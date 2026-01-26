@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { Send } from "lucide-react";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -20,7 +21,6 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
@@ -38,21 +38,22 @@ const Contact = () => {
         <div className="max-w-2xl mx-auto">
           {/* Section header */}
           <div className="text-center mb-12">
-            <span className="text-label text-primary mb-4 block">Контакт</span>
-            <h2 className="text-display-md text-foreground mb-4">
-              Готови за старт?
+            <span className="text-label text-secondary mb-4 block font-body font-medium">Контакт</span>
+            <h2 className="text-display-lg text-foreground font-display mb-4">
+              Готови за{" "}
+              <span className="text-accent-italic">старт?</span>
             </h2>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-lg font-body">
               Отговаряме до 24 часа.
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid md:grid-cols-2 gap-5">
               {/* Name */}
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium text-foreground">
+                <label htmlFor="name" className="text-sm font-medium text-foreground font-body">
                   Име
                 </label>
                 <input
@@ -62,14 +63,14 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  className="w-full h-12 px-4 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-body"
                   placeholder="Вашето име"
                 />
               </div>
 
               {/* Email */}
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-foreground">
+                <label htmlFor="email" className="text-sm font-medium text-foreground font-body">
                   Email
                 </label>
                 <input
@@ -79,7 +80,7 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  className="w-full h-12 px-4 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-body"
                   placeholder="email@example.com"
                 />
               </div>
@@ -87,7 +88,7 @@ const Contact = () => {
 
             {/* Phone */}
             <div className="space-y-2">
-              <label htmlFor="phone" className="text-sm font-medium text-foreground">
+              <label htmlFor="phone" className="text-sm font-medium text-foreground font-body">
                 Телефон
               </label>
               <input
@@ -96,14 +97,14 @@ const Contact = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                className="w-full h-12 px-4 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-body"
                 placeholder="+359 888 123 456"
               />
             </div>
 
             {/* Message */}
             <div className="space-y-2">
-              <label htmlFor="message" className="text-sm font-medium text-foreground">
+              <label htmlFor="message" className="text-sm font-medium text-foreground font-body">
                 Съобщение
               </label>
               <textarea
@@ -113,7 +114,7 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 rows={5}
-                className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none font-body"
                 placeholder="Разкажете ни за вашия проект..."
               />
             </div>
@@ -121,12 +122,19 @@ const Contact = () => {
             {/* Submit button */}
             <Button
               type="submit"
-              variant="hero"
+              variant="default"
               size="lg"
-              className="w-full"
+              className="w-full rounded-xl"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Изпращане..." : "Изпрати запитване"}
+              {isSubmitting ? (
+                "Изпращане..."
+              ) : (
+                <>
+                  Изпрати запитване
+                  <Send className="w-4 h-4 ml-2" />
+                </>
+              )}
             </Button>
           </form>
         </div>

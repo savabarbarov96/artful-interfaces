@@ -2,51 +2,107 @@ import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-gradient">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -right-20 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl animate-pulse-subtle" />
-        <div className="absolute -bottom-32 -left-20 w-[500px] h-[500px] rounded-full bg-primary/3 blur-3xl animate-pulse-subtle delay-500" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-foreground/[0.03]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full border border-foreground/[0.02]" />
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-hero-gradient">
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern" />
+      
+      {/* Wireframe globe decoration */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 w-[700px] h-[700px] opacity-40">
+        <svg viewBox="0 0 400 400" className="w-full h-full animate-spin-slow">
+          {/* Longitude lines */}
+          {[0, 30, 60, 90, 120, 150].map((angle) => (
+            <ellipse
+              key={`long-${angle}`}
+              cx="200"
+              cy="200"
+              rx={200 * Math.cos((angle * Math.PI) / 180)}
+              ry="200"
+              fill="none"
+              stroke="rgba(255,255,255,0.3)"
+              strokeWidth="1"
+              transform={`rotate(${angle} 200 200)`}
+            />
+          ))}
+          {/* Latitude lines */}
+          {[-60, -30, 0, 30, 60].map((lat, i) => (
+            <ellipse
+              key={`lat-${i}`}
+              cx="200"
+              cy={200 + lat * 2}
+              rx={Math.sqrt(40000 - lat * lat * 4)}
+              ry={Math.sqrt(40000 - lat * lat * 4) * 0.3}
+              fill="none"
+              stroke="rgba(255,255,255,0.25)"
+              strokeWidth="1"
+            />
+          ))}
+          {/* Outer circle */}
+          <circle cx="200" cy="200" r="200" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
+        </svg>
       </div>
 
-      <div className="container relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Label */}
-          <div className="animate-fade-up">
-            <span className="text-label text-warm-gray tracking-widest">
-              Software Development Studio
-            </span>
-          </div>
+      {/* Floating accent orbs */}
+      <div className="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-accent/60 animate-float" />
+      <div className="absolute bottom-1/3 left-1/3 w-3 h-3 rounded-full bg-primary-foreground/40 animate-float delay-300" />
+      <div className="absolute top-1/3 right-1/3 w-2 h-2 rounded-full bg-accent/50 animate-float delay-500" />
 
+      <div className="container relative z-10 pt-32 pb-24">
+        <div className="max-w-3xl">
           {/* Main headline */}
-          <h1 className="text-display-xl text-foreground mt-8 mb-8 animate-fade-up delay-100">
-            Изграждаме дигитални решения за вашия бизнес
+          <h1 className="text-display-xl text-primary-foreground animate-fade-up">
+            Не просто уебсайт
+            <br />
+            <span className="text-accent-italic">Цяло уеб решение</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-body-xl text-muted-foreground max-w-xl mx-auto mb-12 animate-fade-up delay-200">
-            Уебсайтове, онлайн магазини и custom софтуер.
+          <p className="text-lg md:text-xl text-primary-foreground/80 max-w-xl mt-8 mb-10 leading-relaxed animate-fade-up delay-200">
+            Премиум уебсайт и лого дизайн, всичко необходимо за Вашия бизнес онлайн - изградено от експерти.
           </p>
 
           {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up delay-300">
-            <Button variant="hero" size="lg" asChild>
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-up delay-300">
+            <Button variant="hero-outline" size="lg" asChild>
               <a href="#contact">Безплатна консултация</a>
             </Button>
-            <Button variant="hero-outline" size="lg" asChild>
-              <a href="#work">Нашите проекти</a>
-            </Button>
           </div>
+
+          {/* Sub-CTA text */}
+          <p className="text-primary-foreground/60 text-sm mt-4 animate-fade-up delay-400">
+            Нека планираме проекта Ви
+          </p>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-fade-up delay-700">
-        <div className="flex flex-col items-center gap-3 text-muted-foreground">
-          <span className="text-xs font-medium tracking-wider uppercase">Scroll</span>
-          <div className="w-px h-12 bg-gradient-to-b from-foreground/20 to-transparent" />
+      {/* Clients strip */}
+      <div className="absolute bottom-0 left-0 right-0 bg-primary/30 backdrop-blur-sm border-t border-primary-foreground/10 py-8">
+        <div className="container">
+          <p className="text-primary-foreground/60 text-sm mb-6 animate-fade-up delay-500">
+            Над 50+ бизнеса и институции ни се довериха
+          </p>
+          <div className="flex items-center gap-12 overflow-hidden">
+            <div className="flex items-center gap-12 animate-slide-left">
+              {/* Client logos - stylized placeholders */}
+              {[
+                "TechCorp",
+                "Amelia Diva",
+                "DroneShow.bg",
+                "BuildPro",
+                "EcoLife",
+                "FinanceHub",
+                "TechCorp",
+                "Amelia Diva",
+                "DroneShow.bg",
+              ].map((name, i) => (
+                <span
+                  key={i}
+                  className="text-primary-foreground/50 font-display text-lg md:text-xl whitespace-nowrap italic"
+                >
+                  {name}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
