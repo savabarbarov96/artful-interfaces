@@ -68,10 +68,10 @@ const Hero = () => {
       ref={heroRef}
       className="relative min-h-screen flex items-center overflow-hidden grain-overlay bg-hero-gradient"
     >
-      {/* Spline 3D Scene - centered & right on mobile, more right on desktop */}
+      {/* Spline 3D Scene - hidden on mobile, positioned right on desktop */}
       <div
         ref={splineContainerRef}
-        className="absolute inset-0 z-[5] translate-x-[15%] md:translate-x-0 md:left-[25%] lg:left-[35%] xl:left-[40%]"
+        className="absolute inset-0 z-[5] hidden md:block md:left-[25%] lg:left-[35%] xl:left-[40%]"
       >
         <Spline
           scene="https://prod.spline.design/GkBTyEqij0NnFcAZ/scene.splinecode"
@@ -100,6 +100,23 @@ const Hero = () => {
           )`,
         }}
       />
+
+      {/* Spinning planet - mobile only */}
+      <div
+        className="absolute -right-20 top-1/3 w-[280px] h-[280px] md:hidden pointer-events-none"
+      >
+        <div
+          className="w-full h-full rounded-full animate-spin-slow"
+          style={{
+            background: `
+              radial-gradient(circle at 30% 30%, hsl(0 0% 100% / 0.4) 0%, transparent 50%),
+              radial-gradient(circle at 70% 60%, hsl(217 91% 60% / 0.3) 0%, transparent 40%),
+              radial-gradient(circle, hsl(217 91% 50% / 0.25) 0%, hsl(217 91% 40% / 0.1) 50%, transparent 70%)
+            `,
+            boxShadow: '0 0 60px hsl(217 91% 50% / 0.3), inset 0 0 40px hsl(0 0% 100% / 0.1)',
+          }}
+        />
+      </div>
 
       {/* Floating glow orbs with mouse parallax */}
       <div
@@ -207,10 +224,6 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* Sub-CTA text */}
-          <p className="text-white/85 text-sm mt-6 animate-fade-up delay-600 font-body">
-            Нека планираме проекта Ви • Отговор до 24 часа
-          </p>
         </div>
       </div>
 
@@ -220,7 +233,7 @@ const Hero = () => {
       >
         <div className="container py-8">
           <div className="flex flex-col md:flex-row md:items-center gap-6">
-            <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="hidden md:flex items-center gap-3 flex-shrink-0">
               <div className="w-2 h-2 rounded-full bg-white animate-pulse-glow" />
               <p className="text-white/70 text-sm font-body">
                 Работим с <span className="text-white font-semibold">най-добрите</span> технологии
@@ -233,7 +246,11 @@ const Hero = () => {
                 {[...technologies, ...technologies].map((name, i) => (
                   <span
                     key={i}
-                    className="text-white/40 font-display text-lg md:text-xl whitespace-nowrap tracking-wider hover:text-white/80 transition-colors duration-300 cursor-default"
+                    className={`font-display text-lg md:text-xl whitespace-nowrap tracking-wider hover:text-white/90 transition-colors duration-300 cursor-default ${
+                      name === "Supabase" || name === "TailwindCSS"
+                        ? "text-white font-semibold drop-shadow-[0_4px_18px_rgba(255,255,255,0.25)]"
+                        : "text-white/40"
+                    }`}
                   >
                     {name}
                   </span>
