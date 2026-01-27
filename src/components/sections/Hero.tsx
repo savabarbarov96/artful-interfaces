@@ -71,7 +71,7 @@ const Hero = () => {
       {/* Spline 3D Scene - hidden on mobile, positioned right on desktop */}
       <div
         ref={splineContainerRef}
-        className="absolute inset-0 z-[5] hidden md:block md:left-[25%] lg:left-[35%] xl:left-[40%]"
+        className="absolute inset-0 z-[5] hidden md:block"
       >
         <Spline
           scene="https://prod.spline.design/GkBTyEqij0NnFcAZ/scene.splinecode"
@@ -189,17 +189,17 @@ const Hero = () => {
 
           {/* Main headline with staggered animation */}
           <h1 className="text-display-hero text-white mb-8 drop-shadow-[0_8px_28px_rgba(255,255,255,0.25)] font-semibold leading-tight">
-            <span className="block animate-fade-up">Не просто уебсайт</span>
-            <span className="block animate-fade-up delay-200">
-              <span className="italic font-medium text-accent">Цяло уеб решение</span>
-            </span>
+            <span className="block animate-fade-up">Вие развивате</span>
+            <span className="block animate-fade-up delay-100 text-[#FF6B35]">бизнеса</span>
+            <span className="block animate-fade-up delay-200">Ние се грижим за</span>
+            <span className="block animate-fade-up delay-300 text-[#FF6B35]">сайта</span>
           </h1>
 
           {/* Subheadline */}
           <p
             className="text-xl md:text-2xl text-white max-w-2xl mb-12 leading-relaxed animate-fade-up delay-400 font-body font-medium drop-shadow-[0_6px_22px_rgba(255,255,255,0.22)]"
           >
-            Премиум уебсайт и лого дизайн, всичко необходимо за Вашия бизнес онлайн — изградено от експерти с внимание към всеки детайл.
+            Пълен пакет: дизайн, разработка, хостинг и поддръжка — месечно.
           </p>
 
           {/* CTA buttons */}
@@ -217,7 +217,7 @@ const Hero = () => {
             <Button
               variant="outline"
               size="lg"
-              className="border-white/40 text-white hover:bg-white/20 hover:border-white/60 px-8 py-6 text-base rounded-xl transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.12)]"
+              className="hidden sm:inline-flex border-white/40 text-white hover:bg-white/20 hover:border-white/60 px-8 py-6 text-base rounded-xl transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.12)]"
               asChild
             >
               <a href="#work">Вижте проектите ни</a>
@@ -236,7 +236,7 @@ const Hero = () => {
             <div className="hidden md:flex items-center gap-3 flex-shrink-0">
               <div className="w-2 h-2 rounded-full bg-white animate-pulse-glow" />
               <p className="text-white/70 text-sm font-body">
-                Работим с <span className="text-white font-semibold">най-добрите</span> технологии
+                Изпозлваме най-новите технологии.
               </p>
             </div>
 
@@ -246,11 +246,7 @@ const Hero = () => {
                 {[...technologies, ...technologies].map((name, i) => (
                   <span
                     key={i}
-                    className={`font-display text-lg md:text-xl whitespace-nowrap tracking-wider hover:text-white/90 transition-colors duration-300 cursor-default ${
-                      name === "Supabase" || name === "TailwindCSS"
-                        ? "text-white font-semibold drop-shadow-[0_4px_18px_rgba(255,255,255,0.25)]"
-                        : "text-white/40"
-                    }`}
+                    className="font-display text-lg md:text-xl whitespace-nowrap tracking-wider text-white drop-shadow-[0_4px_18px_rgba(255,255,255,0.25)]"
                   >
                     {name}
                   </span>
