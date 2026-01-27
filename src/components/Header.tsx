@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ArrowRight } from "lucide-react";
+import logoImg from "@/assets/5f0bce7a-38e6-4daf-b989-6c44279836ea.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,11 +66,13 @@ const Header = () => {
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <a href="#" className="flex items-center gap-3 group">
-              {/* Logo mark */}
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 bg-blue-gradient shadow-blue"
-              >
-                <span className="text-lg font-display font-bold text-white">A</span>
+              <div className="w-12 h-12 rounded-xl overflow-hidden shadow-blue flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                <img
+                  src={logoImg}
+                  alt="AutomationAid logo"
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                />
               </div>
               <span className={`text-lg font-display transition-colors duration-300 ${isScrolled ? 'text-foreground' : 'text-white'
                 } group-hover:text-primary`}>
@@ -212,3 +215,4 @@ const Header = () => {
 };
 
 export default Header;
+
