@@ -99,7 +99,7 @@ const Pricing = () => {
             Изберете план за{" "}
             <span className="text-accent-italic">вашия бизнес</span>
           </h2>
-          <p className="text-muted-foreground text-lg font-body font-light">
+          <p className="text-foreground text-xl md:text-2xl font-display italic">
             Месечни планове с включено всичко необходимо за успешно онлайн присъствие.
           </p>
         </div>
@@ -198,7 +198,7 @@ const Pricing = () => {
                     <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-8" />
 
                     {/* Description */}
-                    <p className="text-muted-foreground mb-8 font-body leading-relaxed">
+                    <p className="text-foreground/80 mb-8 font-display text-lg leading-relaxed italic">
                       {plan.description}
                     </p>
 

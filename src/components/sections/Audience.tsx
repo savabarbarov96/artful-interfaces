@@ -140,7 +140,7 @@ const Audience = () => {
                     </h3>
 
                     {/* Description */}
-                    <p className="text-muted-foreground text-sm leading-relaxed font-body font-light">
+                    <p className="text-foreground/80 leading-relaxed font-display text-lg italic">
                       {audience.description}
                     </p>
                   </div>

@@ -59,7 +59,7 @@ const Footer = () => {
                 Automation Aid
               </span>
             </a>
-            <p className="text-muted-foreground font-body font-light leading-relaxed max-w-md mb-8">
+            <p className="text-foreground/80 font-display text-xl leading-relaxed max-w-md mb-8 italic">
               Премиум уеб решения за амбициозни бизнеси. Създаваме уебсайтове, които не просто изглеждат добре – те работят за вашия успех.
             </p>
 

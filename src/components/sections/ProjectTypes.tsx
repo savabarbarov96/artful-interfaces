@@ -171,7 +171,7 @@ const ProjectTypes = () => {
                 </h3>
 
                 {/* Description */}
-                <p className="text-muted-foreground text-lg leading-relaxed mb-10 font-body font-light">
+                <p className="text-foreground text-xl md:text-2xl leading-relaxed mb-10 font-display italic">
                   {activeProject.description}
                 </p>
 

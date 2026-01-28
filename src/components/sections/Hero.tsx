@@ -8,6 +8,7 @@ const Hero = () => {
   const splineContainerRef = useRef<HTMLDivElement>(null);
   const [scrollY, setScrollY] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [splineLoaded, setSplineLoaded] = useState(false);
 
   // Block scroll events from reaching Spline
   useEffect(() => {
@@ -71,13 +72,33 @@ const Hero = () => {
       {/* Spline 3D Scene - hidden on mobile, positioned right on desktop */}
       <div
         ref={splineContainerRef}
-        className="absolute inset-0 z-[5] hidden md:block"
+        className={`absolute inset-0 z-[5] hidden md:block transition-opacity duration-700 ${
+          splineLoaded ? "opacity-100" : "opacity-0"
+        }`}
       >
         <Spline
           scene="https://prod.spline.design/GkBTyEqij0NnFcAZ/scene.splinecode"
           style={{ width: '100%', height: '100%' }}
+          onLoad={() => setSplineLoaded(true)}
         />
       </div>
+
+      {/* Desktop-only Spline loading cover */}
+      {!splineLoaded && (
+        <div className="absolute inset-0 z-[8] hidden md:flex items-center justify-center">
+          <div className="absolute inset-0 bg-gradient-to-br from-black/35 via-black/15 to-transparent backdrop-blur-sm" />
+          <div className="relative flex flex-col items-center gap-5 px-8 py-6 rounded-2xl border border-white/20 bg-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-2 border-white/20" />
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-white animate-spin" />
+              <div className="absolute inset-2 rounded-full border border-white/20 animate-pulse" />
+            </div>
+            <div className="text-white/90 text-sm font-body uppercase tracking-[0.3em]">
+              Зареждане на сцената
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Animated gradient mesh background */}
       <div

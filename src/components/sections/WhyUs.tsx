@@ -111,7 +111,7 @@ const WhyUs = () => {
             Нашият{" "}
             <span className="text-accent-italic">подход</span>
           </h2>
-          <p className="text-muted-foreground font-body font-light">
+          <p className="text-foreground text-xl md:text-2xl font-display italic">
             Съчетаваме скорост, качество и експертиза за постигане на резултати.
           </p>
         </div>
@@ -175,7 +175,7 @@ const WhyUs = () => {
                     </h3>
 
                     {/* Description */}
-                    <p className="text-muted-foreground font-body font-light leading-relaxed text-sm">
+                    <p className="text-foreground/80 font-display leading-relaxed text-lg italic">
                       {reason.description}
                     </p>
                   </div>

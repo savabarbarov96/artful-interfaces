@@ -113,7 +113,7 @@ const Contact = () => {
                 Готови за{" "}
                 <span className="text-accent-italic">старт?</span>
               </h2>
-              <p className="text-muted-foreground text-lg font-body font-light leading-relaxed">
+              <p className="text-foreground text-xl md:text-2xl font-display leading-relaxed italic">
                 Разкажете ни за вашия проект и ние ще ви помогнем да го реализирате. Отговаряме до 24 часа.
               </p>
             </div>

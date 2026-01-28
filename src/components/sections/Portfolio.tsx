@@ -115,7 +115,7 @@ const Portfolio = () => {
               <span className="text-accent-italic">разработки</span>
             </h2>
           </div>
-          <p className="text-muted-foreground max-w-sm font-body font-light leading-relaxed">
+          <p className="text-foreground max-w-sm font-display text-xl leading-relaxed italic">
             Всеки проект е уникално решение, съобразено с нуждите на клиента и изградено с внимание към детайлите.
           </p>
         </div>
