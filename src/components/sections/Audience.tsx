@@ -71,15 +71,18 @@ const Audience = () => {
       <div className="container relative z-10">
         {/* Section header */}
         <div
-          className={`text-center max-w-xl mx-auto mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <span className="text-label text-primary mb-4 block font-body font-medium tracking-[0.2em]">
             За кого е
           </span>
-          <h2 className="text-display-md text-foreground font-display">
+          <h2 className="text-display-lg text-foreground font-display mb-4">
             Работим с{" "}
             <span className="text-accent-italic">амбициозни екипи</span>
           </h2>
+          <p className="text-foreground text-xl md:text-2xl font-display font-medium italic">
+            Партнираме с визионери, които ценят качеството и иновациите.
+          </p>
         </div>
 
         {/* Audience blocks */}
@@ -97,7 +100,7 @@ const Audience = () => {
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 <div
-                  className={`relative p-8 lg:p-10 rounded-2xl transition-all duration-500 overflow-hidden bg-white ${isHovered ? 'scale-[1.02] shadow-lg' : 'shadow-sm'
+                  className={`relative p-10 lg:p-12 rounded-2xl transition-all duration-500 overflow-hidden bg-white ${isHovered ? 'scale-[1.02] shadow-lg' : 'shadow-sm'
                     }`}
                 >
                   {/* Border effect */}
@@ -124,23 +127,23 @@ const Audience = () => {
                   <div className="relative z-10">
                     {/* Icon */}
                     <div
-                      className={`w-14 h-14 rounded-2xl ${audience.iconBg} border flex items-center justify-center mb-6 transition-all duration-500 ${isHovered ? 'scale-110 shadow-lg' : ''
+                      className={`w-16 h-16 rounded-2xl ${audience.iconBg} border flex items-center justify-center mb-8 transition-all duration-500 ${isHovered ? 'scale-110 shadow-lg' : ''
                         }`}
                     >
-                      <Icon className={`w-6 h-6 ${audience.iconColor} transition-all duration-300`} />
+                      <Icon className={`w-7 h-7 ${audience.iconColor} transition-all duration-300`} />
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl font-display text-foreground mb-4 flex items-center gap-2">
+                    <h3 className="text-2xl md:text-3xl font-display text-foreground mb-5 flex items-center gap-2">
                       {audience.title}
                       <ArrowUpRight
-                        className={`w-4 h-4 text-muted-foreground transition-all duration-300 ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
+                        className={`w-5 h-5 text-muted-foreground transition-all duration-300 ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
                           }`}
                       />
                     </h3>
 
                     {/* Description */}
-                    <p className="text-foreground/80 leading-relaxed font-display text-lg italic">
+                    <p className="text-foreground leading-relaxed font-display text-xl md:text-2xl font-medium italic">
                       {audience.description}
                     </p>
                   </div>

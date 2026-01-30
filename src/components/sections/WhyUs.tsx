@@ -197,26 +197,6 @@ const WhyUs = () => {
             );
           })}
         </div>
-
-        {/* Trust indicators */}
-        <div
-          className={`flex flex-wrap items-center justify-center gap-8 lg:gap-16 mt-20 pt-12 border-t border-border transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          {[
-            { label: "Години опит", value: "5+" },
-            { label: "Доволни клиенти", value: "50+" },
-            { label: "Поддръжка", value: "24/7" },
-          ].map((item, index) => (
-            <div key={index} className="text-center">
-              <div className="text-2xl font-display font-bold text-gradient-blue mb-1">
-                {item.value}
-              </div>
-              <div className="text-xs text-muted-foreground font-body uppercase tracking-wider">
-                {item.label}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

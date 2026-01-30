@@ -59,7 +59,7 @@ const Footer = () => {
                 Automation Aid
               </span>
             </a>
-            <p className="text-foreground/80 font-display text-xl leading-relaxed max-w-md mb-8 italic">
+            <p className="text-foreground font-display text-xl leading-relaxed max-w-md mb-8 font-medium italic">
               Премиум уеб решения за амбициозни бизнеси. Създаваме уебсайтове, които не просто изглеждат добре – те работят за вашия успех.
             </p>
 
@@ -132,7 +132,7 @@ const Footer = () => {
             {/* Legal links */}
             <div className="flex items-center gap-6">
               <a
-                href="#"
+                href="/privacy-policy"
                 className="text-sm text-muted-foreground hover:text-foreground font-body transition-colors duration-300"
               >
                 Политика за поверителност

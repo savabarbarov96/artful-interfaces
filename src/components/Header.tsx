@@ -1,18 +1,28 @@
-﻿import { useState, useEffect } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import logoImg from "@/assets/5f0bce7a-38e6-4daf-b989-6c44279836ea.png";
+
+const serviceLinks = [
+  { href: "/website", label: "Изработка на уебсайт" },
+  { href: "/ai-integration", label: "AI Интеграция" },
+  { href: "/housing-software", label: "Софтуер за настаняване" },
+];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownTimeout = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      // Calculate scroll progress for page
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = Math.min(window.scrollY / totalHeight, 1);
       setScrollProgress(progress);
@@ -22,7 +32,17 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -34,8 +54,16 @@ const Header = () => {
     };
   }, [isMobileMenuOpen]);
 
+  const handleDropdownEnter = () => {
+    clearTimeout(dropdownTimeout.current);
+    setIsDropdownOpen(true);
+  };
+
+  const handleDropdownLeave = () => {
+    dropdownTimeout.current = setTimeout(() => setIsDropdownOpen(false), 150);
+  };
+
   const navLinks = [
-    { href: "#services", label: "Услуги" },
     { href: "#work", label: "Проекти" },
     { href: "#contact", label: "Контакти" },
   ];
@@ -48,7 +76,7 @@ const Header = () => {
             : "py-5"
           }`}
       >
-        {/* Background with blur - changes based on scroll */}
+        {/* Background with blur */}
         <div
           className={`absolute inset-0 transition-all duration-500 ${isScrolled
               ? "opacity-100 bg-white/90 backdrop-blur-md shadow-sm"
@@ -65,7 +93,7 @@ const Header = () => {
         <div className="container relative">
           <nav className="flex items-center justify-between">
             {/* Logo */}
-            <a href="#" className="flex items-center gap-3 group">
+            <Link to="/" className="flex items-center gap-3 group">
               <div className="w-12 h-12 rounded-xl overflow-hidden shadow-blue flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <img
                   src={logoImg}
@@ -78,20 +106,67 @@ const Header = () => {
                 } group-hover:text-primary`}>
                 Automation Aid
               </span>
-            </a>
+            </Link>
 
             {/* Navigation links - Desktop */}
             <div className="hidden md:flex items-center gap-1">
+              {/* Услуги dropdown */}
+              <div
+                ref={dropdownRef}
+                className="relative"
+                onMouseEnter={handleDropdownEnter}
+                onMouseLeave={handleDropdownLeave}
+              >
+                <button
+                  className={`relative px-5 py-2 text-sm font-medium font-body transition-colors duration-300 group flex items-center gap-1 ${isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
+                    }`}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  Услуги
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 rounded-full group-hover:w-6 transition-all duration-300 ${isScrolled ? 'bg-primary' : 'bg-white'
+                    }`} />
+                </button>
+
+                {/* Dropdown panel */}
+                <div
+                  className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 ${
+                    isDropdownOpen
+                      ? 'opacity-100 translate-y-0 pointer-events-auto'
+                      : 'opacity-0 -translate-y-2 pointer-events-none'
+                  }`}
+                >
+                  <div
+                    className="bg-white rounded-xl border border-border shadow-lg overflow-hidden min-w-[240px]"
+                    style={{
+                      boxShadow: '0 12px 40px -8px hsl(222 47% 11% / 0.12), 0 0 0 1px hsl(220 13% 91% / 0.8)',
+                    }}
+                  >
+                    {serviceLinks.map((link, i) => (
+                      <Link
+                        key={link.href}
+                        to={link.href}
+                        className="block px-5 py-3.5 text-sm font-body font-medium text-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200 border-b border-border/50 last:border-0"
+                        onClick={() => setIsDropdownOpen(false)}
+                        style={{ transitionDelay: `${i * 30}ms` }}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Other nav links */}
               {navLinks.map((link, index) => (
                 <a
                   key={link.href}
                   href={link.href}
                   className={`relative px-5 py-2 text-sm font-medium font-body transition-colors duration-300 group ${isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
                     }`}
-                  style={{ transitionDelay: `${index * 50}ms` }}
+                  style={{ transitionDelay: `${(index + 1) * 50}ms` }}
                 >
                   {link.label}
-                  {/* Hover underline */}
                   <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 rounded-full group-hover:w-6 transition-all duration-300 ${isScrolled ? 'bg-primary' : 'bg-white'
                     }`} />
                 </a>
@@ -158,6 +233,46 @@ const Header = () => {
             }`}
         >
           <nav className="space-y-2">
+            {/* Услуги with expandable sub-links */}
+            <div>
+              <button
+                className="flex items-center gap-2 py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300 w-full text-left"
+                onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                style={{
+                  transitionDelay: '75ms',
+                  opacity: isMobileMenuOpen ? 1 : 0,
+                  transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-20px)',
+                  transition: 'all 0.4s ease-out',
+                }}
+              >
+                Услуги
+                <ChevronDown className={`w-6 h-6 transition-transform duration-300 ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <div
+                className={`overflow-hidden transition-all duration-400 ${
+                  isMobileServicesOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <div className="pl-4 pb-2 space-y-1 border-l-2 border-primary/20 ml-1">
+                  {serviceLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      className="block py-2.5 text-xl font-display text-muted-foreground hover:text-primary transition-colors duration-300"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setIsMobileServicesOpen(false);
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Other nav links */}
             {navLinks.map((link, index) => (
               <a
                 key={link.href}
@@ -165,7 +280,7 @@ const Header = () => {
                 className="block py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
                 style={{
-                  transitionDelay: `${(index + 1) * 75}ms`,
+                  transitionDelay: `${(index + 2) * 75}ms`,
                   opacity: isMobileMenuOpen ? 1 : 0,
                   transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-20px)',
                   transition: 'all 0.4s ease-out',
@@ -215,4 +330,3 @@ const Header = () => {
 };
 
 export default Header;
-

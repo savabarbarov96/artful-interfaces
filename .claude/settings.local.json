@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(node scripts/optimize-images.mjs:*)"
+      "Bash(node scripts/optimize-images.mjs:*)",
+      "WebFetch(domain:sveti-nikola.eu)"
     ]
   }
 }

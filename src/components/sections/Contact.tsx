@@ -56,20 +56,14 @@ const Contact = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "hello@automationaid.bg",
-      href: "mailto:hello@automationaid.bg",
+      value: "slav@automationaid.eu",
+      href: "mailto:slav@automationaid.eu",
     },
     {
       icon: Phone,
       label: "Телефон",
-      value: "+359 888 123 456",
-      href: "tel:+359888123456",
-    },
-    {
-      icon: MapPin,
-      label: "Локация",
-      value: "София, България",
-      href: "#",
+      value: "0884323999",
+      href: "tel:0884323999",
     },
   ];
 
@@ -113,7 +107,7 @@ const Contact = () => {
                 Готови за{" "}
                 <span className="text-accent-italic">старт?</span>
               </h2>
-              <p className="text-foreground text-xl md:text-2xl font-display leading-relaxed italic">
+              <p className="text-foreground text-xl md:text-2xl font-display leading-relaxed font-medium italic">
                 Разкажете ни за вашия проект и ние ще ви помогнем да го реализирате. Отговаряме до 24 часа.
               </p>
             </div>

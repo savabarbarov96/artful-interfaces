@@ -283,7 +283,7 @@ const Services = () => {
                 {activeContent.title}
               </h3>
 
-              <p className="text-foreground text-xl md:text-2xl leading-relaxed mb-10 font-display italic">
+              <p className="text-foreground text-xl md:text-2xl leading-relaxed mb-10 font-display font-medium italic">
                 {activeContent.description}
               </p>
 

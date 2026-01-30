@@ -42,8 +42,8 @@ const projectTypes: ProjectType[] = [
     title: "Корпоративни сайтове",
     description: "Професионално онлайн присъствие за средни и големи компании. Многоезични, с интегрирани CMS системи и разширена функционалност.",
     seoDescription: "Корпоративни уеб сайтове с професионален дизайн, многоезична поддръжка, CMS интеграция и корпоративни функции за големи организации.",
-    mediaType: "image",
-    mediaUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+    mediaType: "video",
+    mediaUrl: "/clients/WebsiteDesktopKostova.mp4",
     features: ["Многоезичност", "CMS интеграция", "Разширена сигурност", "Корпоративен дизайн"],
     category: "Корпоративни",
     tech: ["Next.js", "CMS", "PostgreSQL"],
@@ -53,8 +53,8 @@ const projectTypes: ProjectType[] = [
     title: "Уеб приложения",
     description: "Персонализирани уеб приложения за специфични бизнес нужди. От прости инструменти до сложни вътрешни системи.",
     seoDescription: "Персонализирани уеб приложения и SaaS платформи с модерна архитектура, API интеграции, реално-време данни и автоматизация на бизнес процеси.",
-    mediaType: "image",
-    mediaUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+    mediaType: "video",
+    mediaUrl: "/clients/WebsiteDesktopShelepko.mp4",
     features: ["Потребителски панели", "API интеграции", "Реално време данни", "Автоматизации"],
     category: "SaaS",
     tech: ["React", "WebSockets", "REST API"],
@@ -72,6 +72,20 @@ const ProjectTypes = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const interstitialCopy: Record<number, string> = {
+    1: "Вижте как изглежда един реален сайт за услуги с внимание към детайла, удобството и професионалното представяне.",
+    2: "Вижте как изглежда една реална e-commerce реализация с внимание към детайла, удобството и усещането за премиум бранд.",
+    3: "Вижте как изглежда един корпоративен сайт с ясно послание, доверие и силно бизнес присъствие.",
+    4: "Вижте как изглежда уеб приложение с модерна визия, ясни потоци и фокус върху ефективността.",
+  };
+
+  const showcaseLabel: Record<number, string> = {
+    1: "Уебсайт по ваша визия",
+    2: "Магазин по ваша визия",
+    3: "Корпоративен сайт по ваша визия",
+    4: "Уеб приложение по ваша визия",
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -345,7 +359,7 @@ const ProjectTypes = () => {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-xl md:text-2xl text-foreground/80 leading-relaxed font-display italic">
+                  <p className="text-xl md:text-2xl text-foreground leading-relaxed font-display font-medium italic">
                     {activeProject.description}
                   </p>
 
@@ -417,10 +431,8 @@ const ProjectTypes = () => {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <p className="text-base md:text-lg text-foreground/70 font-body leading-relaxed">
-              {activeProject.id === 1
-                ? "Вижте как изглежда един реален сайт за услуги с внимание към детайла, удобството и професионалното представяне."
-                : "Вижте как изглежда една реална e-commerce реализация с внимание към детайла, удобството и усещането за премиум бранд."}
+            <p className="text-base md:text-lg text-foreground font-body font-medium leading-relaxed">
+              {interstitialCopy[activeProject.id] ?? ""}
             </p>
           </div>
 
@@ -443,7 +455,7 @@ const ProjectTypes = () => {
                 }}
               >
                 <span className="text-sm font-body font-semibold tracking-[0.18em] text-primary uppercase">
-                  {activeProject.id === 1 ? "Уебсайт по ваша визия" : "Магазин по ваша визия"}
+                  {showcaseLabel[activeProject.id] ?? "Проект по ваша визия"}
                 </span>
               </span>
             </div>
@@ -498,7 +510,7 @@ const ProjectTypes = () => {
                             loop
                             muted
                             playsInline
-                            preload="metadata"
+                            preload={isVisible ? "metadata" : "none"}
                             onLoadedData={() => setVideoLoaded(true)}
                             onPlay={() => setIsPlaying(true)}
                             onPause={() => setIsPlaying(false)}

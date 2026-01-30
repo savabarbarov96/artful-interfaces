@@ -99,13 +99,13 @@ const Pricing = () => {
             Изберете план за{" "}
             <span className="text-accent-italic">вашия бизнес</span>
           </h2>
-          <p className="text-foreground text-xl md:text-2xl font-display italic">
+          <p className="text-foreground text-xl md:text-2xl font-display font-medium italic">
             Месечни планове с включено всичко необходимо за успешно онлайн присъствие.
           </p>
         </div>
 
         {/* Pricing cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {plans.map((plan, index) => {
             const Icon = plan.icon;
             const isHovered = hoveredPlan === index;
@@ -132,7 +132,7 @@ const Pricing = () => {
 
                 {/* Card */}
                 <div
-                  className={`relative h-full rounded-2xl p-8 lg:p-10 transition-all duration-500 overflow-hidden ${plan.isPopular
+                  className={`relative h-full rounded-2xl p-5 md:p-6 lg:p-7 transition-all duration-500 overflow-hidden ${plan.isPopular
                       ? 'bg-white border-2 border-primary shadow-lg'
                       : 'bg-white border border-border shadow-sm'
                     } ${isHovered ? 'shadow-xl scale-[1.02]' : ''}`}
@@ -151,7 +151,7 @@ const Pricing = () => {
                   {/* Content */}
                   <div className="relative z-10">
                     {/* Top badge / Icon */}
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-4">
                       <div
                         className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium font-body border ${plan.isPopular
                             ? 'border-primary/30 bg-primary/10 text-primary'
@@ -164,13 +164,13 @@ const Pricing = () => {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-2xl md:text-3xl font-display text-foreground mb-3">
+                    <h3 className="text-xl md:text-2xl font-display text-foreground mb-2">
                       {plan.title}
                     </h3>
 
                     {/* Subtitle badge */}
                     <div
-                      className={`inline-block px-3 py-1.5 rounded-lg text-xs font-medium font-body mb-8 ${plan.isPopular
+                      className={`inline-block px-3 py-1.5 rounded-lg text-xs font-medium font-body mb-5 ${plan.isPopular
                           ? 'bg-secondary/20 text-secondary'
                           : 'bg-primary/10 text-primary/80'
                         }`}
@@ -179,31 +179,31 @@ const Pricing = () => {
                     </div>
 
                     {/* Pricing */}
-                    <div className="mb-2">
-                      <span className="text-muted-foreground text-lg font-body">от </span>
-                      <span className="text-5xl md:text-6xl font-display font-medium text-foreground">
+                    <div className="mb-1">
+                      <span className="text-muted-foreground text-base font-body">от </span>
+                      <span className="text-4xl md:text-5xl font-display font-medium text-foreground">
                         {plan.priceEur}
                       </span>
-                      <span className="text-2xl font-display text-primary">€</span>
-                      <span className="text-muted-foreground text-lg font-body">/месец </span>
+                      <span className="text-xl font-display text-primary">€</span>
+                      <span className="text-muted-foreground text-base font-body">/месец </span>
                     </div>
 
                     {/* BGN price */}
-                    <p className="text-lg text-muted-foreground mb-8 font-body">
+                    <p className="text-base text-muted-foreground mb-5 font-body">
                       ≈ <span className="font-medium text-foreground">{plan.priceBgn} лв</span>/месец{" "}
                       <span className="text-sm opacity-60">(без ДДС)</span>
                     </p>
 
                     {/* Divider */}
-                    <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-8" />
+                    <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-5" />
 
                     {/* Description */}
-                    <p className="text-foreground/80 mb-8 font-display text-lg leading-relaxed italic">
+                    <p className="text-foreground mb-5 font-display text-base md:text-lg leading-relaxed font-medium italic">
                       {plan.description}
                     </p>
 
                     {/* Features */}
-                    <ul className="space-y-4 mb-10">
+                    <ul className="space-y-3 mb-6">
                       {plan.features.map((feature) => (
                         <li
                           key={feature}
@@ -217,7 +217,7 @@ const Pricing = () => {
                           >
                             <Check className="w-3 h-3" strokeWidth={3} />
                           </div>
-                          <span className="text-foreground font-body text-sm">{feature}</span>
+                          <span className="text-foreground font-body text-sm font-medium">{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -225,7 +225,7 @@ const Pricing = () => {
                     {/* Details link */}
                     <a
                       href="#contact"
-                      className="text-muted-foreground hover:text-primary underline underline-offset-4 transition-colors text-sm font-body block mb-8"
+                      className="text-muted-foreground hover:text-primary underline underline-offset-4 transition-colors text-sm font-body block mb-5"
                     >
                       Вижте всичко, което получавате в плана си
                     </a>
@@ -233,7 +233,7 @@ const Pricing = () => {
                     {/* CTA Button */}
                     <Button
                       size="lg"
-                      className={`w-full group rounded-xl py-6 text-base font-medium transition-all duration-300 ${plan.isPopular
+                      className={`w-full group rounded-xl py-5 text-sm md:text-base font-medium transition-all duration-300 ${plan.isPopular
                           ? 'bg-blue-gradient hover:shadow-blue text-white'
                           : 'bg-muted hover:bg-muted/80 text-foreground border border-border'
                         }`}

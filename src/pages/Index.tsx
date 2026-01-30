@@ -5,10 +5,8 @@ import Testimonials from "@/components/sections/Testimonials";
 import ProjectTypes from "@/components/sections/ProjectTypes";
 import Pricing from "@/components/sections/Pricing";
 import Services from "@/components/sections/Services";
+import AIIntegrations from "@/components/sections/AIIntegrations";
 import Audience from "@/components/sections/Audience";
-import Portfolio from "@/components/sections/Portfolio";
-import MobileSection from "@/components/sections/MobileSection";
-import WhyUs from "@/components/sections/WhyUs";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 
@@ -19,14 +17,12 @@ const Index = () => {
       <main>
         <Hero />
         <Proposition />
-        <MobileSection />
         <ProjectTypes />
         <Testimonials />
         <Pricing />
         <Services />
+        <AIIntegrations />
         <Audience />
-        <Portfolio />
-        <WhyUs />
         <Contact />
       </main>
       <Footer />
