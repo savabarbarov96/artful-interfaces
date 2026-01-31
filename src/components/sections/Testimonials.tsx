@@ -13,7 +13,7 @@ interface Testimonial {
   role: string;
   company: string;
   rating: number;
-  projectUrl: string;
+  projectUrl?: string;
 }
 
 const testimonials: Testimonial[] = [
@@ -76,6 +76,17 @@ const testimonials: Testimonial[] = [
     company: "WeTransportIt",
     rating: 5,
     projectUrl: "https://wetransportit.eu/",
+  },
+  {
+    id: 6,
+    image: "/clients/lubomir-kupenski-espresso-cafe-bar.jpg",
+    logoText: "ЕК",
+    headline: "ДИГИТАЛНО МЕНЮ, КОЕТО УЛЕСНЯВА ОБСЛУЖВАНЕТО",
+    quote: "Дигиталното меню направи поръчките по-бързи и ясни, а клиентите оценяват модерното преживяване. Получихме стилно решение, което пасва идеално на атмосферата в бара.",
+    name: "Любомир Купенски",
+    role: "Собственик",
+    company: "Еспресо Кафе Бар",
+    rating: 5,
   },
 ];
 
@@ -231,17 +242,19 @@ const Testimonials = () => {
                           </blockquote>
 
                           {/* CTA Button - prominent centerpiece */}
-                          <div className="mb-8">
-                            <a
-                              href={testimonial.projectUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white rounded-xl font-body font-semibold text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5"
-                            >
-                              <span>Вижте проекта</span>
-                              <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                            </a>
-                          </div>
+                          {testimonial.projectUrl ? (
+                            <div className="mb-8">
+                              <a
+                                href={testimonial.projectUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white rounded-xl font-body font-semibold text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5"
+                              >
+                                <span>Вижте проекта</span>
+                                <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                              </a>
+                            </div>
+                          ) : null}
                         </div>
 
                         {/* Bottom row: Author info */}
