@@ -1,9 +1,15 @@
 import Header from "@/components/Header";
 import Footer from "@/components/sections/Footer";
+import SEOHead from "@/components/landing/SEOHead";
 
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Политика за поверителност | Automation Aid"
+        description="Политика за поверителност на Automation Aid — как обработваме и защитаваме вашите лични данни."
+        canonical="https://automationaid.bg/privacy-policy"
+      />
       <Header />
       <main className="pt-28 lg:pt-32 pb-20">
         <section className="container">

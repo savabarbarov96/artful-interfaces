@@ -19,7 +19,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    image: "/clients/ivan_mitev_examate_owner.jpg",
+    image: "/clients/ivan_mitev_examate_owner.webp",
     logo: "/clients/examate_logo.png",
     headline: "МОДЕРНА ПЛАТФОРМА ЗА ДИГИТАЛНО ОБРАЗОВАНИЕ",
     quote: "Имахме нужда от платформа, която да опрости процеса на провеждане на изпити и да бъде интуитивна както за преподаватели, така и за студенти. Резултатът надмина очакванията ни - бърза, надеждна и лесна за използване система.",

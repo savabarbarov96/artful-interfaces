@@ -4,6 +4,7 @@ import { ArrowRight, Trophy, Award, Brain, Code, Cpu, Shield, Linkedin, Github, 
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import SEOHead from "@/components/landing/SEOHead";
 
 const founders = [
   {
@@ -18,8 +19,9 @@ const founders = [
       "Като съосновател на Automation Aid, Сава се специализира в създаването на AI-базирани решения за автоматизация, които елиминират повтарящи се задачи и оптимизират операциите.",
     ],
     skills: ["AI интеграция", "Уеб разработка", "Автоматизация", "QA"],
-    linkedin: "#",
-    github: "#",
+    linkedin: "https://www.linkedin.com/in/sava-barbarov-79a898232/",
+    github: "https://github.com/savabarbarov96",
+    facebook: "https://www.facebook.com/sava.barbarov.7",
   },
   {
     name: "Слав Астинов",
@@ -33,8 +35,9 @@ const founders = [
       "През последните четири години Слав е изградил множество automation frameworks от нулата и е пионер в интегрирането на AI в тестване и бизнес процеси.",
     ],
     skills: ["AI инструменти", "Testing Frameworks", "Azure", "ISTQB"],
-    linkedin: "#",
-    github: "#",
+    linkedin: "https://www.linkedin.com/in/slav-astinov-6b574b20b/",
+    github: "https://github.com/slavislav",
+    facebook: "https://www.facebook.com/slav.astinov",
   },
 ];
 
@@ -119,6 +122,11 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="За нас | Automation Aid"
+        description="Екип от световни шампиони по софтуерно тестване и инженери по автоматизация. Създаваме решения с AI, които дават реални резултати."
+        canonical="https://automationaid.bg/about"
+      />
       <Header />
       <main>
         {/* Hero Section */}
@@ -297,6 +305,15 @@ const AboutUs = () => {
                         >
                           <Github className="w-5 h-5" />
                           GitHub
+                        </a>
+                        <a
+                          href={founder.facebook}
+                          className="flex items-center gap-2 text-sm font-body font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
+                        >
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                          </svg>
+                          Facebook
                         </a>
                       </div>
                     </div>

@@ -64,6 +64,7 @@ const Header = () => {
   };
 
   const navLinks = [
+    { href: "/about", label: "За нас" },
     { href: "#work", label: "Проекти" },
     { href: "#contact", label: "Контакти" },
   ];
@@ -158,19 +159,38 @@ const Header = () => {
               </div>
 
               {/* Other nav links */}
-              {navLinks.map((link, index) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className={`relative px-5 py-2 text-sm font-medium font-body transition-colors duration-300 group ${isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
-                    }`}
-                  style={{ transitionDelay: `${(index + 1) * 50}ms` }}
-                >
-                  {link.label}
-                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 rounded-full group-hover:w-6 transition-all duration-300 ${isScrolled ? 'bg-primary' : 'bg-white'
-                    }`} />
-                </a>
-              ))}
+              {navLinks.map((link, index) => {
+                const classes = `relative px-5 py-2 text-sm font-medium font-body transition-colors duration-300 group ${isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
+                  }`;
+                const underline = (
+                  <span
+                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 rounded-full group-hover:w-6 transition-all duration-300 ${isScrolled ? 'bg-primary' : 'bg-white'
+                      }`}
+                  />
+                );
+
+                return link.href.startsWith("/") ? (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className={classes}
+                    style={{ transitionDelay: `${(index + 1) * 50}ms` }}
+                  >
+                    {link.label}
+                    {underline}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className={classes}
+                    style={{ transitionDelay: `${(index + 1) * 50}ms` }}
+                  >
+                    {link.label}
+                    {underline}
+                  </a>
+                );
+              })}
             </div>
 
             {/* CTA */}
@@ -273,22 +293,36 @@ const Header = () => {
             </div>
 
             {/* Other nav links */}
-            {navLinks.map((link, index) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="block py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300"
-                onClick={() => setIsMobileMenuOpen(false)}
-                style={{
-                  transitionDelay: `${(index + 2) * 75}ms`,
-                  opacity: isMobileMenuOpen ? 1 : 0,
-                  transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-20px)',
-                  transition: 'all 0.4s ease-out',
-                }}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link, index) => {
+              const styles = {
+                transitionDelay: `${(index + 2) * 75}ms`,
+                opacity: isMobileMenuOpen ? 1 : 0,
+                transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-20px)',
+                transition: 'all 0.4s ease-out',
+              } as const;
+
+              return link.href.startsWith("/") ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="block py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={styles}
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="block py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={styles}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
 
           <div
