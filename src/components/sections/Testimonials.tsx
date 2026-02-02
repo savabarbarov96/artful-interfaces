@@ -88,6 +88,18 @@ const testimonials: Testimonial[] = [
     company: "Еспресо Кафе Бар",
     rating: 5,
   },
+  {
+    id: 7,
+    image: "/clients/Vanya_owner.jpg",
+    logo: "/clients/shelepkoglobalmindcare_logo.jpg",
+    headline: "СЪВРЕМЕННА ПЛАТФОРМА ЗА ТЕРАПЕВТИ И КЛИЕНТИ",
+    quote: "Искахме дигитална среда, която да свързва терапевти и клиенти сигурно и без излишни стъпки. Новата платформа е елегантна, бърза и с функции, които реално улесняват работата ни – от записванията до управлението на сесиите.",
+    name: "Ваня Шелепко",
+    role: "Основател",
+    company: "Shelepko Mind Care",
+    rating: 5,
+    projectUrl: "https://shelepkoglobalmindcare.com/",
+  },
 ];
 
 const Testimonials = () => {
