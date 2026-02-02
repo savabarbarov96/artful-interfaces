@@ -3,15 +3,15 @@ import { ArrowUpRight } from "lucide-react";
 const Footer = () => {
   const links = {
     services: [
-      { label: "Уеб дизайн", href: "#" },
-      { label: "Онлайн магазини", href: "#" },
-      { label: "SEO оптимизация", href: "#" },
-      { label: "Поддръжка", href: "#" },
+      { label: "Уебсайт / лендинг", href: "/website" },
+      { label: "AI бизнес интеграция", href: "/ai-integration" },
+      { label: "Софтуер за настаняване", href: "/housing-software" },
+      { label: "Всички услуги", href: "/#services" },
     ],
     company: [
       { label: "За нас", href: "/about" },
-      { label: "Проекти", href: "#work" },
-      { label: "Контакти", href: "#contact" },
+      { label: "Проекти", href: "/#work" },
+      { label: "Контакти", href: "/#contact" },
     ],
     social: [
       {
@@ -36,7 +36,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand column */}
           <div className="lg:col-span-2">
-            <a href="#" className="inline-block mb-6 group">
+            <a href="/" className="inline-block mb-6 group">
               <span className="text-2xl font-display text-foreground group-hover:text-primary transition-colors duration-300">
                 Automation Aid
               </span>
