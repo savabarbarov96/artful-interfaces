@@ -11,6 +11,7 @@ import AboutUs from "./pages/AboutUs";
 import WebsiteLanding from "./pages/WebsiteLanding";
 import AIIntegrationLanding from "./pages/AIIntegrationLanding";
 import HousingSoftwareLanding from "./pages/HousingSoftwareLanding";
+import EcommerceStoreLanding from "./pages/EcommerceStoreLanding";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/website" element={<WebsiteLanding />} />
             <Route path="/ai-integration" element={<AIIntegrationLanding />} />
             <Route path="/housing-software" element={<HousingSoftwareLanding />} />
+            <Route path="/ecommerce-store" element={<EcommerceStoreLanding />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

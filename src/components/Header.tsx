@@ -8,6 +8,7 @@ const serviceLinks = [
   { href: "/website", label: "Изработка на уебсайт" },
   { href: "/ai-integration", label: "AI Интеграция" },
   { href: "/housing-software", label: "Софтуер за настаняване" },
+  { href: "/ecommerce-store", label: "Онлайн магазин" },
 ];
 
 const Header = () => {
