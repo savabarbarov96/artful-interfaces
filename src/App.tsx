@@ -12,6 +12,7 @@ import WebsiteLanding from "./pages/WebsiteLanding";
 import AIIntegrationLanding from "./pages/AIIntegrationLanding";
 import HousingSoftwareLanding from "./pages/HousingSoftwareLanding";
 import EcommerceStoreLanding from "./pages/EcommerceStoreLanding";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
