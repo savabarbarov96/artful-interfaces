@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Send, Mail, Phone, ArrowRight, Sparkles, CheckCircle2, CalendarDays, Clock } from "lucide-react";
 
@@ -8,13 +9,19 @@ const Contact = () => {
   const { toast } = useToast();
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [formData, setFormData] = useState({
+  const [contactFormData, setContactFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: "",
   });
+  const [meetingFormData, setMeetingFormData] = useState({
+    email: "",
+    phone: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMeetingSubmitting, setIsMeetingSubmitting] = useState(false);
+  const [isMeetingDialogOpen, setIsMeetingDialogOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState("Уебсайт");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -37,16 +44,32 @@ const Contact = () => {
     return () => observer.disconnect();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setContactFormData({ ...contactFormData, [e.target.name]: e.target.value });
   };
 
-  const buildEmail = (type: "inquiry" | "meeting") => {
-    const subject =
-      type === "meeting"
-        ? `Запитване за среща - ${selectedService}`
-        : `Запитване от сайт - ${selectedService}`;
+  const handleMeetingFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMeetingFormData({ ...meetingFormData, [e.target.name]: e.target.value });
+  };
 
+  const buildContactEmail = () => {
+    const subject = `Запитване от сайт - ${selectedService}`;
+    const bodyLines = [
+      "Тип: Контактна форма",
+      `Услуга: ${selectedService}`,
+      `Име: ${contactFormData.name || "Не е попълнено"}`,
+      `Email: ${contactFormData.email || "Не е попълнено"}`,
+      `Телефон: ${contactFormData.phone || "Не е попълнен"}`,
+      "",
+      "Съобщение:",
+      contactFormData.message || "Няма допълнително съобщение",
+    ];
+
+    return `mailto:slav@automationaid.eu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+  };
+
+  const buildMeetingEmail = () => {
+    const subject = "Заявка за среща от календар";
     const meetingDate = selectedDate
       ? selectedDate.toLocaleDateString("bg-BG", {
           day: "2-digit",
@@ -56,17 +79,14 @@ const Contact = () => {
       : "Не е избрана";
 
     const bodyLines = [
-      `Тип: ${type === "meeting" ? "Заявка за среща" : "Общо запитване"}`,
-      `Услуга: ${selectedService}`,
-      `Име: ${formData.name || "Не е попълнено"}`,
-      `Email: ${formData.email || "Не е попълнено"}`,
-      `Телефон: ${formData.phone || "Не е попълнен"}`,
-      type === "meeting" ? `Предпочитана дата: ${meetingDate}` : "",
-      type === "meeting" ? `Предпочитан час: ${selectedTime}` : "",
+      "Тип: Календарна заявка за среща",
+      `Дата: ${meetingDate}`,
+      `Час: ${selectedTime}`,
       "",
-      "Съобщение:",
-      formData.message || "Няма допълнително съобщение",
-    ].filter(Boolean);
+      "Контакти за потвърждение:",
+      `Email: ${meetingFormData.email || "Не е попълнен"}`,
+      `Телефон: ${meetingFormData.phone || "Не е попълнен"}`,
+    ];
 
     return `mailto:slav@automationaid.eu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
   };
@@ -76,23 +96,58 @@ const Contact = () => {
     setIsSubmitting(true);
 
     await new Promise((resolve) => setTimeout(resolve, 700));
-    window.location.href = buildEmail("inquiry");
+    window.location.href = buildContactEmail();
 
     toast({
       title: "Съобщението е изпратено!",
       description: "Ще се свържем с вас до 24 часа.",
     });
 
-    setFormData({ name: "", email: "", phone: "", message: "" });
+    setContactFormData({ name: "", email: "", phone: "", message: "" });
     setIsSubmitting(false);
   };
 
   const handleMeetingRequest = () => {
-    window.location.href = buildEmail("meeting");
+    if (!selectedDate) {
+      toast({
+        title: "Изберете дата за срещата",
+        description: "Моля изберете ден от календара и после продължете.",
+      });
+      return;
+    }
+
+    setIsMeetingDialogOpen(true);
+  };
+
+  const handleMeetingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const emailValue = meetingFormData.email.trim();
+    const phoneValue = meetingFormData.phone.trim();
+    const hasValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+    const digitsOnly = phoneValue.replace(/\D/g, "");
+    const hasValidPhone = digitsOnly.length >= 6;
+
+    if (!hasValidEmail || !hasValidPhone) {
+      toast({
+        title: "Попълнете email и телефон",
+        description: "Нужни са валидни контакти, за да потвърдим срещата.",
+      });
+      return;
+    }
+
+    setIsMeetingSubmitting(true);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    window.location.href = buildMeetingEmail();
+
     toast({
       title: "Срещата е заявена!",
-      description: "Подготвихме имейл с избраните от вас детайли.",
+      description: "Изпратихме заявката с избраната дата, час и вашите контакти.",
     });
+
+    setMeetingFormData({ email: "", phone: "" });
+    setIsMeetingDialogOpen(false);
+    setIsMeetingSubmitting(false);
   };
 
   const contactInfo = [
@@ -147,7 +202,7 @@ const Contact = () => {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-6 lg:gap-7 items-start">
+          <div className="grid lg:grid-cols-[1.2fr_auto_0.8fr] gap-6 lg:gap-5 items-start">
             <div
               className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}
             >
@@ -199,14 +254,14 @@ const Contact = () => {
                         >
                           Име
                         </label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField("name")}
-                          onBlur={() => setFocusedField(null)}
+                          <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={contactFormData.name}
+                            onChange={handleContactChange}
+                            onFocus={() => setFocusedField("name")}
+                            onBlur={() => setFocusedField(null)}
                           required
                           className={`w-full h-12 px-4 rounded-xl border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all duration-300 font-body ${
                             focusedField === "name" ? "border-primary/60 shadow-[0_0_0_3px_hsl(217_91%_50%/0.08)]" : "border-border/70"
@@ -222,14 +277,14 @@ const Contact = () => {
                         >
                           Email
                         </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField("email")}
-                          onBlur={() => setFocusedField(null)}
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={contactFormData.email}
+                            onChange={handleContactChange}
+                            onFocus={() => setFocusedField("email")}
+                            onBlur={() => setFocusedField(null)}
                           required
                           className={`w-full h-12 px-4 rounded-xl border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all duration-300 font-body ${
                             focusedField === "email" ? "border-primary/60 shadow-[0_0_0_3px_hsl(217_91%_50%/0.08)]" : "border-border/70"
@@ -250,8 +305,8 @@ const Contact = () => {
                         type="tel"
                         id="phone"
                         name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
+                        value={contactFormData.phone}
+                        onChange={handleContactChange}
                         onFocus={() => setFocusedField("phone")}
                         onBlur={() => setFocusedField(null)}
                         className={`w-full h-12 px-4 rounded-xl border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all duration-300 font-body ${
@@ -271,8 +326,8 @@ const Contact = () => {
                       <textarea
                         id="message"
                         name="message"
-                        value={formData.message}
-                        onChange={handleChange}
+                        value={contactFormData.message}
+                        onChange={handleContactChange}
                         onFocus={() => setFocusedField("message")}
                         onBlur={() => setFocusedField(null)}
                         required
@@ -329,6 +384,16 @@ const Contact = () => {
               </div>
             </div>
 
+            <div className="flex items-center justify-center lg:min-h-[640px]">
+              <div className="flex w-full items-center gap-3 lg:flex-col lg:w-auto">
+                <div className="h-px flex-1 bg-border lg:w-px lg:h-20" />
+                <span className="px-2 py-1 rounded-full border border-primary/20 bg-white text-[11px] font-semibold tracking-[0.14em] text-primary">
+                  OR
+                </span>
+                <div className="h-px flex-1 bg-border lg:w-px lg:h-20" />
+              </div>
+            </div>
+
             <div
               className={`w-full lg:max-w-[430px] lg:ml-auto transition-all duration-1000 delay-150 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}
             >
@@ -355,7 +420,7 @@ const Contact = () => {
                     Резервирайте кратка среща
                   </h3>
                   <p className="text-muted-foreground font-body text-sm leading-relaxed mb-4">
-                    Изберете дата и час. Ще подготвим имейл със същите данни както формата.
+                    Изберете дата и час, после въведете email и телефон в pop-up за потвърждение.
                   </p>
 
                   <div className="rounded-2xl border border-border bg-white mb-4">
@@ -421,12 +486,86 @@ const Contact = () => {
                   </Button>
 
                   <p className="text-muted-foreground text-xs text-center font-body mt-3">
-                    Ако не изберете дата, ще ви предложим първите свободни опции.
+                    Това е отделен канал от контактната форма и изпраща отделен имейл.
                   </p>
                 </div>
               </div>
             </div>
           </div>
+
+          <Dialog open={isMeetingDialogOpen} onOpenChange={setIsMeetingDialogOpen}>
+            <DialogContent className="sm:max-w-[460px] rounded-2xl">
+              <DialogHeader>
+                <DialogTitle>Потвърдете данни за срещата</DialogTitle>
+                <DialogDescription>
+                  Въведете email и телефон, за да се свържем с вас и потвърдим избраните дата и час.
+                </DialogDescription>
+              </DialogHeader>
+
+              <form onSubmit={handleMeetingSubmit} className="space-y-4">
+                <div className="rounded-xl border border-border bg-muted/20 px-3 py-2.5">
+                  <p className="text-xs text-muted-foreground font-body">
+                    Избрана среща:{" "}
+                    <span className="text-foreground font-medium">
+                      {selectedDate
+                        ? selectedDate.toLocaleDateString("bg-BG", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })
+                        : "няма дата"}
+                    </span>{" "}
+                    • <span className="text-foreground font-medium">{selectedTime}</span>
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="meeting-email" className="text-sm font-medium font-body text-foreground">
+                    Email
+                  </label>
+                  <input
+                    id="meeting-email"
+                    name="email"
+                    type="email"
+                    required
+                    value={meetingFormData.email}
+                    onChange={handleMeetingFieldChange}
+                    className="w-full h-12 px-4 rounded-xl border border-border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10"
+                    placeholder="email@example.com"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="meeting-phone" className="text-sm font-medium font-body text-foreground">
+                    Телефон
+                  </label>
+                  <input
+                    id="meeting-phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    value={meetingFormData.phone}
+                    onChange={handleMeetingFieldChange}
+                    className="w-full h-12 px-4 rounded-xl border border-border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10"
+                    placeholder="+359 888 123 456"
+                  />
+                </div>
+
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={() => setIsMeetingDialogOpen(false)}>
+                    Отказ
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isMeetingSubmitting}
+                    className="bg-blue-gradient text-white hover:shadow-[0_24px_48px_-24px_hsl(217_91%_50%/0.8)]"
+                  >
+                    {isMeetingSubmitting ? "Изпращане..." : "Изпрати заявка"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </section>
