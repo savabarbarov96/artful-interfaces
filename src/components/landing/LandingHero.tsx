@@ -156,7 +156,7 @@ const LandingHero = ({
           </div>
 
           {/* Title */}
-          <h1 className="text-display-hero text-white mb-8 drop-shadow-[0_8px_28px_rgba(255,255,255,0.25)] font-semibold leading-tight animate-fade-up delay-100">
+          <h1 className="text-display-hero text-white mb-8 drop-shadow-[0_8px_28px_rgba(255,255,255,0.25)] font-bold leading-tight animate-fade-up delay-100">
             {title}
           </h1>
 

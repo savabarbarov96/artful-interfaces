@@ -62,9 +62,8 @@ export default {
         },
       },
       fontFamily: {
-        display: ["Cormorant Garamond", "serif"],
-        manasco: ["Manasco", "cursive"],
-        body: ["Source Sans 3", "sans-serif"],
+        display: ["Space Grotesk", "sans-serif"],
+        body: ["Manrope", "sans-serif"],
       },
       fontSize: {
         "display-hero": ["clamp(3rem, 8vw, 6rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],

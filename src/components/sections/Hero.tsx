@@ -209,7 +209,7 @@ const Hero = () => {
           </div>
 
           {/* Main headline with staggered animation */}
-          <h1 className="text-display-hero text-white mb-8 drop-shadow-[0_8px_28px_rgba(255,255,255,0.25)] font-semibold leading-tight">
+          <h1 className="text-display-hero text-white mb-8 drop-shadow-[0_8px_28px_rgba(255,255,255,0.25)] font-bold leading-tight">
             <span className="block animate-fade-up">Вие развивате</span>
             <span className="block animate-fade-up delay-100 text-[#FF6B35]">бизнеса</span>
             <span className="block animate-fade-up delay-200">Ние се грижим за</span>
