@@ -10,6 +10,8 @@ import FeatureGrid from "@/components/landing/FeatureGrid";
 import ProcessSteps from "@/components/landing/ProcessSteps";
 import SocialProof from "@/components/landing/SocialProof";
 import LandingCTA from "@/components/landing/LandingCTA";
+import FAQSection, { type FAQItem } from "@/components/landing/FAQSection";
+import RelatedServices from "@/components/landing/RelatedServices";
 import {
   Monitor,
   Search,
@@ -17,15 +19,92 @@ import {
   Zap,
   LayoutDashboard,
   Headset,
+  Brain,
+  Building2,
+  ShoppingCart,
 } from "lucide-react";
+
+const websiteFaqs: FAQItem[] = [
+  {
+    question: "Колко време отнема изработката на уебсайт?",
+    answer:
+      "Стандартният срок е до 14 дни от одобрението на дизайна. За по-сложни проекти с допълнителни функционалности срокът може да бъде до 30 дни.",
+  },
+  {
+    question: "Какво включва месечният абонамент?",
+    answer:
+      "Абонаментът покрива хостинг, SSL сертификат, домейн, ежедневни бекъпи, техническа поддръжка, актуализации на софтуера и SEO основи. Няма скрити такси.",
+  },
+  {
+    question: "Мога ли да променям съдържанието сам?",
+    answer:
+      "Да, всеки сайт включва админ панел, от който може да редактирате текстове, снимки и страници. Освен това можете да се обърнете към нас за промени по всяко време.",
+  },
+  {
+    question: "Какво се случва, ако искам да прекратя абонамента?",
+    answer:
+      "Няма обвързващ договор — може да прекратите по всяко време. Предоставяме пълен достъп до кода и данните на сайта ви.",
+  },
+  {
+    question: "Включена ли е SEO оптимизация?",
+    answer:
+      "Да. Всеки сайт е оптимизиран за търсачки с мета тагове, структурирани данни (Schema markup), бързо зареждане, мобилна версия и правилна HTML структура.",
+  },
+];
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      name: "Изработка на уебсайт",
+      provider: {
+        "@type": "Organization",
+        name: "Automation Aid",
+        url: "https://automationaid.bg",
+      },
+      serviceType: "Web development",
+      areaServed: "BG",
+      url: "https://automationaid.bg/website",
+      description:
+        "Професионална изработка на уебсайт с месечен абонамент. Дизайн, разработка, хостинг, SEO и поддръжка.",
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Начало",
+          item: "https://automationaid.bg/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Изработка на уебсайт",
+          item: "https://automationaid.bg/website",
+        },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: websiteFaqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    },
+  ],
+};
 
 const WebsiteLanding = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Изработка на уебсайт | Automation Aid — Месечен план без начална инвестиция"
-        description="Професионална изработка на уебсайт с месечен абонамент. Включен дизайн, разработка, хостинг, SEO и поддръжка. Без начална инвестиция. Пускаме сайта ви до 14 дни."
+        title="Изработка на уебсайт | Automation Aid"
+        description="Професионална изработка на уебсайт с месечен абонамент. Дизайн, разработка, хостинг, SEO и поддръжка. Без начална инвестиция. До 14 дни."
         canonical="https://automationaid.bg/website"
+        structuredData={serviceSchema}
       />
       <Header />
       <main>
@@ -155,6 +234,34 @@ const WebsiteLanding = () => {
         />
 
         <Testimonials />
+
+        <FAQSection faqs={websiteFaqs} />
+
+        <RelatedServices
+          services={[
+            {
+              title: "AI интеграция",
+              description:
+                "Добавете AI чатботове, автоматизация на процеси и предиктивна аналитика към бизнеса си.",
+              href: "/ai-integration",
+              icon: Brain,
+            },
+            {
+              title: "Софтуер за настаняване",
+              description:
+                "Платформа за къщи за гости и хотели с Airbnb и Booking.com синхронизация.",
+              href: "/housing-software",
+              icon: Building2,
+            },
+            {
+              title: "Онлайн магазин",
+              description:
+                "eCommerce платформа с checkout оптимизация, Speedy и Еконт интеграции.",
+              href: "/ecommerce-store",
+              icon: ShoppingCart,
+            },
+          ]}
+        />
 
         <LandingCTA
           title={

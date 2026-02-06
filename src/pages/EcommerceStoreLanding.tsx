@@ -8,6 +8,10 @@ import FeatureGrid from "@/components/landing/FeatureGrid";
 import ProcessSteps from "@/components/landing/ProcessSteps";
 import SocialProof from "@/components/landing/SocialProof";
 import LandingCTA from "@/components/landing/LandingCTA";
+import Testimonials from "@/components/sections/Testimonials";
+import Pricing from "@/components/sections/Pricing";
+import FAQSection, { type FAQItem } from "@/components/landing/FAQSection";
+import RelatedServices from "@/components/landing/RelatedServices";
 import { Helmet } from "react-helmet-async";
 import {
   Store,
@@ -19,6 +23,9 @@ import {
   ArrowRight,
   ExternalLink,
   CheckCircle2,
+  Monitor,
+  Brain,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -63,34 +70,92 @@ const featureShowcase = [
   },
 ];
 
+const ecommerceFaqs: FAQItem[] = [
+  {
+    question: "Колко продукта може да поддържа магазинът?",
+    answer:
+      "Няма ограничение за броя продукти. Платформата е оптимизирана за каталози от 10 до 10,000+ продукта с категории, вариации и филтри.",
+  },
+  {
+    question: "Интегрирани ли са Speedy и Еконт?",
+    answer:
+      "Да, интеграцията със Speedy и Еконт е включена. Клиентите виждат автоматично изчислени цени за доставка директно в checkout процеса.",
+  },
+  {
+    question: "Какви методи за плащане поддържате?",
+    answer:
+      "Интегрираме подходящите за вашия бизнес payment решения — наложен платеж, банков превод, и онлайн плащане с карта чрез Stripe или подобен доставчик.",
+  },
+  {
+    question: "Мога ли да управлявам магазина сам?",
+    answer:
+      "Да, всеки магазин включва админ панел за управление на продукти, поръчки, наличности и цени. Не е нужно програмиране.",
+  },
+  {
+    question: "Колко бързо ще бъде готов магазинът?",
+    answer:
+      "Стандартен e-commerce проект е готов за 3-4 седмици, включително продуктов каталог, checkout, куриерски интеграции и SEO настройка.",
+  },
+];
+
 const EcommerceStoreLanding = () => {
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Service",
-    name: "Изработка на онлайн магазин",
-    provider: {
-      "@type": "Organization",
-      name: "Automation Aid",
-      url: "https://automationaid.bg",
-    },
-    serviceType: "E-commerce development",
-    areaServed: "BG",
-    url: "https://automationaid.bg/ecommerce-store",
-    offers: {
-      "@type": "Offer",
-      url: demoUrl,
-      description:
-        "Демо на e-commerce платформа с checkout и куриерски интеграции",
-    },
+    "@graph": [
+      {
+        "@type": "Service",
+        name: "Изработка на онлайн магазин",
+        provider: {
+          "@type": "Organization",
+          name: "Automation Aid",
+          url: "https://automationaid.bg",
+        },
+        serviceType: "E-commerce development",
+        areaServed: "BG",
+        url: "https://automationaid.bg/ecommerce-store",
+        offers: {
+          "@type": "Offer",
+          url: demoUrl,
+          description:
+            "Демо на e-commerce платформа с checkout и куриерски интеграции",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Начало",
+            item: "https://automationaid.bg/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Онлайн магазин",
+            item: "https://automationaid.bg/ecommerce-store",
+          },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: ecommerceFaqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      },
+    ],
   };
 
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Изработка на онлайн магазин | Automation Aid — eCommerce платформа с демо"
-        description="Изработка на онлайн магазин с модерен дизайн, мобилна версия, checkout, интеграции със Speedy и Еконт, SEO и поддръжка. Вижте live демо на demo.automationaid.eu."
+        title="Онлайн магазин | Automation Aid — eCommerce с демо"
+        description="Изработка на онлайн магазин с модерен дизайн, мобилна версия, checkout, Speedy и Еконт интеграции. Вижте live демо на demo.automationaid.eu."
         canonical="https://automationaid.bg/ecommerce-store"
         ogImage="/clients/smart_shopping_cart_options.png"
+        structuredData={structuredData}
       />
 
       <Helmet>
@@ -98,7 +163,6 @@ const EcommerceStoreLanding = () => {
           name="keywords"
           content="изработка на онлайн магазин, ecommerce сайт, онлайн магазин с Еконт, онлайн магазин със Speedy, checkout оптимизация, web shop development"
         />
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
 
       <Header />
@@ -322,6 +386,38 @@ const EcommerceStoreLanding = () => {
             { value: "4", label: "основни checkout стъпки", suffix: "" },
             { value: "24", label: "ч. отговор от екипа", suffix: "ч" },
             { value: "100", label: "% custom workflow", suffix: "%" },
+          ]}
+        />
+
+        <Pricing />
+
+        <Testimonials />
+
+        <FAQSection faqs={ecommerceFaqs} />
+
+        <RelatedServices
+          services={[
+            {
+              title: "Изработка на уебсайт",
+              description:
+                "Професионален уебсайт с месечен абонамент. Дизайн, разработка, хостинг и SEO.",
+              href: "/website",
+              icon: Monitor,
+            },
+            {
+              title: "AI интеграция",
+              description:
+                "AI чатботове за обслужване на клиенти и автоматизация на поръчки.",
+              href: "/ai-integration",
+              icon: Brain,
+            },
+            {
+              title: "Софтуер за настаняване",
+              description:
+                "Платформа за къщи за гости и хотели с Airbnb и Booking.com синхронизация.",
+              href: "/housing-software",
+              icon: Building2,
+            },
           ]}
         />
 
