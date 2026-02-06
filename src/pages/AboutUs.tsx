@@ -9,32 +9,32 @@ import SEOHead from "@/components/landing/SEOHead";
 const founders = [
   {
     name: "Сава Барбаров",
-    title: "Световен шампион по софтуерно тестване",
-    subtitle: "AI & Automation специалист",
+    title: "Съосновател и AI Automation Architect",
+    subtitle: "Уеб решения, AI интеграции и автоматизация на процеси",
     image: "/clients/sava_main.png",
-    achievement: "Победител в ISTQB National Testing Cup 2025",
+    achievement: "Персонализирани уебсайтове и AI системи за реален бизнес растеж",
     bio: [
-      "Сава е признат като един от водещите инженери в България в областта на софтуерното качество и тестване.",
-      "С опит в индустриални лидери като ASML (глобален лидер в полупроводниковите технологии) и Cisco (гигант в мрежовите и ИТ инфраструктури), Сава носи световен клас експертиза във всеки проект.",
-      "Като съосновател на Automation Aid, Сава се специализира в създаването на AI-базирани решения за автоматизация, които елиминират повтарящи се задачи и оптимизират операциите.",
+      "Като съосновател на Automation Aid, Сава помага на компании да изграждат бързи и професионални уебсайтове, които генерират запитвания и превръщат трафика в клиенти.",
+      "Фокусът му е върху AI интеграции и автоматизация на бизнес процеси: интелигентни форми, автоматични нотификации, CRM свързаност и оптимизация на повтарящи се задачи.",
+      "Във всеки проект комбинира UX, SEO структура, проследяване чрез Analytics и практични автоматизации, така че сайтът да работи не само като визитка, а като реален инструмент за растеж.",
     ],
-    skills: ["AI интеграция", "Уеб разработка", "Автоматизация", "QA"],
+    skills: ["Бизнес уебсайтове", "AI интеграции", "Автоматизация", "SEO и Analytics"],
     linkedin: "https://www.linkedin.com/in/sava-barbarov-79a898232/",
     github: "https://github.com/savabarbarov96",
     facebook: "https://www.facebook.com/sava.barbarov.7",
   },
   {
     name: "Слав Астинов",
-    title: "Глобален шампион по софтуерно тестване",
-    subtitle: "QA & AI иновационен лидер",
-    image: "/clients/slav_main.png",
-    achievement: "ISTQB World Testing Cup Global Champion 2025 — Копенхаген",
+    title: "Съосновател и QA & Delivery Lead",
+    subtitle: "Надеждни уеб приложения, e-commerce и AI workflows",
+    image: "/clients/slav-4.jpg",
+    achievement: "Стабилни дигитални продукти с фокус върху качество, скорост и мащабируемост",
     bio: [
-      "Слав е глобалният шампион на ISTQB World Testing Cup 2025, като се е състезавал срещу най-добрите тестери в света в Копенхаген и е излязъл победител на международната сцена.",
-      "Като съосновател на Automation Aid, Слав не просто тества софтуер — той революционизира начина, по който бизнесите гарантират качество. Комбинирайки дълбока експертиза в QA с авангарден изкуствен интелект, той създава интелигентни системи.",
-      "През последните четири години Слав е изградил множество automation frameworks от нулата и е пионер в интегрирането на AI в тестване и бизнес процеси.",
+      "Като съосновател на Automation Aid, Слав ръководи изграждането на надеждни уеб приложения и онлайн магазини, които са бързи, сигурни и готови за мащабиране.",
+      "Той структурира процеса от идея до пускане: техническа архитектура, QA стратегия, performance оптимизация и качествена интеграция с външни системи като плащания, CRM и аналитични инструменти.",
+      "Слав работи с ясен фокус върху дългосрочна стойност: по-малко грешки, по-добра конверсия, стабилна поддръжка и AI автоматизации, които спестяват време на екипите.",
     ],
-    skills: ["AI инструменти", "Testing Frameworks", "Azure", "ISTQB"],
+    skills: ["Уеб приложения", "E-commerce", "QA и performance", "AI workflows"],
     linkedin: "https://www.linkedin.com/in/slav-astinov-6b574b20b/",
     github: "https://github.com/slavislav",
     facebook: "https://www.facebook.com/slav.astinov",
@@ -289,6 +289,10 @@ const AboutUs = () => {
               <h2 className="text-display-lg text-foreground animate-fade-up delay-100">
                 Хората зад <span className="text-accent-italic">Automation Aid</span>
               </h2>
+              <p className="text-base md:text-lg text-muted-foreground font-body max-w-3xl mx-auto mt-6 animate-fade-up delay-200 leading-relaxed">
+                Комбинираме уеб разработка, SEO оптимизация, AI интеграции и автоматизация на бизнес процеси, за да създаваме дигитални решения,
+                които носят реални резултати, а не само добра визия.
+              </p>
             </div>
 
             <div className="space-y-32">
@@ -324,6 +328,10 @@ const AboutUs = () => {
                   <div className="w-full lg:w-7/12 animate-fade-up delay-200">
                     <div className="space-y-6">
                       <div>
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-body font-semibold mb-4 border border-primary/20">
+                          <Sparkles className="w-3.5 h-3.5" />
+                          Съосновател на Automation Aid
+                        </div>
                         <h3 className="text-display-md text-foreground mb-2">{founder.name}</h3>
                         <p className="text-lg font-body font-semibold text-primary">{founder.title}</p>
                         <p className="text-base font-body text-muted-foreground">{founder.subtitle}</p>
@@ -339,7 +347,11 @@ const AboutUs = () => {
                         ))}
                       </div>
 
-                      <div className="flex flex-wrap gap-3 pt-2">
+                      <div className="pt-2">
+                        <p className="text-xs font-body font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                          Фокус услуги
+                        </p>
+                        <div className="flex flex-wrap gap-3">
                         {founder.skills.map((skill) => (
                           <span
                             key={skill}
@@ -348,6 +360,7 @@ const AboutUs = () => {
                             {skill}
                           </span>
                         ))}
+                        </div>
                       </div>
 
                       <div className="flex items-center gap-4 pt-2">
@@ -519,7 +532,32 @@ const AboutUs = () => {
 
               {/* Right side - Form */}
               <div>
-                <div className="bg-white rounded-2xl p-8 lg:p-10 shadow-lg border border-border">
+                <div className="relative rounded-[28px] p-[1px] bg-gradient-to-br from-primary/40 via-white to-secondary/30 shadow-[0_30px_70px_-32px_hsl(217_91%_50%/0.45)]">
+                  <div className="relative overflow-hidden rounded-[27px] border border-white/80 bg-white/95 backdrop-blur-sm p-8 lg:p-10">
+                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_120%_-10%,hsl(217_91%_50%/0.12),transparent_45%),radial-gradient(circle_at_-10%_110%,hsl(173_80%_45%/0.08),transparent_40%)]" />
+                    <div className="relative z-10">
+                      <div className="mb-8 rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/10 via-white to-secondary/10 p-5">
+                        <p className="text-xs uppercase tracking-[0.18em] font-body font-semibold text-primary mb-2">
+                          Безплатна стратегия
+                        </p>
+                        <h3 className="text-2xl font-display text-foreground mb-2">
+                          Получете план за растеж
+                        </h3>
+                        <p className="text-sm text-muted-foreground font-body leading-relaxed">
+                          Ще ви върнем конкретни препоръки за структура, SEO, AI интеграции и следващи стъпки за проекта.
+                        </p>
+                        <div className="grid sm:grid-cols-2 gap-3 mt-4">
+                          <div className="flex items-center gap-2 text-sm text-foreground/90 font-body">
+                            <span className="w-2 h-2 rounded-full bg-primary" />
+                            Отговор до 24 часа
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-foreground/90 font-body">
+                            <span className="w-2 h-2 rounded-full bg-primary" />
+                            Персонална стратегия
+                          </div>
+                        </div>
+                      </div>
+
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -539,10 +577,9 @@ const AboutUs = () => {
                             onFocus={() => setFocusedField('name')}
                             onBlur={() => setFocusedField(null)}
                             required
-                            className="w-full h-14 px-5 rounded-xl border bg-muted/30 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 font-body border-border focus:border-primary focus:bg-white"
+                            className="w-full h-14 px-5 rounded-2xl border border-border/70 bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/60 transition-all duration-300 font-body shadow-[inset_0_1px_0_hsl(0_0%_100%),0_1px_2px_hsl(222_47%_11%/0.04)]"
                             placeholder="Вашето име"
                           />
-                          <div className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-500 ${focusedField === 'name' ? 'opacity-100 bg-primary' : 'opacity-0'}`} />
                         </div>
                       </div>
                       <div className="space-y-2">
@@ -562,10 +599,9 @@ const AboutUs = () => {
                             onFocus={() => setFocusedField('email')}
                             onBlur={() => setFocusedField(null)}
                             required
-                            className="w-full h-14 px-5 rounded-xl border bg-muted/30 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 font-body border-border focus:border-primary focus:bg-white"
+                            className="w-full h-14 px-5 rounded-2xl border border-border/70 bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/60 transition-all duration-300 font-body shadow-[inset_0_1px_0_hsl(0_0%_100%),0_1px_2px_hsl(222_47%_11%/0.04)]"
                             placeholder="email@example.com"
                           />
-                          <div className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-500 ${focusedField === 'email' ? 'opacity-100 bg-primary' : 'opacity-0'}`} />
                         </div>
                       </div>
                     </div>
@@ -586,10 +622,9 @@ const AboutUs = () => {
                           onChange={handleChange}
                           onFocus={() => setFocusedField('phone')}
                           onBlur={() => setFocusedField(null)}
-                          className="w-full h-14 px-5 rounded-xl border bg-muted/30 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 font-body border-border focus:border-primary focus:bg-white"
+                          className="w-full h-14 px-5 rounded-2xl border border-border/70 bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/60 transition-all duration-300 font-body shadow-[inset_0_1px_0_hsl(0_0%_100%),0_1px_2px_hsl(222_47%_11%/0.04)]"
                           placeholder="+359 888 123 456"
                         />
-                        <div className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-500 ${focusedField === 'phone' ? 'opacity-100 bg-primary' : 'opacity-0'}`} />
                       </div>
                     </div>
 
@@ -610,17 +645,16 @@ const AboutUs = () => {
                           onBlur={() => setFocusedField(null)}
                           required
                           rows={5}
-                          className="w-full px-5 py-4 rounded-xl border bg-muted/30 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none font-body border-border focus:border-primary focus:bg-white"
-                          placeholder="Разкажете ни за вашия проект..."
+                          className="w-full px-5 py-4 rounded-2xl border border-border/70 bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/60 transition-all duration-300 resize-none font-body shadow-[inset_0_1px_0_hsl(0_0%_100%),0_1px_2px_hsl(222_47%_11%/0.04)]"
+                          placeholder="Разкажете ни за целите ви, срок и тип услуга..."
                         />
-                        <div className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-500 ${focusedField === 'message' ? 'opacity-100 bg-primary' : 'opacity-0'}`} />
                       </div>
                     </div>
 
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full bg-blue-gradient hover:shadow-blue text-white font-semibold rounded-xl py-7 text-base transition-all duration-300 group"
+                      className="w-full bg-blue-gradient hover:shadow-[0_24px_45px_-20px_hsl(217_91%_50%/0.8)] text-white font-semibold rounded-2xl py-7 text-base transition-all duration-300 group"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
@@ -643,6 +677,8 @@ const AboutUs = () => {
                       </a>
                     </p>
                   </form>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
