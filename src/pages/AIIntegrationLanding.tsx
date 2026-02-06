@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/sections/Footer";
 import Contact from "@/components/sections/Contact";
 import AIIntegrations from "@/components/sections/AIIntegrations";
+import Testimonials from "@/components/sections/Testimonials";
+import Pricing from "@/components/sections/Pricing";
 import Proposition from "@/components/sections/Proposition";
 import SEOHead from "@/components/landing/SEOHead";
 import LandingHero from "@/components/landing/LandingHero";
@@ -9,6 +11,8 @@ import FeatureGrid from "@/components/landing/FeatureGrid";
 import ProcessSteps from "@/components/landing/ProcessSteps";
 import SocialProof from "@/components/landing/SocialProof";
 import LandingCTA from "@/components/landing/LandingCTA";
+import FAQSection, { type FAQItem } from "@/components/landing/FAQSection";
+import RelatedServices from "@/components/landing/RelatedServices";
 import {
   MessageSquare,
   Workflow,
@@ -16,15 +20,92 @@ import {
   Brain,
   Plug,
   TrendingDown,
+  Monitor,
+  Building2,
+  ShoppingCart,
 } from "lucide-react";
+
+const aiFaqs: FAQItem[] = [
+  {
+    question: "Какви AI решения можете да внедрите?",
+    answer:
+      "Внедряваме чатботове (ChatGPT, Claude, Gemini), автоматизация на работни процеси, предиктивна аналитика, обработка на документи с AI и custom ML модели, трениране с вашите данни.",
+  },
+  {
+    question: "Колко време отнема AI интеграцията?",
+    answer:
+      "Стандартна интеграция на чатбот или автоматизация отнема 2-4 седмици. По-сложни проекти с custom ML модели могат да отнемат 4-8 седмици в зависимост от обема на данните и сложността.",
+  },
+  {
+    question: "Сигурни ли са данните ми при AI интеграция?",
+    answer:
+      "Да, работим само с enterprise-grade AI платформи и спазваме стриктни стандарти за сигурност. Данните ви остават под ваш контрол и не се споделят с трети страни.",
+  },
+  {
+    question: "Нужно ли е да имам технически екип?",
+    answer:
+      "Не. Ние се грижим за цялата техническа страна — от проектиране и интеграция до поддръжка. Вашият екип използва готови решения без нужда от програмиране.",
+  },
+  {
+    question: "Какъв ROI мога да очаквам от AI автоматизация?",
+    answer:
+      "Повечето ни клиенти виждат намаление на оперативните разходи с 20-40% и ускоряване на процесите 2-3 пъти. Конкретните резултати зависят от процесите, които автоматизираме.",
+  },
+];
+
+const aiServiceSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      name: "AI интеграция за бизнеса",
+      provider: {
+        "@type": "Organization",
+        name: "Automation Aid",
+        url: "https://automationaid.bg",
+      },
+      serviceType: "AI integration and automation",
+      areaServed: "BG",
+      url: "https://automationaid.bg/ai-integration",
+      description:
+        "Чатботове, автоматизация на процеси, предиктивна аналитика и custom AI модели за бизнеса.",
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Начало",
+          item: "https://automationaid.bg/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "AI Интеграция",
+          item: "https://automationaid.bg/ai-integration",
+        },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: aiFaqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    },
+  ],
+};
 
 const AIIntegrationLanding = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="AI Интеграция за бизнеса | Automation Aid — Автоматизация и Machine Learning"
-        description="Трансформирайте бизнеса си с AI интеграции. Чатботове, автоматизация на процеси, предиктивна аналитика и custom AI модели. Внедряваме ChatGPT, Claude и Gemini решения."
+        title="AI Интеграция за бизнеса | Automation Aid"
+        description="Чатботове, автоматизация на процеси, предиктивна аналитика и custom AI модели. Внедряваме ChatGPT, Claude и Gemini решения за вашия бизнес."
         canonical="https://automationaid.bg/ai-integration"
+        structuredData={aiServiceSchema}
       />
       <Header />
       <main>
@@ -150,6 +231,38 @@ const AIIntegrationLanding = () => {
             { value: "3", label: "× По-бърза обработка", suffix: "×" },
             { value: "24", label: "/7 AI поддръжка", suffix: "/7" },
             { value: "98", label: "% Точност на моделите", suffix: "%" },
+          ]}
+        />
+
+        <Pricing />
+
+        <Testimonials />
+
+        <FAQSection faqs={aiFaqs} />
+
+        <RelatedServices
+          services={[
+            {
+              title: "Изработка на уебсайт",
+              description:
+                "Професионален уебсайт с месечен абонамент. Дизайн, разработка, хостинг и SEO.",
+              href: "/website",
+              icon: Monitor,
+            },
+            {
+              title: "Софтуер за настаняване",
+              description:
+                "Платформа за къщи за гости и хотели с Airbnb и Booking.com синхронизация.",
+              href: "/housing-software",
+              icon: Building2,
+            },
+            {
+              title: "Онлайн магазин",
+              description:
+                "eCommerce платформа с checkout оптимизация и куриерски интеграции.",
+              href: "/ecommerce-store",
+              icon: ShoppingCart,
+            },
           ]}
         />
 

@@ -120,12 +120,71 @@ const AboutUs = () => {
     setIsSubmitting(false);
   };
 
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://automationaid.bg/#organization",
+        name: "Automation Aid",
+        url: "https://automationaid.bg",
+        logo: "https://automationaid.bg/favicon-32x32.png",
+        foundingDate: "2024",
+        areaServed: "BG",
+        numberOfEmployees: { "@type": "QuantitativeValue", value: 2 },
+        founder: [
+          {
+            "@type": "Person",
+            name: "Сава Барбаров",
+            jobTitle: "Co-founder & AI Automation Specialist",
+            url: "https://www.linkedin.com/in/sava-barbarov-79a898232/",
+            award: "ISTQB National Testing Cup 2025 Winner",
+            worksFor: { "@id": "https://automationaid.bg/#organization" },
+          },
+          {
+            "@type": "Person",
+            name: "Слав Астинов",
+            jobTitle: "Co-founder & QA Innovation Lead",
+            url: "https://www.linkedin.com/in/slav-astinov-6b574b20b/",
+            award: "ISTQB World Testing Cup 2025 Global Champion",
+            worksFor: { "@id": "https://automationaid.bg/#organization" },
+          },
+        ],
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+359884323999",
+          email: "slav@automationaid.eu",
+          contactType: "customer service",
+          availableLanguage: ["Bulgarian", "English"],
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Начало",
+            item: "https://automationaid.bg/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "За нас",
+            item: "https://automationaid.bg/about",
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="За нас | Automation Aid"
-        description="Екип от световни шампиони по софтуерно тестване и инженери по автоматизация. Създаваме решения с AI, които дават реални резултати."
+        title="За нас — Екип и история | Automation Aid"
+        description="Екип от световни шампиони по софтуерно тестване с опит в ASML и Cisco. Създаваме уебсайтове, AI интеграции и автоматизации за бизнеса."
         canonical="https://automationaid.bg/about"
+        structuredData={aboutSchema}
       />
       <Header />
       <main>
@@ -245,7 +304,7 @@ const AboutUs = () => {
                       <div className="relative overflow-hidden rounded-3xl border border-border/50 shadow-lg">
                         <img
                           src={founder.image}
-                          alt={founder.name}
+                          alt={`${founder.name} — ${founder.title}, съосновател на Automation Aid`}
                           className="w-full aspect-[4/5] object-cover object-top transition-transform duration-700 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
@@ -294,6 +353,8 @@ const AboutUs = () => {
                       <div className="flex items-center gap-4 pt-2">
                         <a
                           href={founder.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center gap-2 text-sm font-body font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
                         >
                           <Linkedin className="w-5 h-5" />
@@ -301,6 +362,8 @@ const AboutUs = () => {
                         </a>
                         <a
                           href={founder.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center gap-2 text-sm font-body font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
                         >
                           <Github className="w-5 h-5" />
@@ -308,6 +371,8 @@ const AboutUs = () => {
                         </a>
                         <a
                           href={founder.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center gap-2 text-sm font-body font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
                         >
                           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

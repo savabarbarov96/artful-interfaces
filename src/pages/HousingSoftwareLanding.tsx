@@ -8,6 +8,9 @@ import FeatureGrid from "@/components/landing/FeatureGrid";
 import ProcessSteps from "@/components/landing/ProcessSteps";
 import SocialProof from "@/components/landing/SocialProof";
 import LandingCTA from "@/components/landing/LandingCTA";
+import FAQSection, { type FAQItem } from "@/components/landing/FAQSection";
+import RelatedServices from "@/components/landing/RelatedServices";
+import Testimonials from "@/components/sections/Testimonials";
 import {
   LayoutDashboard,
   Building2,
@@ -15,6 +18,9 @@ import {
   Search,
   CalendarSync,
   Globe,
+  Monitor,
+  Brain,
+  ShoppingCart,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -519,15 +525,91 @@ const HousingShowcase = () => {
   );
 };
 
+/* ── FAQ data ──────────────────────────────────────────────────────── */
+
+const housingFaqs: FAQItem[] = [
+  {
+    question: "За какви типове обекти е подходящ софтуерът?",
+    answer:
+      "Платформата е проектирана за къщи за гости, хотели, ваканционни апартаменти, вили и комплекси. Поддържа неограничен брой обекти и стаи.",
+  },
+  {
+    question: "Как работи синхронизацията с Airbnb и Booking.com?",
+    answer:
+      "Използваме iCal и channel manager интеграции за двупосочна синхронизация в реално време. Когато получите резервация от Airbnb, датите автоматично се блокират в Booking.com и обратно.",
+  },
+  {
+    question: "Мога ли да приемам директни резервации без комисионна?",
+    answer:
+      "Да, платформата включва собствена резервационна система с формуляр за директни резервации. Така намалявате зависимостта от OTA платформите и спестявате комисионни.",
+  },
+  {
+    question: "Има ли мобилна версия за управление?",
+    answer:
+      "Да, целият dashboard е оптимизиран за мобилни устройства. Може да управлявате резервации, да преглеждате статистики и да комуникирате с гости от телефона си.",
+  },
+  {
+    question: "Колко време отнема настройката?",
+    answer:
+      "Обикновено настройваме платформата за 5-7 работни дни, включително миграция на съществуващи данни, снимки и настройка на Airbnb/Booking.com каналите.",
+  },
+];
+
+const housingServiceSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      name: "Софтуер за настаняване",
+      provider: {
+        "@type": "Organization",
+        name: "Automation Aid",
+        url: "https://automationaid.bg",
+      },
+      serviceType: "Property management software",
+      areaServed: "BG",
+      url: "https://automationaid.bg/housing-software",
+      description:
+        "Професионален софтуер за управление на къщи за гости, хотели и ваканционни имоти с Airbnb и Booking.com интеграции.",
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Начало",
+          item: "https://automationaid.bg/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Софтуер за настаняване",
+          item: "https://automationaid.bg/housing-software",
+        },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: housingFaqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    },
+  ],
+};
+
 /* ── Main Page ──────────────────────────────────────────────────────── */
 
 const HousingSoftwareLanding = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Софтуер за настаняване и хотелски мениджмънт | Automation Aid"
-        description="Професионален софтуер за управление на къщи за гости, хотели и ваканционни имоти. Dashboard, галерия, SEO, Airbnb и Booking.com интеграции. Заявете демо."
+        title="Софтуер за настаняване | Automation Aid"
+        description="Софтуер за управление на къщи за гости, хотели и ваканционни имоти. Dashboard, галерия, SEO, Airbnb и Booking.com синхронизация. Заявете демо."
         canonical="https://automationaid.bg/housing-software"
+        structuredData={housingServiceSchema}
       />
       <Header />
       <main>
@@ -653,6 +735,36 @@ const HousingSoftwareLanding = () => {
             { value: "0", label: "Двойни резервации", suffix: "" },
             { value: "3", label: "× Повече директни резервации", suffix: "×" },
             { value: "99", label: "% Uptime", suffix: "%" },
+          ]}
+        />
+
+        <Testimonials />
+
+        <FAQSection faqs={housingFaqs} />
+
+        <RelatedServices
+          services={[
+            {
+              title: "Изработка на уебсайт",
+              description:
+                "Професионален уебсайт с месечен абонамент. Дизайн, разработка, хостинг и SEO.",
+              href: "/website",
+              icon: Monitor,
+            },
+            {
+              title: "AI интеграция",
+              description:
+                "AI чатботове за автоматично отговаряне на запитвания от гости и автоматизация на процеси.",
+              href: "/ai-integration",
+              icon: Brain,
+            },
+            {
+              title: "Онлайн магазин",
+              description:
+                "eCommerce платформа с checkout оптимизация и куриерски интеграции.",
+              href: "/ecommerce-store",
+              icon: ShoppingCart,
+            },
           ]}
         />
 
