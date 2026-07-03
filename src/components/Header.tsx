@@ -61,7 +61,7 @@ const Header = () => {
   };
 
   // Light text over the dark hero, ink text once scrolled onto paper
-  const linkTone = "text-ink/60 hover:text-ink";
+  const linkTone = "text-ink/70 hover:text-ink";
 
   return (
     <>
@@ -182,27 +182,28 @@ const Header = () => {
 
       {/* Mobile menu — full ink panel */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
+        className={`fixed inset-0 z-[60] md:hidden transition-all duration-400 ${
           isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="absolute inset-0 bg-white" onClick={() => setIsMobileMenuOpen(false)} />
-        <div className="absolute inset-0 aa-grid-paper pointer-events-none" />
+        {/* Full-screen panel */}
+        <div className="absolute inset-0 bg-white" />
+        <div className="absolute inset-0 aa-grid-paper pointer-events-none" aria-hidden="true" />
 
         <div
-          className={`relative h-full flex flex-col justify-center px-8 transition-all duration-500 ${
-            isMobileMenuOpen ? "translate-y-0" : "-translate-y-8"
+          className={`relative h-full flex flex-col px-7 pt-24 pb-8 overflow-y-auto transition-transform duration-400 ease-out ${
+            isMobileMenuOpen ? "translate-y-0" : "-translate-y-4"
           }`}
         >
           <nav className="space-y-1">
             <div>
               <button
-                className="flex items-center gap-3 py-4 font-heading text-2xl text-ink hover:text-signal transition-colors duration-300 w-full text-left"
+                className="flex items-center justify-between gap-3 py-4 font-heading text-2xl text-ink hover:text-signal transition-colors duration-300 w-full text-left border-b border-ink/10"
                 onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
                 style={{
                   opacity: isMobileMenuOpen ? 1 : 0,
-                  transform: isMobileMenuOpen ? "translateX(0)" : "translateX(-20px)",
-                  transition: "all 0.4s ease-out 75ms",
+                  transform: isMobileMenuOpen ? "translateY(0)" : "translateY(10px)",
+                  transition: "opacity 0.4s ease-out 75ms, transform 0.4s ease-out 75ms, color 0.3s",
                 }}
               >
                 Услуги
@@ -216,12 +217,12 @@ const Header = () => {
                   isMobileServicesOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="pl-5 pb-2 space-y-1 border-l border-signal/40 ml-1">
+                <div className="pl-4 py-2 space-y-0.5 border-l border-signal/40 ml-1">
                   {serviceLinks.map((link) => (
                     <Link
                       key={link.href}
                       to={link.href}
-                      className="block py-2.5 font-plex text-lg text-ink/60 hover:text-ink transition-colors duration-300"
+                      className="block py-2.5 font-plex text-lg text-ink/70 hover:text-ink transition-colors duration-300"
                       onClick={() => {
                         setIsMobileMenuOpen(false);
                         setIsMobileServicesOpen(false);
@@ -236,13 +237,12 @@ const Header = () => {
 
             {navLinks.map((link, index) => {
               const styles = {
-                transitionDelay: `${(index + 2) * 75}ms`,
                 opacity: isMobileMenuOpen ? 1 : 0,
-                transform: isMobileMenuOpen ? "translateX(0)" : "translateX(-20px)",
-                transition: "all 0.4s ease-out",
+                transform: isMobileMenuOpen ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 0.4s ease-out ${(index + 2) * 75}ms, transform 0.4s ease-out ${(index + 2) * 75}ms, color 0.3s`,
               } as const;
               const classes =
-                "block py-4 font-heading text-2xl text-ink hover:text-signal transition-colors duration-300";
+                "block py-4 font-heading text-2xl text-ink hover:text-signal transition-colors duration-300 border-b border-ink/10";
 
               return link.href.startsWith("/") ? (
                 <Link key={link.href} to={link.href} className={classes} onClick={() => setIsMobileMenuOpen(false)} style={styles}>
@@ -256,33 +256,39 @@ const Header = () => {
             })}
           </nav>
 
-          <div
-            className="mt-12"
+          {/* Close button below the menu items */}
+          <button
+            className="mt-8 flex items-center justify-center gap-2.5 w-full border border-signal text-signal font-plex font-semibold text-sm uppercase tracking-[0.08em] py-3.5 rounded-sm hover:bg-signal/5 transition-colors duration-300"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Затвори менюто"
             style={{
               opacity: isMobileMenuOpen ? 1 : 0,
-              transform: isMobileMenuOpen ? "translateY(0)" : "translateY(20px)",
-              transition: "all 0.5s ease-out 0.3s",
+              transition: "opacity 0.4s ease-out 0.2s, background-color 0.3s",
+            }}
+          >
+            <X className="w-4 h-4" />
+            Затвори
+          </button>
+
+          {/* CTA pinned to the bottom */}
+          <div
+            className="mt-auto pt-10"
+            style={{
+              opacity: isMobileMenuOpen ? 1 : 0,
+              transform: isMobileMenuOpen ? "translateY(0)" : "translateY(12px)",
+              transition: "all 0.5s ease-out 0.25s",
             }}
           >
             <a
               href="#contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-3 w-full bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.1em] py-4 rounded-sm"
+              className="flex items-center justify-center gap-3 w-full bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] py-4 rounded-sm"
             >
               Безплатна консултация
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 flex-shrink-0" />
             </a>
-          </div>
-
-          <div
-            className="absolute bottom-12 left-8 right-8"
-            style={{
-              opacity: isMobileMenuOpen ? 1 : 0,
-              transition: "opacity 0.5s ease-out 0.4s",
-            }}
-          >
-            <div className="h-px aa-rule-ink" />
-            <p className="text-center font-plexmono text-xs text-ink/50 tracking-wider mt-6">Отговаряме до 24 часа</p>
+            <div className="h-px aa-rule-ink mt-6" />
+            <p className="text-center font-plexmono text-xs text-ink/65 tracking-wider mt-4">Отговаряме до 24 часа</p>
           </div>
         </div>
       </div>

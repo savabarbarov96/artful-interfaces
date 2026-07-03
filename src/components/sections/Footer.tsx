@@ -34,7 +34,7 @@ const Footer = () => {
             <div className="flex items-center gap-4">
               <a
                 href="https://www.linkedin.com/company/automation-aid/"
-                className="w-11 h-11 rounded-sm bg-white border border-ink/15 flex items-center justify-center text-ink/60 hover:text-signal hover:border-signal/40 transition-all duration-300"
+                className="w-11 h-11 rounded-sm bg-white border border-ink/15 flex items-center justify-center text-ink/70 hover:text-signal hover:border-signal/40 transition-all duration-300"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -46,13 +46,13 @@ const Footer = () => {
 
           {/* Services column */}
           <div>
-            <h3 className="aa-label text-ink/50 mb-6">Услуги</h3>
+            <h3 className="aa-label text-ink/65 mb-6">Услуги</h3>
             <ul className="space-y-3">
               {links.services.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="font-plex text-sm text-ink/60 hover:text-ink transition-colors duration-300 flex items-center gap-2 group"
+                    className="font-plex text-sm text-ink/70 hover:text-ink transition-colors duration-300 flex items-center gap-2 group"
                   >
                     <span>{link.label}</span>
                     <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-signal" />
@@ -64,13 +64,13 @@ const Footer = () => {
 
           {/* Company column */}
           <div>
-            <h3 className="aa-label text-ink/50 mb-6">Компания</h3>
+            <h3 className="aa-label text-ink/65 mb-6">Компания</h3>
             <ul className="space-y-3">
               {links.company.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="font-plex text-sm text-ink/60 hover:text-ink transition-colors duration-300 flex items-center gap-2 group"
+                    className="font-plex text-sm text-ink/70 hover:text-ink transition-colors duration-300 flex items-center gap-2 group"
                   >
                     <span>{link.label}</span>
                     <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-signal" />
@@ -86,20 +86,20 @@ const Footer = () => {
       <div className="border-t border-ink/10">
         <div className="container py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="font-plexmono text-xs text-ink/45 tracking-wide">
+            <p className="font-plexmono text-xs text-ink/60 tracking-wide">
               © {new Date().getFullYear()} Automation Aid. Всички права запазени.
             </p>
 
             <div className="flex items-center gap-6">
               <a
                 href="/privacy-policy"
-                className="font-plexmono text-xs text-ink/45 hover:text-ink tracking-wide transition-colors duration-300"
+                className="font-plexmono text-xs text-ink/60 hover:text-ink tracking-wide transition-colors duration-300"
               >
                 Политика за поверителност
               </a>
               <a
                 href="#"
-                className="font-plexmono text-xs text-ink/45 hover:text-ink tracking-wide transition-colors duration-300"
+                className="font-plexmono text-xs text-ink/60 hover:text-ink tracking-wide transition-colors duration-300"
               >
                 Условия за ползване
               </a>

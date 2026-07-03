@@ -147,7 +147,7 @@ const Testimonials = () => {
 
           {/* Counter + arrows */}
           <div className="flex items-center gap-6 flex-shrink-0">
-            <span className="font-plexmono text-sm text-ink/50 tracking-[0.2em]">
+            <span className="font-plexmono text-sm text-ink/65 tracking-[0.2em]">
               {String(currentIndex + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
             </span>
             <div className="flex gap-2">
@@ -220,7 +220,7 @@ const Testimonials = () => {
                       <div className="flex flex-wrap items-end justify-between gap-4 pt-6 border-t border-ink/10">
                         <div>
                           <h4 className="font-heading text-base md:text-lg text-ink mb-1">{testimonial.name}</h4>
-                          <p className="font-plexmono text-xs text-ink/50 tracking-wider">
+                          <p className="font-plexmono text-xs text-ink/65 tracking-wider">
                             {testimonial.role} — {testimonial.company}
                           </p>
                         </div>

@@ -80,8 +80,8 @@ const Pricing = () => {
                 {dark && (
                   <>
                     <span className="absolute top-0 left-0 right-0 h-1 bg-signal" />
-                    <Cross className="absolute -top-[7px] -left-[7px] text-ink/40" />
-                    <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/40" />
+                    <Cross className="absolute -top-[7px] -left-[7px] text-ink/55" />
+                    <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/55" />
                   </>
                 )}
 
@@ -89,12 +89,12 @@ const Pricing = () => {
                 <div className={"px-7 md:px-9 pt-8 pb-6 border-b border-ink/10"}>
                   <div className="flex items-center justify-between gap-4 mb-5">
                     <span className={`aa-label ${dark ? "text-signal" : "text-machine-deep"}`}>{plan.badge}</span>
-                    <span className={`font-plexmono text-[10px] tracking-widest ${dark ? "text-signal/70" : "text-ink/35"}`}>
+                    <span className={`font-plexmono text-[10px] tracking-widest ${dark ? "text-signal/70" : "text-ink/50"}`}>
                       план {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
                   <h3 className="font-heading text-2xl md:text-[1.75rem] mb-2">{plan.title}</h3>
-                  <p className={`font-plexmono text-[11px] uppercase tracking-[0.14em] ${dark ? "text-ink/50" : "text-ink/50"}`}>
+                  <p className={`font-plexmono text-[11px] uppercase tracking-[0.14em] ${dark ? "text-ink/65" : "text-ink/65"}`}>
                     {plan.subtitle}
                   </p>
                 </div>
@@ -102,12 +102,12 @@ const Pricing = () => {
                 {/* Price */}
                 <div className={"px-7 md:px-9 py-6 border-b border-ink/10"}>
                   <div className="flex items-baseline gap-2">
-                    <span className={`font-plex text-sm ${dark ? "text-ink/50" : "text-ink/50"}`}>от</span>
+                    <span className={`font-plex text-sm ${dark ? "text-ink/65" : "text-ink/65"}`}>от</span>
                     <span className="font-heading text-5xl md:text-6xl leading-none">{plan.priceEur}</span>
                     <span className={`font-heading text-2xl ${dark ? "text-signal" : "text-machine-deep"}`}>€</span>
-                    <span className={`font-plex text-sm ${dark ? "text-ink/50" : "text-ink/50"}`}>/месец</span>
+                    <span className={`font-plex text-sm ${dark ? "text-ink/65" : "text-ink/65"}`}>/месец</span>
                   </div>
-                  <p className={`font-plexmono text-xs mt-2.5 tracking-wide text-ink/45`}>
+                  <p className={`font-plexmono text-xs mt-2.5 tracking-wide text-ink/60`}>
                     ≈ {plan.priceBgn} лв/месец (без ДДС)
                   </p>
                 </div>
@@ -137,19 +137,19 @@ const Pricing = () => {
                 <div className="px-7 md:px-9 pb-8">
                   <a
                     href="#contact"
-                    className={`group flex items-center justify-center gap-3 w-full font-plex font-semibold text-sm uppercase tracking-[0.08em] py-4 rounded-sm transition-all duration-300 ${
+                    className={`group flex items-center justify-center gap-2.5 w-full px-4 text-center font-plex font-semibold text-xs sm:text-sm leading-snug uppercase tracking-[0.06em] sm:tracking-[0.08em] py-4 rounded-sm transition-all duration-300 ${
                       dark
                         ? "bg-signal text-white hover:brightness-110 hover:shadow-[0_16px_36px_-12px_hsl(var(--aa-signal)/0.6)]"
                         : "bg-ink text-paper hover:bg-ink-soft"
                     }`}
                   >
                     {plan.cta}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
                   </a>
                   <a
                     href="#contact"
                     className={`block text-center font-plexmono text-[11px] tracking-wider underline underline-offset-4 mt-4 transition-colors ${
-                      "text-ink/50 hover:text-ink"
+                      "text-ink/65 hover:text-ink"
                     }`}
                   >
                     Вижте всичко, което получавате в плана си
@@ -161,7 +161,7 @@ const Pricing = () => {
         </div>
 
         <div className="text-center mt-12 aa-reveal" style={{ transitionDelay: "400ms" }}>
-          <p className="font-plex text-sm text-ink/60">
+          <p className="font-plex text-sm text-ink/70">
             Нуждаете се от нещо по-специфично?{" "}
             <a href="#contact" className="text-machine-deep hover:text-ink underline underline-offset-4 transition-colors">
               Свържете се с нас

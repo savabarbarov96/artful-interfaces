@@ -41,7 +41,7 @@ interface SectionHeadProps {
 /** Numbered technical section header: `01 / ЕТИКЕТ` rule + display title. */
 export const SectionHead = ({ index, label, title, lead, dark = false, align = "left" }: SectionHeadProps) => {
   const tone = dark ? "text-paper" : "text-ink";
-  const faint = dark ? "text-paper/50" : "text-ink/50";
+  const faint = dark ? "text-paper/50" : "text-ink/65";
   const rule = dark ? "aa-rule-light" : "aa-rule-ink";
 
   return (

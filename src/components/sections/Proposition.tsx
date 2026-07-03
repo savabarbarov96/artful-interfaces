@@ -46,8 +46,8 @@ const Proposition = () => {
 
         {/* Ledger */}
         <div className="mt-12 border border-ink/15 bg-bone relative aa-reveal" style={{ transitionDelay: "120ms" }}>
-          <Cross className="absolute -top-[7px] -left-[7px] text-ink/40" />
-          <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/40" />
+          <Cross className="absolute -top-[7px] -left-[7px] text-ink/55" />
+          <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/55" />
 
           {/* Column headers */}
           <div className="grid md:grid-cols-2 border-b border-ink/15">
@@ -59,9 +59,9 @@ const Proposition = () => {
             </div>
             <div className="flex items-center gap-3 px-6 md:px-8 py-5">
               <span className="w-8 h-8 rounded-sm bg-ink/5 border border-ink/15 flex items-center justify-center">
-                <X className="w-4 h-4 text-ink/40" strokeWidth={2.5} />
+                <X className="w-4 h-4 text-ink/55" strokeWidth={2.5} />
               </span>
-              <h3 className="font-heading text-xl md:text-2xl text-ink/45">Няма да получиш</h3>
+              <h3 className="font-heading text-xl md:text-2xl text-ink/60">Няма да получиш</h3>
             </div>
           </div>
 
@@ -89,7 +89,7 @@ const Proposition = () => {
                   style={{ transitionDelay: `${220 + i * 45}ms` }}
                 >
                   <X className="w-3.5 h-3.5 text-signal/60 mt-1.5 flex-shrink-0" strokeWidth={2.5} />
-                  <span className="font-plex text-[0.95rem] md:text-base text-ink/45 leading-snug line-through decoration-ink/25">
+                  <span className="font-plex text-[0.95rem] md:text-base text-ink/60 leading-snug line-through decoration-ink/25">
                     {item}
                   </span>
                 </li>

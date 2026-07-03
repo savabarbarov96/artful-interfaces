@@ -120,7 +120,7 @@ const Services = () => {
                 className={`relative flex items-center gap-2.5 pb-4 -mb-px font-plexmono text-xs uppercase tracking-[0.12em] transition-colors duration-300 border-b-2 ${
                   isActive
                     ? "text-ink border-signal"
-                    : "text-ink/45 border-transparent hover:text-ink/75"
+                    : "text-ink/60 border-transparent hover:text-ink/75"
                 }`}
               >
                 <span className={`text-[10px] ${isActive ? "text-signal" : "text-ink/30"}`}>

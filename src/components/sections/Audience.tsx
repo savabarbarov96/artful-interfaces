@@ -60,7 +60,7 @@ const Audience = () => {
                     {audience.number}
                   </span>
                   <span className="w-10 h-10 rounded-sm bg-ink text-paper flex items-center justify-center transition-colors duration-300 group-hover:bg-signal">
-                    <Icon className="w-4.5 h-4.5 w-[18px] h-[18px]" />
+                    <Icon className="w-[18px] h-[18px]" />
                   </span>
                 </div>
 

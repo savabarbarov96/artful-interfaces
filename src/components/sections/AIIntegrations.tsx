@@ -75,8 +75,8 @@ const AIIntegrations = () => {
           className="relative max-w-4xl mx-auto mt-14 border border-ink/15 bg-bone aa-reveal"
           style={{ transitionDelay: "150ms" }}
         >
-          <Cross className="absolute -top-[7px] -right-[7px] text-ink/40" />
-          <Cross className="absolute -bottom-[7px] -left-[7px] text-ink/40" />
+          <Cross className="absolute -top-[7px] -right-[7px] text-ink/55" />
+          <Cross className="absolute -bottom-[7px] -left-[7px] text-ink/55" />
 
           {/* Providers row */}
           <div className="grid grid-cols-3 border-b border-ink/15">
@@ -88,7 +88,7 @@ const AIIntegrations = () => {
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-sm bg-white border border-ink/10 shadow-sm flex items-center justify-center transition-transform duration-300 hover:-translate-y-1">
                   <img src={logo.src} alt={logo.alt} className="w-7 h-7 md:w-8 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <span className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/55">{logo.label}</span>
+                <span className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/65">{logo.label}</span>
               </div>
             ))}
           </div>
@@ -132,7 +132,7 @@ const AIIntegrations = () => {
         </div>
 
         <p
-          className="text-center font-plexmono text-xs md:text-sm text-ink/50 tracking-wide max-w-lg mx-auto mt-10 aa-reveal"
+          className="text-center font-plexmono text-xs md:text-sm text-ink/65 tracking-wide max-w-lg mx-auto mt-10 aa-reveal"
           style={{ transitionDelay: "500ms" }}
         >
           Отключваме нови приходни потоци и оперативна ефективност чрез интелигентна автоматизация.

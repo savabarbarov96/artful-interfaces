@@ -45,7 +45,7 @@ const Hero = () => {
             <div className="flex items-center gap-4 mb-7 animate-fade-up">
               <span className="aa-label text-signal">Automation Aid</span>
               <span className="h-px w-12 aa-rule-ink" />
-              <span className="aa-label text-ink/50">Уебсайтове · AI · Автоматизация</span>
+              <span className="aa-label text-ink/65">Уебсайтове · AI · Автоматизация</span>
             </div>
 
             <h1 className="aa-display text-[clamp(1.8rem,4.2vw,3rem)] text-ink mb-7">
@@ -83,7 +83,7 @@ const Hero = () => {
 
             <div className="flex items-center gap-3 mt-9 animate-fade-up delay-500">
               <span className="w-1.5 h-1.5 rounded-full bg-machine animate-pulse" />
-              <span className="font-plexmono text-xs text-ink/50 tracking-wider">Отговаряме до 24 часа</span>
+              <span className="font-plexmono text-xs text-ink/65 tracking-wider">Отговаряме до 24 часа</span>
             </div>
           </div>
 
@@ -100,7 +100,7 @@ const Hero = () => {
             {/* Schematic caption */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-3">
               <span className="h-px w-8 aa-rule-ink" />
-              <span className="font-plexmono text-[10px] uppercase tracking-[0.25em] text-ink/40">
+              <span className="font-plexmono text-[10px] uppercase tracking-[0.25em] text-ink/55">
                 fig. 01 — дигитална екосистема
               </span>
               <span className="h-px w-8 aa-rule-ink" />
@@ -114,7 +114,7 @@ const Hero = () => {
         <div className="flex items-center">
           <div className="hidden md:flex items-center gap-3 flex-shrink-0 px-8 py-5 border-r border-ink/10">
             <span className="w-1.5 h-1.5 rounded-full bg-signal animate-pulse" />
-            <p className="font-plexmono text-[11px] uppercase tracking-[0.18em] text-ink/50 whitespace-nowrap">
+            <p className="font-plexmono text-[11px] uppercase tracking-[0.18em] text-ink/65 whitespace-nowrap">
               Използваме най-новите технологии
             </p>
           </div>
@@ -122,7 +122,7 @@ const Hero = () => {
             <div className="flex items-center gap-10 aa-ticker w-max hover:[animation-play-state:paused]">
               {[...technologies, ...technologies].map((name, i) => (
                 <span key={i} className="flex items-center gap-10 whitespace-nowrap">
-                  <span className="font-plexmono text-sm text-ink/60 tracking-wider">{name}</span>
+                  <span className="font-plexmono text-sm text-ink/70 tracking-wider">{name}</span>
                   <span className="text-signal/60 text-xs">+</span>
                 </span>
               ))}

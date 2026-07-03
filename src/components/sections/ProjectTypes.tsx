@@ -219,14 +219,14 @@ const ProjectTypes = () => {
                   >
                     <span
                       className={`font-plexmono text-xs transition-colors duration-300 ${
-                        isActive ? "text-signal" : "text-ink/35 group-hover:text-ink/60"
+                        isActive ? "text-signal" : "text-ink/50 group-hover:text-ink/70"
                       }`}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
                       className={`font-heading text-xl md:text-[1.65rem] leading-none transition-colors duration-300 ${
-                        isActive ? "text-ink" : "text-ink/35 group-hover:text-ink/70"
+                        isActive ? "text-ink" : "text-ink/50 group-hover:text-ink/70"
                       }`}
                     >
                       {project.title}
@@ -266,7 +266,7 @@ const ProjectTypes = () => {
                 {activeProject.tech.map((tech) => (
                   <span
                     key={tech}
-                    className="font-plexmono text-[11px] uppercase tracking-wider px-2.5 py-1 border border-ink/20 text-ink/60"
+                    className="font-plexmono text-[11px] uppercase tracking-wider px-2.5 py-1 border border-ink/20 text-ink/70"
                   >
                     {tech}
                   </span>
@@ -291,18 +291,18 @@ const ProjectTypes = () => {
           {/* Right — media in technical frame */}
           <div className="aa-reveal lg:sticky lg:top-28" style={{ transitionDelay: "220ms" }}>
             <div className="relative">
-              <Cross className="absolute -top-[7px] -left-[7px] text-ink/40 z-10" />
-              <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/40 z-10" />
+              <Cross className="absolute -top-[7px] -left-[7px] text-ink/55 z-10" />
+              <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/55 z-10" />
 
               <div className="border border-ink/15 bg-white shadow-[0_24px_60px_-28px_rgba(15,23,42,0.3)]">
                 {/* Caption bar */}
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-ink/10 bg-bone">
-                  <span className="font-plexmono text-[10px] uppercase tracking-[0.2em] text-ink/55">
+                  <span className="font-plexmono text-[10px] uppercase tracking-[0.2em] text-ink/65">
                     {showcaseLabel[activeProject.id] ?? "Проект по ваша визия"}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-signal animate-pulse" />
-                    <span className="font-plexmono text-[10px] uppercase tracking-wider text-ink/40">live demo</span>
+                    <span className="font-plexmono text-[10px] uppercase tracking-wider text-ink/55">live demo</span>
                   </span>
                 </div>
 
@@ -389,7 +389,7 @@ const ProjectTypes = () => {
               </div>
             </div>
 
-            <p className="font-plex text-sm text-ink/60 leading-relaxed mt-5 max-w-lg">
+            <p className="font-plex text-sm text-ink/70 leading-relaxed mt-5 max-w-lg">
               {interstitialCopy[activeProject.id] ?? ""}
             </p>
           </div>

@@ -25,7 +25,7 @@ const contactInfo = [
 ];
 
 const inputClasses = (focused: boolean) =>
-  `w-full h-12 px-4 rounded-sm border bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none transition-all duration-300 ${
+  `w-full h-12 px-4 rounded-sm border bg-white font-plex text-sm text-ink placeholder:text-ink/60 focus:outline-none transition-all duration-300 ${
     focused ? "border-machine shadow-[0_0_0_3px_hsl(var(--aa-teal)/0.12)]" : "border-ink/20"
   }`;
 
@@ -179,14 +179,14 @@ const Contact = () => {
         <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-6 lg:gap-8 max-w-6xl mx-auto items-start">
           {/* Inquiry form — paper card on ink */}
           <div className="relative aa-reveal" style={{ transitionDelay: "120ms" }}>
-            <Cross className="absolute -top-[7px] -left-[7px] text-ink/40 z-10" />
+            <Cross className="absolute -top-[7px] -left-[7px] text-ink/55 z-10" />
             <div className="bg-bone text-ink border border-ink/15 p-6 md:p-8">
               <div className="flex flex-wrap items-start justify-between gap-3 mb-6 pb-5 border-b border-ink/10">
                 <div>
                   <p className="aa-label text-machine-deep mb-2">Бриф за проект</p>
                   <h3 className="font-heading text-xl md:text-2xl text-ink">Изпратете запитване</h3>
                 </div>
-                <div className="flex items-center gap-2 font-plexmono text-[11px] uppercase tracking-wider text-ink/60 border border-ink/15 px-3 py-1.5">
+                <div className="flex items-center gap-2 font-plexmono text-[11px] uppercase tracking-wider text-ink/70 border border-ink/15 px-3 py-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-machine-deep" />
                   Отговор до 24 часа
                 </div>
@@ -194,7 +194,7 @@ const Contact = () => {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <p className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">Изберете услуга</p>
+                  <p className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">Изберете услуга</p>
                   <div className="flex flex-wrap gap-2">
                     {serviceOptions.map((service) => (
                       <button
@@ -215,7 +215,7 @@ const Contact = () => {
 
                 <div className="grid md:grid-cols-2 gap-3">
                   <div className="space-y-1.5">
-                    <label htmlFor="name" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                    <label htmlFor="name" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
                       Име
                     </label>
                     <input
@@ -233,7 +233,7 @@ const Contact = () => {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="email" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                    <label htmlFor="email" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
                       Email
                     </label>
                     <input
@@ -252,8 +252,8 @@ const Contact = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="phone" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
-                    Телефон <span className="text-ink/35 normal-case">(опционално)</span>
+                  <label htmlFor="phone" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
+                    Телефон <span className="text-ink/50 normal-case">(опционално)</span>
                   </label>
                   <input
                     type="tel"
@@ -269,7 +269,7 @@ const Contact = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="message" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                  <label htmlFor="message" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
                     Съобщение
                   </label>
                   <textarea
@@ -281,7 +281,7 @@ const Contact = () => {
                     onBlur={() => setFocusedField(null)}
                     required
                     rows={4}
-                    className={`w-full px-4 py-3 rounded-sm border bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none transition-all duration-300 resize-none ${
+                    className={`w-full px-4 py-3 rounded-sm border bg-white font-plex text-sm text-ink placeholder:text-ink/60 focus:outline-none transition-all duration-300 resize-none ${
                       focusedField === "message"
                         ? "border-machine shadow-[0_0_0_3px_hsl(var(--aa-teal)/0.12)]"
                         : "border-ink/20"
@@ -321,14 +321,14 @@ const Contact = () => {
                           <Icon className="w-3.5 h-3.5 text-paper" />
                         </span>
                         <span className="min-w-0">
-                          <span className="block font-plexmono text-[10px] uppercase tracking-wider text-ink/45">
+                          <span className="block font-plexmono text-[10px] uppercase tracking-wider text-ink/60">
                             {item.label}
                           </span>
                           <span className="block font-plex text-xs md:text-sm text-ink font-medium truncate">
                             {item.value}
                           </span>
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 ml-auto text-ink/35 group-hover:text-ink group-hover:translate-x-0.5 transition-all duration-300" />
+                        <ArrowRight className="w-3.5 h-3.5 ml-auto text-ink/50 group-hover:text-ink group-hover:translate-x-0.5 transition-all duration-300" />
                       </a>
                     );
                   })}
@@ -339,7 +339,7 @@ const Contact = () => {
 
           {/* Meeting booking — dark card */}
           <div className="relative aa-reveal" style={{ transitionDelay: "240ms" }}>
-            <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/40 z-10" />
+            <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/55 z-10" />
             <div className="bg-white border border-ink/15 p-6 md:p-7">
               <div className="flex items-center gap-3 mb-5 pb-5 border-b border-ink/10">
                 <img
@@ -349,16 +349,16 @@ const Contact = () => {
                 />
                 <div>
                   <p className="font-plex text-sm font-semibold text-ink">Slav Astinov</p>
-                  <p className="font-plexmono text-[11px] text-ink/50 tracking-wide">Co-owner • Project Discovery</p>
+                  <p className="font-plexmono text-[11px] text-ink/65 tracking-wide">Co-owner • Project Discovery</p>
                 </div>
-                <span className="ml-auto inline-flex items-center gap-1.5 border border-ink/15 px-2.5 py-1 font-plexmono text-[10px] uppercase tracking-wider text-ink/55">
+                <span className="ml-auto inline-flex items-center gap-1.5 border border-ink/15 px-2.5 py-1 font-plexmono text-[10px] uppercase tracking-wider text-ink/65">
                   <CalendarDays className="w-3.5 h-3.5 text-signal" />
                   Optional
                 </span>
               </div>
 
               <h3 className="font-heading text-lg md:text-xl text-ink mb-2">Резервирайте кратка среща</h3>
-              <p className="font-plex text-sm text-ink/60 leading-relaxed mb-5">
+              <p className="font-plex text-sm text-ink/70 leading-relaxed mb-5">
                 Изберете дата и час, после въведете email и телефон в pop-up за потвърждение.
               </p>
 
@@ -377,7 +377,7 @@ const Contact = () => {
                     table: "w-full border-collapse",
                     row: "flex w-full mt-2",
                     head_row: "flex w-full",
-                    head_cell: "text-ink/40 rounded-sm w-9 lg:w-full text-center font-normal text-[0.7rem] font-plexmono uppercase",
+                    head_cell: "text-ink/55 rounded-sm w-9 lg:w-full text-center font-normal text-[0.7rem] font-plexmono uppercase",
                     cell: "h-9 w-9 lg:h-10 lg:w-full text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
                     nav_button: "h-7 w-7 bg-transparent text-ink/70 border border-ink/15 p-0 opacity-100 hover:bg-bone hover:text-ink",
                     caption_label: "text-sm font-medium text-ink font-plex",
@@ -389,7 +389,7 @@ const Contact = () => {
               </div>
 
               <div className="mb-5">
-                <p className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2.5 flex items-center gap-2">
+                <p className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/65 mb-2.5 flex items-center gap-2">
                   <Clock className="w-3.5 h-3.5 text-signal" />
                   Изберете час
                 </p>
@@ -420,7 +420,7 @@ const Contact = () => {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
 
-              <p className="font-plexmono text-[10px] text-ink/40 text-center tracking-wide mt-3">
+              <p className="font-plexmono text-[10px] text-ink/55 text-center tracking-wide mt-3">
                 Това е отделен канал от контактната форма и изпраща отделен имейл.
               </p>
             </div>
@@ -438,7 +438,7 @@ const Contact = () => {
 
             <form onSubmit={handleMeetingSubmit} className="space-y-4">
               <div className="rounded-sm border border-ink/15 bg-white px-3 py-2.5">
-                <p className="font-plexmono text-xs text-ink/60">
+                <p className="font-plexmono text-xs text-ink/70">
                   Избрана среща:{" "}
                   <span className="text-ink font-medium">
                     {selectedDate
@@ -450,7 +450,7 @@ const Contact = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="meeting-email" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                <label htmlFor="meeting-email" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
                   Email
                 </label>
                 <input
@@ -460,13 +460,13 @@ const Contact = () => {
                   required
                   value={meetingFormData.email}
                   onChange={handleMeetingFieldChange}
-                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none focus:border-machine"
+                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/60 focus:outline-none focus:border-machine"
                   placeholder="email@example.com"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="meeting-phone" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                <label htmlFor="meeting-phone" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
                   Телефон
                 </label>
                 <input
@@ -476,7 +476,7 @@ const Contact = () => {
                   required
                   value={meetingFormData.phone}
                   onChange={handleMeetingFieldChange}
-                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none focus:border-machine"
+                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/60 focus:outline-none focus:border-machine"
                   placeholder="+359 888 123 456"
                 />
               </div>

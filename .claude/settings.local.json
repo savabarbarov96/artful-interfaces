@@ -1,1 +1,9 @@
-{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"touch '/mnt/c/Users/Aneta/firstmate/state/redesign-home-f3.turn-ended'"}]}]}}
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(node scripts/optimize-images.mjs:*)",
+      "WebFetch(domain:sveti-nikola.eu)"
+    ]
+  }
+}
