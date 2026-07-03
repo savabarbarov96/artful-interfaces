@@ -191,72 +191,45 @@ const AboutUs = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative min-h-[80vh] flex items-center overflow-hidden grain-overlay bg-hero-gradient"
+          className="relative min-h-[70vh] flex items-center overflow-hidden bg-white text-ink"
         >
-          {/* Background effects */}
-          <div className="absolute inset-0 opacity-30 pointer-events-none"
-            style={{
-              background: `repeating-conic-gradient(from 0deg at 50% 120%, hsl(0 0% 100% / 0) 0deg, hsl(0 0% 100% / 0.15) 0.5deg, hsl(0 0% 100% / 0) 1deg)`,
-            }}
-          />
+          {/* Blueprint grid */}
+          <div className="absolute inset-0 aa-grid-paper" aria-hidden="true" />
+
+          {/* Teal atmosphere */}
           <div
-            className="absolute w-[520px] h-[520px] -top-32 -right-36 rounded-full opacity-20 pointer-events-none"
+            className="absolute right-[-15%] top-[5%] w-[55vw] h-[70vh] pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, hsl(0 0% 100% / 0.28) 0%, transparent 70%)',
-              filter: 'blur(70px)',
-              transform: `translateY(${scrollY * 0.15}px)`,
-              transition: 'transform 0.3s ease-out',
+              background: 'radial-gradient(ellipse 60% 55% at 60% 45%, hsl(var(--aa-teal) / 0.09) 0%, transparent 70%)',
             }}
-          />
-          <div
-            className="absolute w-[360px] h-[360px] bottom-16 -left-40 rounded-full opacity-15 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, hsl(173 80% 60% / 0.25) 0%, transparent 70%)',
-              filter: 'blur(70px)',
-            }}
+            aria-hidden="true"
           />
 
-          {/* Floating particles */}
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-white/60 animate-float-slow shadow-glow pointer-events-none" />
-          <div className="absolute bottom-1/3 right-1/3 w-3 h-3 rounded-full bg-white/40 animate-float delay-300 pointer-events-none" />
-          <div className="absolute top-1/3 right-1/4 w-1.5 h-1.5 rounded-full bg-accent/70 animate-float-slow delay-500 pointer-events-none" />
-
-          {/* Decorative lines */}
-          <div
-            className="absolute left-[15%] top-0 bottom-0 w-px pointer-events-none"
-            style={{
-              background: 'linear-gradient(180deg, transparent 0%, hsl(0 0% 100% / 0.2) 30%, hsl(0 0% 100% / 0.2) 70%, transparent 100%)',
-            }}
-          />
-          <div
-            className="absolute right-[20%] top-0 bottom-0 w-px pointer-events-none"
-            style={{
-              background: 'linear-gradient(180deg, transparent 0%, hsl(0 0% 100% / 0.15) 40%, hsl(0 0% 100% / 0.15) 60%, transparent 100%)',
-            }}
-          />
+          {/* Vertical hairlines */}
+          <div className="absolute left-6 md:left-10 top-0 bottom-0 w-px aa-rule-ink opacity-50 pointer-events-none" aria-hidden="true" />
+          <div className="absolute right-6 md:right-10 top-0 bottom-0 w-px aa-rule-ink opacity-50 pointer-events-none" aria-hidden="true" />
 
           <div className="container relative z-10 pt-32 pb-24">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="flex items-center justify-center gap-3 mb-8 animate-fade-up">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
-                  <Trophy className="w-4 h-4 text-[#FF6B35]" />
-                  <span className="text-label text-white">Световно признат екип</span>
-                </div>
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-4 mb-7 animate-fade-up">
+                <span className="aa-label text-signal">Automation Aid</span>
+                <span className="h-px w-12 aa-rule-ink" />
+                <span className="aa-label text-ink/50 inline-flex items-center gap-2">
+                  <Trophy className="w-3.5 h-3.5 text-signal" />
+                  Световно признат екип
+                </span>
               </div>
 
-              <h1 className="text-display-hero text-white mb-8 drop-shadow-[0_8px_28px_rgba(255,255,255,0.25)] font-semibold leading-tight">
+              <h1 className="aa-display text-[clamp(1.8rem,4.2vw,3rem)] text-ink mb-7">
                 <span className="block animate-fade-up">Запознайте се с</span>
-                <span className="block animate-fade-up delay-100 text-[#FF6B35]">екипа</span>
+                <span className="block animate-fade-up delay-100 text-signal">екипа</span>
               </h1>
 
-              <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-up delay-200 font-body font-medium drop-shadow-[0_6px_22px_rgba(255,255,255,0.22)]">
+              <p className="font-plex text-lg md:text-xl text-ink/70 max-w-2xl mx-auto mb-4 leading-relaxed animate-fade-up delay-200">
                 Над 10 години комбиниран опит в IT сферата, над 20 завършени проекта и страст към иновациите.
               </p>
             </div>
           </div>
-
-          {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-20" />
         </section>
 
         {/* Stats Bar */}
