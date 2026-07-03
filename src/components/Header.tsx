@@ -1,5 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, ArrowRight, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoImg from "@/assets/5f0bce7a-38e6-4daf-b989-6c44279836ea.png";
@@ -9,6 +8,11 @@ const serviceLinks = [
   { href: "/ai-integration", label: "AI Интеграция" },
   { href: "/housing-software", label: "Софтуер за настаняване" },
   { href: "/ecommerce-store", label: "Онлайн магазин" },
+];
+
+const navLinks = [
+  { href: "/about", label: "За нас" },
+  { href: "#contact", label: "Контакти" },
 ];
 
 const Header = () => {
@@ -23,17 +27,13 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min(window.scrollY / totalHeight, 1);
-      setScrollProgress(progress);
+      setScrollProgress(Math.min(window.scrollY / totalHeight, 1));
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -45,11 +45,7 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
@@ -64,54 +60,36 @@ const Header = () => {
     dropdownTimeout.current = setTimeout(() => setIsDropdownOpen(false), 150);
   };
 
-  const navLinks = [
-    { href: "/about", label: "За нас" },
-    { href: "#contact", label: "Контакти" },
-  ];
+  // Light text over the dark hero, ink text once scrolled onto paper
+  const linkTone = "text-ink/60 hover:text-ink";
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-            ? "py-3"
-            : "py-5"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "py-2.5" : "py-4"}`}
       >
-        {/* Background with blur */}
         <div
-          className={`absolute inset-0 transition-all duration-500 ${isScrolled
-              ? "opacity-100 bg-white/90 backdrop-blur-md shadow-sm"
-              : "opacity-0"
-            }`}
-        />
-
-        {/* Bottom border */}
-        <div
-          className={`absolute bottom-0 left-0 right-0 h-px transition-opacity duration-500 ${isScrolled ? 'opacity-100 bg-border' : 'opacity-0'
-            }`}
+          className={`absolute inset-0 transition-all duration-500 ${
+            isScrolled ? "opacity-100 bg-white/92 backdrop-blur-md border-b border-ink/10" : "opacity-0"
+          }`}
         />
 
         <div className="container relative">
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-xl overflow-hidden shadow-blue flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                <img
-                  src={logoImg}
-                  alt="AutomationAid logo"
-                  className="w-full h-full object-contain"
-                  loading="lazy"
-                />
+              <div className="w-10 h-10 rounded-sm overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                <img src={logoImg} alt="Automation Aid лого" className="w-full h-full object-contain" loading="lazy" />
               </div>
-              <span className={`text-lg font-display transition-colors duration-300 ${isScrolled ? 'text-foreground' : 'text-white'
-                } group-hover:text-primary`}>
+              <span
+                className="font-heading text-sm md:text-base tracking-wide text-ink transition-colors duration-300"
+              >
                 Automation Aid
               </span>
             </Link>
 
-            {/* Navigation links - Desktop */}
+            {/* Desktop nav */}
             <div className="hidden md:flex items-center gap-1">
-              {/* Услуги dropdown */}
               <div
                 ref={dropdownRef}
                 className="relative"
@@ -119,167 +97,131 @@ const Header = () => {
                 onMouseLeave={handleDropdownLeave}
               >
                 <button
-                  className={`relative px-5 py-2 text-sm font-medium font-body transition-colors duration-300 group flex items-center gap-1 ${isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
-                    }`}
+                  className={`relative px-5 py-2 font-plexmono text-xs uppercase tracking-[0.14em] transition-colors duration-300 flex items-center gap-1.5 ${linkTone}`}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   Услуги
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                  <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 rounded-full group-hover:w-6 transition-all duration-300 ${isScrolled ? 'bg-primary' : 'bg-white'
-                    }`} />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`}
+                  />
                 </button>
 
-                {/* Dropdown panel */}
                 <div
                   className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 ${
                     isDropdownOpen
-                      ? 'opacity-100 translate-y-0 pointer-events-auto'
-                      : 'opacity-0 -translate-y-2 pointer-events-none'
+                      ? "opacity-100 translate-y-0 pointer-events-auto"
+                      : "opacity-0 -translate-y-2 pointer-events-none"
                   }`}
                 >
-                  <div
-                    className="bg-white rounded-xl border border-border shadow-lg overflow-hidden min-w-[240px]"
-                    style={{
-                      boxShadow: '0 12px 40px -8px hsl(222 47% 11% / 0.12), 0 0 0 1px hsl(220 13% 91% / 0.8)',
-                    }}
-                  >
+                  <div className="bg-white border border-ink/15 rounded-sm overflow-hidden min-w-[260px] shadow-[0_24px_60px_-16px_rgba(15,23,42,0.25)]">
                     {serviceLinks.map((link, i) => (
                       <Link
                         key={link.href}
                         to={link.href}
-                        className="block px-5 py-3.5 text-sm font-body font-medium text-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200 border-b border-border/50 last:border-0"
+                        className="flex items-center justify-between px-5 py-3.5 font-plex text-sm text-ink/75 hover:text-ink hover:bg-bone transition-all duration-200 border-b border-ink/10 last:border-0 group"
                         onClick={() => setIsDropdownOpen(false)}
-                        style={{ transitionDelay: `${i * 30}ms` }}
                       >
-                        {link.label}
+                        <span>{link.label}</span>
+                        <span className="font-plexmono text-[10px] text-signal/70">0{i + 1}</span>
                       </Link>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Other nav links */}
-              {navLinks.map((link, index) => {
-                const classes = `relative px-5 py-2 text-sm font-medium font-body transition-colors duration-300 group ${isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
-                  }`;
-                const underline = (
-                  <span
-                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 rounded-full group-hover:w-6 transition-all duration-300 ${isScrolled ? 'bg-primary' : 'bg-white'
-                      }`}
-                  />
-                );
-
+              {navLinks.map((link) => {
+                const classes = `relative px-5 py-2 font-plexmono text-xs uppercase tracking-[0.14em] transition-colors duration-300 ${linkTone}`;
                 return link.href.startsWith("/") ? (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    className={classes}
-                    style={{ transitionDelay: `${(index + 1) * 50}ms` }}
-                  >
+                  <Link key={link.href} to={link.href} className={classes}>
                     {link.label}
-                    {underline}
                   </Link>
                 ) : (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className={classes}
-                    style={{ transitionDelay: `${(index + 1) * 50}ms` }}
-                  >
+                  <a key={link.href} href={link.href} className={classes}>
                     {link.label}
-                    {underline}
                   </a>
                 );
               })}
             </div>
 
             {/* CTA */}
-            <Button
-              size="sm"
-              className={`hidden md:flex font-medium rounded-xl px-5 transition-all duration-300 group ${isScrolled
-                  ? 'bg-blue-gradient hover:shadow-blue text-white'
-                  : 'bg-white hover:bg-white/90 text-primary'
-                }`}
-              asChild
+            <a
+              href="#contact"
+              className="hidden md:inline-flex items-center gap-2 bg-signal text-white font-plex font-semibold text-xs uppercase tracking-[0.1em] px-5 py-2.5 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_12px_28px_-10px_hsl(var(--aa-signal)/0.7)] group"
             >
-              <a href="#contact" className="flex items-center gap-2">
-                Безплатна консултация
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            </Button>
+              Безплатна консултация
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </a>
 
-            {/* Mobile menu button */}
+            {/* Mobile menu toggle */}
             <button
-              className={`md:hidden relative w-10 h-10 flex items-center justify-center rounded-xl border transition-colors duration-300 ${isScrolled
-                  ? 'text-foreground border-border hover:border-primary/30'
-                  : 'text-white border-white/30 hover:border-white/50'
-                }`}
+              className={`md:hidden relative w-10 h-10 flex items-center justify-center rounded-sm border transition-colors duration-300 ${
+                "text-ink border-ink/20"
+              }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
-              <span className={`absolute transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`}>
+              <span
+                className={`absolute transition-all duration-300 ${isMobileMenuOpen ? "opacity-0 rotate-90" : "opacity-100 rotate-0"}`}
+              >
                 <Menu className="w-5 h-5" />
               </span>
-              <span className={`absolute transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`}>
+              <span
+                className={`absolute transition-all duration-300 ${isMobileMenuOpen ? "opacity-100 rotate-0" : "opacity-0 -rotate-90"}`}
+              >
                 <X className="w-5 h-5" />
               </span>
             </button>
           </nav>
         </div>
 
-        {/* Scroll progress bar */}
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-border/20">
-          <div
-            className="h-full bg-primary transition-all duration-100"
-            style={{ width: `${scrollProgress * 100}%` }}
-          />
+        {/* Scroll progress */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-transparent">
+          <div className="h-full bg-signal transition-all duration-100" style={{ width: `${scrollProgress * 100}%` }} />
         </div>
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — full ink panel */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
       >
-        {/* Backdrop */}
-        <div
-          className="absolute inset-0 bg-white/98 backdrop-blur-xl"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
+        <div className="absolute inset-0 bg-white" onClick={() => setIsMobileMenuOpen(false)} />
+        <div className="absolute inset-0 aa-grid-paper pointer-events-none" />
 
-        {/* Menu content */}
         <div
-          className={`relative h-full flex flex-col justify-center px-8 transition-all duration-500 ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-8'
-            }`}
+          className={`relative h-full flex flex-col justify-center px-8 transition-all duration-500 ${
+            isMobileMenuOpen ? "translate-y-0" : "-translate-y-8"
+          }`}
         >
-          <nav className="space-y-2">
-            {/* Услуги with expandable sub-links */}
+          <nav className="space-y-1">
             <div>
               <button
-                className="flex items-center gap-2 py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300 w-full text-left"
+                className="flex items-center gap-3 py-4 font-heading text-2xl text-ink hover:text-signal transition-colors duration-300 w-full text-left"
                 onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
                 style={{
-                  transitionDelay: '75ms',
                   opacity: isMobileMenuOpen ? 1 : 0,
-                  transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-20px)',
-                  transition: 'all 0.4s ease-out',
+                  transform: isMobileMenuOpen ? "translateX(0)" : "translateX(-20px)",
+                  transition: "all 0.4s ease-out 75ms",
                 }}
               >
                 Услуги
-                <ChevronDown className={`w-6 h-6 transition-transform duration-300 ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  className={`w-6 h-6 transition-transform duration-300 ${isMobileServicesOpen ? "rotate-180" : ""}`}
+                />
               </button>
 
               <div
                 className={`overflow-hidden transition-all duration-400 ${
-                  isMobileServicesOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
+                  isMobileServicesOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="pl-4 pb-2 space-y-1 border-l-2 border-primary/20 ml-1">
+                <div className="pl-5 pb-2 space-y-1 border-l border-signal/40 ml-1">
                   {serviceLinks.map((link) => (
                     <Link
                       key={link.href}
                       to={link.href}
-                      className="block py-2.5 text-xl font-display text-muted-foreground hover:text-primary transition-colors duration-300"
+                      className="block py-2.5 font-plex text-lg text-ink/60 hover:text-ink transition-colors duration-300"
                       onClick={() => {
                         setIsMobileMenuOpen(false);
                         setIsMobileServicesOpen(false);
@@ -292,33 +234,22 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Other nav links */}
             {navLinks.map((link, index) => {
               const styles = {
                 transitionDelay: `${(index + 2) * 75}ms`,
                 opacity: isMobileMenuOpen ? 1 : 0,
-                transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-20px)',
-                transition: 'all 0.4s ease-out',
+                transform: isMobileMenuOpen ? "translateX(0)" : "translateX(-20px)",
+                transition: "all 0.4s ease-out",
               } as const;
+              const classes =
+                "block py-4 font-heading text-2xl text-ink hover:text-signal transition-colors duration-300";
 
               return link.href.startsWith("/") ? (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className="block py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  style={styles}
-                >
+                <Link key={link.href} to={link.href} className={classes} onClick={() => setIsMobileMenuOpen(false)} style={styles}>
                   {link.label}
                 </Link>
               ) : (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="block py-4 text-3xl font-display text-foreground hover:text-primary transition-colors duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  style={styles}
-                >
+                <a key={link.href} href={link.href} className={classes} onClick={() => setIsMobileMenuOpen(false)} style={styles}>
                   {link.label}
                 </a>
               );
@@ -329,33 +260,29 @@ const Header = () => {
             className="mt-12"
             style={{
               opacity: isMobileMenuOpen ? 1 : 0,
-              transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.5s ease-out 0.3s',
+              transform: isMobileMenuOpen ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.5s ease-out 0.3s",
             }}
           >
-            <Button
-              size="lg"
-              className="w-full bg-blue-gradient hover:shadow-blue text-white font-medium rounded-xl py-6"
-              asChild
+            <a
+              href="#contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-3 w-full bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.1em] py-4 rounded-sm"
             >
-              <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
-                Безплатна консултация
-              </a>
-            </Button>
+              Безплатна консултация
+              <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
 
-          {/* Decorative element */}
           <div
             className="absolute bottom-12 left-8 right-8"
             style={{
-              opacity: isMobileMenuOpen ? 0.5 : 0,
-              transition: 'opacity 0.5s ease-out 0.4s',
+              opacity: isMobileMenuOpen ? 1 : 0,
+              transition: "opacity 0.5s ease-out 0.4s",
             }}
           >
-            <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-            <p className="text-center text-muted-foreground text-sm font-body mt-6">
-              Отговаряме до 24 часа
-            </p>
+            <div className="h-px aa-rule-ink" />
+            <p className="text-center font-plexmono text-xs text-ink/50 tracking-wider mt-6">Отговаряме до 24 часа</p>
           </div>
         </div>
       </div>

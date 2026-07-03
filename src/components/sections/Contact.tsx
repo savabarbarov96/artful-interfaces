@@ -1,24 +1,39 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Mail, Phone, ArrowRight, Sparkles, CheckCircle2, CalendarDays, Clock } from "lucide-react";
+import { Send, Mail, Phone, ArrowRight, CheckCircle2, CalendarDays, Clock } from "lucide-react";
+import { useReveal, SectionHead, Cross } from "@/components/home/primitives";
+
+const serviceOptions = ["Уебсайт", "AI интеграция", "Онлайн магазин", "Уеб приложение"];
+const timeSlots = ["09:30", "10:00", "11:30", "14:00", "16:00"];
+
+const contactInfo = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "slav@automationaid.eu",
+    href: "mailto:slav@automationaid.eu",
+  },
+  {
+    icon: Phone,
+    label: "Телефон",
+    value: "0884323999",
+    href: "tel:0884323999",
+  },
+];
+
+const inputClasses = (focused: boolean) =>
+  `w-full h-12 px-4 rounded-sm border bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none transition-all duration-300 ${
+    focused ? "border-machine shadow-[0_0_0_3px_hsl(var(--aa-teal)/0.12)]" : "border-ink/20"
+  }`;
 
 const Contact = () => {
   const { toast } = useToast();
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [contactFormData, setContactFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-  const [meetingFormData, setMeetingFormData] = useState({
-    email: "",
-    phone: "",
-  });
+  const { ref: sectionRef, inView: isVisible } = useReveal<HTMLElement>(0.08);
+  const [contactFormData, setContactFormData] = useState({ name: "", email: "", phone: "", message: "" });
+  const [meetingFormData, setMeetingFormData] = useState({ email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMeetingSubmitting, setIsMeetingSubmitting] = useState(false);
   const [isMeetingDialogOpen, setIsMeetingDialogOpen] = useState(false);
@@ -26,23 +41,6 @@ const Contact = () => {
   const [selectedService, setSelectedService] = useState("Уебсайт");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState("10:00");
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setContactFormData({ ...contactFormData, [e.target.name]: e.target.value });
@@ -71,11 +69,7 @@ const Contact = () => {
   const buildMeetingEmail = () => {
     const subject = "Заявка за среща от календар";
     const meetingDate = selectedDate
-      ? selectedDate.toLocaleDateString("bg-BG", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        })
+      ? selectedDate.toLocaleDateString("bg-BG", { day: "2-digit", month: "long", year: "numeric" })
       : "Не е избрана";
 
     const bodyLines = [
@@ -115,7 +109,6 @@ const Contact = () => {
       });
       return;
     }
-
     setIsMeetingDialogOpen(true);
   };
 
@@ -150,24 +143,6 @@ const Contact = () => {
     setIsMeetingSubmitting(false);
   };
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "slav@automationaid.eu",
-      href: "mailto:slav@automationaid.eu",
-    },
-    {
-      icon: Phone,
-      label: "Телефон",
-      value: "0884323999",
-      href: "tel:0884323999",
-    },
-  ];
-
-  const serviceOptions = ["Уебсайт", "AI интеграция", "Онлайн магазин", "Уеб приложение"];
-
-  const timeSlots = ["09:30", "10:00", "11:30", "14:00", "16:00"];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -175,398 +150,357 @@ const Contact = () => {
     <section
       ref={sectionRef}
       id="contact"
-      className="section-padding relative overflow-hidden"
-      style={{
-        background: "linear-gradient(180deg, hsl(218 44% 97%) 0%, hsl(220 32% 98%) 42%, hsl(218 44% 97%) 100%)",
-      }}
+      className={`relative py-20 md:py-28 bg-white text-ink overflow-hidden ${isVisible ? "aa-in" : ""}`}
     >
-      <div className="absolute inset-0 bg-radial-lines opacity-20" />
-      <div className="absolute inset-0 bg-diamond-pattern opacity-15" />
-      <div className="glow-orb glow-orb-copper w-[480px] h-[480px] -top-20 -right-24 opacity-[0.16]" />
-      <div className="glow-orb glow-orb-teal w-[360px] h-[360px] -bottom-16 -left-20 opacity-[0.14]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="absolute inset-0 aa-grid-paper opacity-70 pointer-events-none" aria-hidden="true" />
+      <div
+        className="absolute left-[-15%] bottom-[-30%] w-[50vw] h-[60vh] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 60% 55% at 50% 50%, hsl(var(--aa-teal) / 0.07) 0%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
 
       <div className="container relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-9 lg:mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-white/80 backdrop-blur-sm mb-4">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-label text-primary font-body tracking-[0.18em]">СТРАТЕГИЧЕСКИ СТАРТ</span>
-            </div>
-            <h2 className="text-display-lg text-foreground font-display leading-tight">
-              Нека превърнем идеята ви в{" "}
-              <span className="text-accent-italic">работещ дигитален актив</span>
-            </h2>
-            <p className="text-sm md:text-base font-body text-muted-foreground max-w-3xl mx-auto mt-4 leading-relaxed">
-              Кратка форма за запитване плюс опция да резервирате среща с един клик.
-            </p>
-          </div>
+        <div className="text-center mb-14 aa-reveal">
+          <SectionHead
+            align="center"
+            index="08"
+            label="Стратегически старт"
+            title={
+              <>
+                Нека превърнем идеята ви в <span className="text-machine-deep">работещ дигитален актив</span>
+              </>
+            }
+            lead="Разкажете ни за проекта си — отговаряме до 24 часа. Или си запазете кратка среща директно от календара."
+          />
+        </div>
 
-          <div className="grid lg:grid-cols-[1.2fr_auto_0.8fr] gap-6 lg:gap-5 items-start">
-            <div
-              className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}
-            >
-              <div className="relative rounded-[28px] border border-primary/20 bg-white p-5 md:p-6 lg:p-7 shadow-[0_30px_80px_-44px_hsl(217_91%_50%/0.55)] overflow-hidden">
-                <div className="absolute -top-24 -right-24 w-52 h-52 rounded-full bg-primary/8 blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-20 -left-16 w-44 h-44 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
-                <div className="relative z-10">
-                  <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.16em] text-primary font-body font-semibold mb-1.5">
-                        Бриф за проект
-                      </p>
-                      <h3 className="text-xl md:text-2xl text-foreground font-display leading-tight">
-                        Изпратете запитване
-                      </h3>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs md:text-sm text-foreground/80 font-body rounded-full border border-border px-3 py-1.5 bg-muted/40">
-                      <CheckCircle2 className="w-4 h-4 text-primary" />
-                      Отговор до 24 часа
-                    </div>
-                  </div>
-
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-sm font-body font-medium text-foreground">Изберете услуга</p>
-                      <div className="flex flex-wrap gap-2">
-                        {serviceOptions.map((service) => (
-                          <button
-                            key={service}
-                            type="button"
-                            onClick={() => setSelectedService(service)}
-                            className={`px-3.5 py-1.5 rounded-full text-xs md:text-sm font-body font-medium border transition-all duration-250 ${
-                              selectedService === service
-                                ? "bg-primary text-white border-primary shadow-[0_10px_22px_-14px_hsl(217_91%_50%/0.9)]"
-                                : "bg-white text-foreground border-border hover:border-primary/40"
-                            }`}
-                          >
-                            {service}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-3">
-                      <div className="space-y-1.5">
-                        <label
-                          htmlFor="name"
-                          className={`text-sm font-medium font-body transition-colors duration-300 ${focusedField === "name" ? "text-primary" : "text-foreground"}`}
-                        >
-                          Име
-                        </label>
-                          <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={contactFormData.name}
-                            onChange={handleContactChange}
-                            onFocus={() => setFocusedField("name")}
-                            onBlur={() => setFocusedField(null)}
-                          required
-                          className={`w-full h-12 px-4 rounded-xl border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all duration-300 font-body ${
-                            focusedField === "name" ? "border-primary/60 shadow-[0_0_0_3px_hsl(217_91%_50%/0.08)]" : "border-border/70"
-                          }`}
-                          placeholder="Вашето име"
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label
-                          htmlFor="email"
-                          className={`text-sm font-medium font-body transition-colors duration-300 ${focusedField === "email" ? "text-primary" : "text-foreground"}`}
-                        >
-                          Email
-                        </label>
-                          <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={contactFormData.email}
-                            onChange={handleContactChange}
-                            onFocus={() => setFocusedField("email")}
-                            onBlur={() => setFocusedField(null)}
-                          required
-                          className={`w-full h-12 px-4 rounded-xl border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all duration-300 font-body ${
-                            focusedField === "email" ? "border-primary/60 shadow-[0_0_0_3px_hsl(217_91%_50%/0.08)]" : "border-border/70"
-                          }`}
-                          placeholder="email@example.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="phone"
-                        className={`text-sm font-medium font-body transition-colors duration-300 ${focusedField === "phone" ? "text-primary" : "text-foreground"}`}
-                      >
-                        Телефон <span className="text-muted-foreground/50">(опционално)</span>
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={contactFormData.phone}
-                        onChange={handleContactChange}
-                        onFocus={() => setFocusedField("phone")}
-                        onBlur={() => setFocusedField(null)}
-                        className={`w-full h-12 px-4 rounded-xl border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all duration-300 font-body ${
-                          focusedField === "phone" ? "border-primary/60 shadow-[0_0_0_3px_hsl(217_91%_50%/0.08)]" : "border-border/70"
-                        }`}
-                        placeholder="+359 888 123 456"
-                      />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="message"
-                        className={`text-sm font-medium font-body transition-colors duration-300 ${focusedField === "message" ? "text-primary" : "text-foreground"}`}
-                      >
-                        Съобщение
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={contactFormData.message}
-                        onChange={handleContactChange}
-                        onFocus={() => setFocusedField("message")}
-                        onBlur={() => setFocusedField(null)}
-                        required
-                        rows={4}
-                        className={`w-full px-4 py-3 rounded-xl border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all duration-300 resize-none font-body ${
-                          focusedField === "message" ? "border-primary/60 shadow-[0_0_0_3px_hsl(217_91%_50%/0.08)]" : "border-border/70"
-                        }`}
-                        placeholder={`Разкажете ни за проекта ви в категория: ${selectedService}`}
-                      />
-                    </div>
-
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full bg-blue-gradient hover:shadow-[0_26px_56px_-20px_hsl(217_91%_50%/0.85)] text-white font-semibold rounded-xl py-6 text-sm md:text-base transition-all duration-300 group"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center gap-2">
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Изпращане...
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-2">
-                          Изпрати запитване
-                          <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
-                        </span>
-                      )}
-                    </Button>
-
-                    <div className="grid sm:grid-cols-2 gap-2">
-                      {contactInfo.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                          <a
-                            key={item.href}
-                            href={item.href}
-                            className="group flex items-center gap-3 rounded-xl border border-border bg-muted/25 px-3 py-2.5 hover:bg-muted/40 transition-all duration-300"
-                          >
-                            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-                              <Icon className="w-4 h-4 text-primary" />
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-body">{item.label}</p>
-                              <p className="text-xs md:text-sm text-foreground font-body font-medium truncate">{item.value}</p>
-                            </div>
-                            <ArrowRight className="w-3.5 h-3.5 ml-auto text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all duration-300" />
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </form>
+        <div className="grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-6 lg:gap-8 max-w-6xl mx-auto items-start">
+          {/* Inquiry form — paper card on ink */}
+          <div className="relative aa-reveal" style={{ transitionDelay: "120ms" }}>
+            <Cross className="absolute -top-[7px] -left-[7px] text-ink/40 z-10" />
+            <div className="bg-bone text-ink border border-ink/15 p-6 md:p-8">
+              <div className="flex flex-wrap items-start justify-between gap-3 mb-6 pb-5 border-b border-ink/10">
+                <div>
+                  <p className="aa-label text-machine-deep mb-2">Бриф за проект</p>
+                  <h3 className="font-heading text-xl md:text-2xl text-ink">Изпратете запитване</h3>
+                </div>
+                <div className="flex items-center gap-2 font-plexmono text-[11px] uppercase tracking-wider text-ink/60 border border-ink/15 px-3 py-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-machine-deep" />
+                  Отговор до 24 часа
                 </div>
               </div>
-            </div>
 
-            <div className="flex items-center justify-center lg:min-h-[640px]">
-              <div className="flex w-full items-center gap-3 lg:flex-col lg:w-auto">
-                <div className="h-px flex-1 bg-border lg:w-px lg:h-20" />
-                <span className="px-2 py-1 rounded-full border border-primary/20 bg-white text-[11px] font-semibold tracking-[0.14em] text-primary">
-                  OR
-                </span>
-                <div className="h-px flex-1 bg-border lg:w-px lg:h-20" />
-              </div>
-            </div>
-
-            <div
-              className={`w-full lg:max-w-[430px] lg:ml-auto transition-all duration-1000 delay-150 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}
-            >
-              <div className="relative rounded-[28px] border border-primary/20 bg-white p-5 md:p-6 shadow-[0_30px_80px_-44px_hsl(217_91%_50%/0.45)] overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_12%,hsl(217_91%_50%/0.09),transparent_48%),radial-gradient(circle_at_-10%_100%,hsl(173_82%_55%/0.08),transparent_44%)] pointer-events-none" />
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-4">
-                    <img
-                      src="/clients/slav-4.jpg"
-                      alt="Slav Astinov"
-                      className="w-12 h-12 rounded-xl object-cover border border-primary/20"
-                    />
-                    <div>
-                      <p className="text-foreground font-body text-sm font-semibold">Slav Astinov</p>
-                      <p className="text-muted-foreground font-body text-xs">Co-owner • Project Discovery</p>
-                    </div>
-                    <div className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[11px] text-primary">
-                      <CalendarDays className="w-3.5 h-3.5 text-primary" />
-                      Optional
-                    </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <p className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">Изберете услуга</p>
+                  <div className="flex flex-wrap gap-2">
+                    {serviceOptions.map((service) => (
+                      <button
+                        key={service}
+                        type="button"
+                        onClick={() => setSelectedService(service)}
+                        className={`px-3.5 py-1.5 rounded-sm font-plex text-xs md:text-sm font-medium border transition-all duration-250 ${
+                          selectedService === service
+                            ? "bg-ink text-paper border-ink"
+                            : "bg-white text-ink border-ink/20 hover:border-ink/50"
+                        }`}
+                      >
+                        {service}
+                      </button>
+                    ))}
                   </div>
+                </div>
 
-                  <h3 className="text-xl md:text-2xl font-display text-foreground leading-tight mb-1.5">
-                    Резервирайте кратка среща
-                  </h3>
-                  <p className="text-muted-foreground font-body text-sm leading-relaxed mb-4">
-                    Изберете дата и час, после въведете email и телефон в pop-up за потвърждение.
-                  </p>
-
-                  <div className="rounded-2xl border border-border bg-white mb-4">
-                    <Calendar
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={setSelectedDate}
-                      disabled={{ before: today }}
-                      className="mx-auto w-full"
-                      classNames={{
-                        day_selected: "bg-primary text-white hover:bg-primary",
-                        day_today: "bg-primary/10 text-primary",
-                        months: "flex flex-col w-full",
-                        month: "space-y-4 w-full",
-                        table: "w-full border-collapse",
-                        row: "flex w-full mt-2",
-                        head_row: "flex w-full",
-                        head_cell:
-                          "text-muted-foreground rounded-md w-9 lg:w-full text-center font-normal text-[0.75rem]",
-                        cell:
-                          "h-9 w-9 lg:h-10 lg:w-full text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                        nav_button:
-                          "h-7 w-7 bg-white text-foreground border-border p-0 opacity-100 hover:bg-muted",
-                        caption_label: "text-sm font-medium text-foreground",
-                        day: "h-9 w-9 lg:h-10 lg:w-full p-0 font-normal text-foreground hover:bg-muted",
-                      }}
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label htmlFor="name" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                      Име
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={contactFormData.name}
+                      onChange={handleContactChange}
+                      onFocus={() => setFocusedField("name")}
+                      onBlur={() => setFocusedField(null)}
+                      required
+                      className={inputClasses(focusedField === "name")}
+                      placeholder="Вашето име"
                     />
                   </div>
 
-                  <div className="mb-4">
-                    <p className="text-muted-foreground text-xs uppercase tracking-wider font-body mb-2.5 flex items-center gap-2">
-                      <Clock className="w-3.5 h-3.5 text-primary" />
-                      Изберете час
-                    </p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {timeSlots.map((time) => (
-                        <button
-                          key={time}
-                          type="button"
-                          onClick={() => setSelectedTime(time)}
-                          className={`px-2 py-2 rounded-lg text-xs font-body border transition-colors ${
-                            selectedTime === time
-                              ? "bg-primary text-white border-primary"
-                              : "bg-white text-foreground border-border hover:bg-muted"
-                          }`}
-                        >
-                          {time}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="space-y-1.5">
+                    <label htmlFor="email" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={contactFormData.email}
+                      onChange={handleContactChange}
+                      onFocus={() => setFocusedField("email")}
+                      onBlur={() => setFocusedField(null)}
+                      required
+                      className={inputClasses(focusedField === "email")}
+                      placeholder="email@example.com"
+                    />
                   </div>
-
-                  <Button
-                    type="button"
-                    size="lg"
-                    onClick={handleMeetingRequest}
-                    className="w-full rounded-xl py-6 bg-blue-gradient text-white hover:shadow-[0_24px_48px_-24px_hsl(217_91%_50%/0.8)] font-semibold text-sm md:text-base group"
-                  >
-                    <span className="flex items-center gap-2">
-                      Заяви среща по имейл
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                    </span>
-                  </Button>
-
-                  <p className="text-muted-foreground text-xs text-center font-body mt-3">
-                    Това е отделен канал от контактната форма и изпраща отделен имейл.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Dialog open={isMeetingDialogOpen} onOpenChange={setIsMeetingDialogOpen}>
-            <DialogContent className="sm:max-w-[460px] rounded-2xl">
-              <DialogHeader>
-                <DialogTitle>Потвърдете данни за срещата</DialogTitle>
-                <DialogDescription>
-                  Въведете email и телефон, за да се свържем с вас и потвърдим избраните дата и час.
-                </DialogDescription>
-              </DialogHeader>
-
-              <form onSubmit={handleMeetingSubmit} className="space-y-4">
-                <div className="rounded-xl border border-border bg-muted/20 px-3 py-2.5">
-                  <p className="text-xs text-muted-foreground font-body">
-                    Избрана среща:{" "}
-                    <span className="text-foreground font-medium">
-                      {selectedDate
-                        ? selectedDate.toLocaleDateString("bg-BG", {
-                            day: "2-digit",
-                            month: "long",
-                            year: "numeric",
-                          })
-                        : "няма дата"}
-                    </span>{" "}
-                    • <span className="text-foreground font-medium">{selectedTime}</span>
-                  </p>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="meeting-email" className="text-sm font-medium font-body text-foreground">
-                    Email
+                  <label htmlFor="phone" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                    Телефон <span className="text-ink/35 normal-case">(опционално)</span>
                   </label>
                   <input
-                    id="meeting-email"
-                    name="email"
-                    type="email"
-                    required
-                    value={meetingFormData.email}
-                    onChange={handleMeetingFieldChange}
-                    className="w-full h-12 px-4 rounded-xl border border-border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10"
-                    placeholder="email@example.com"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="meeting-phone" className="text-sm font-medium font-body text-foreground">
-                    Телефон
-                  </label>
-                  <input
-                    id="meeting-phone"
-                    name="phone"
                     type="tel"
-                    required
-                    value={meetingFormData.phone}
-                    onChange={handleMeetingFieldChange}
-                    className="w-full h-12 px-4 rounded-xl border border-border bg-white text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-4 focus:ring-primary/10"
+                    id="phone"
+                    name="phone"
+                    value={contactFormData.phone}
+                    onChange={handleContactChange}
+                    onFocus={() => setFocusedField("phone")}
+                    onBlur={() => setFocusedField(null)}
+                    className={inputClasses(focusedField === "phone")}
                     placeholder="+359 888 123 456"
                   />
                 </div>
 
-                <DialogFooter>
-                  <Button type="button" variant="outline" onClick={() => setIsMeetingDialogOpen(false)}>
-                    Отказ
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={isMeetingSubmitting}
-                    className="bg-blue-gradient text-white hover:shadow-[0_24px_48px_-24px_hsl(217_91%_50%/0.8)]"
-                  >
-                    {isMeetingSubmitting ? "Изпращане..." : "Изпрати заявка"}
-                  </Button>
-                </DialogFooter>
+                <div className="space-y-1.5">
+                  <label htmlFor="message" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                    Съобщение
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={contactFormData.message}
+                    onChange={handleContactChange}
+                    onFocus={() => setFocusedField("message")}
+                    onBlur={() => setFocusedField(null)}
+                    required
+                    rows={4}
+                    className={`w-full px-4 py-3 rounded-sm border bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none transition-all duration-300 resize-none ${
+                      focusedField === "message"
+                        ? "border-machine shadow-[0_0_0_3px_hsl(var(--aa-teal)/0.12)]"
+                        : "border-ink/20"
+                    }`}
+                    placeholder={`Разкажете ни за проекта ви в категория: ${selectedService}`}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="group flex items-center justify-center gap-3 w-full bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] py-4 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_16px_36px_-12px_hsl(var(--aa-signal)/0.6)] disabled:opacity-70"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Изпращане...
+                    </>
+                  ) : (
+                    <>
+                      Изпрати запитване
+                      <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+                    </>
+                  )}
+                </button>
+
+                <div className="grid sm:grid-cols-2 gap-2 pt-1">
+                  {contactInfo.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        className="group flex items-center gap-3 rounded-sm border border-ink/15 bg-white px-3 py-2.5 hover:border-ink/40 transition-all duration-300"
+                      >
+                        <span className="w-8 h-8 rounded-sm bg-ink flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-3.5 h-3.5 text-paper" />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block font-plexmono text-[10px] uppercase tracking-wider text-ink/45">
+                            {item.label}
+                          </span>
+                          <span className="block font-plex text-xs md:text-sm text-ink font-medium truncate">
+                            {item.value}
+                          </span>
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 ml-auto text-ink/35 group-hover:text-ink group-hover:translate-x-0.5 transition-all duration-300" />
+                      </a>
+                    );
+                  })}
+                </div>
               </form>
-            </DialogContent>
-          </Dialog>
+            </div>
+          </div>
+
+          {/* Meeting booking — dark card */}
+          <div className="relative aa-reveal" style={{ transitionDelay: "240ms" }}>
+            <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/40 z-10" />
+            <div className="bg-white border border-ink/15 p-6 md:p-7">
+              <div className="flex items-center gap-3 mb-5 pb-5 border-b border-ink/10">
+                <img
+                  src="/clients/slav-4.jpg"
+                  alt="Slav Astinov"
+                  className="w-12 h-12 rounded-sm object-cover border border-ink/15"
+                />
+                <div>
+                  <p className="font-plex text-sm font-semibold text-ink">Slav Astinov</p>
+                  <p className="font-plexmono text-[11px] text-ink/50 tracking-wide">Co-owner • Project Discovery</p>
+                </div>
+                <span className="ml-auto inline-flex items-center gap-1.5 border border-ink/15 px-2.5 py-1 font-plexmono text-[10px] uppercase tracking-wider text-ink/55">
+                  <CalendarDays className="w-3.5 h-3.5 text-signal" />
+                  Optional
+                </span>
+              </div>
+
+              <h3 className="font-heading text-lg md:text-xl text-ink mb-2">Резервирайте кратка среща</h3>
+              <p className="font-plex text-sm text-ink/60 leading-relaxed mb-5">
+                Изберете дата и час, после въведете email и телефон в pop-up за потвърждение.
+              </p>
+
+              <div className="rounded-sm border border-ink/15 bg-white mb-5">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  disabled={{ before: today }}
+                  className="mx-auto w-full text-ink"
+                  classNames={{
+                    day_selected: "bg-signal text-white hover:bg-signal focus:bg-signal",
+                    day_today: "bg-signal/10 text-signal",
+                    months: "flex flex-col w-full",
+                    month: "space-y-4 w-full",
+                    table: "w-full border-collapse",
+                    row: "flex w-full mt-2",
+                    head_row: "flex w-full",
+                    head_cell: "text-ink/40 rounded-sm w-9 lg:w-full text-center font-normal text-[0.7rem] font-plexmono uppercase",
+                    cell: "h-9 w-9 lg:h-10 lg:w-full text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+                    nav_button: "h-7 w-7 bg-transparent text-ink/70 border border-ink/15 p-0 opacity-100 hover:bg-bone hover:text-ink",
+                    caption_label: "text-sm font-medium text-ink font-plex",
+                    day: "h-9 w-9 lg:h-10 lg:w-full p-0 font-normal text-ink/85 hover:bg-bone rounded-sm",
+                    day_disabled: "text-ink/20 hover:bg-transparent",
+                    day_outside: "text-ink/25",
+                  }}
+                />
+              </div>
+
+              <div className="mb-5">
+                <p className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2.5 flex items-center gap-2">
+                  <Clock className="w-3.5 h-3.5 text-signal" />
+                  Изберете час
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {timeSlots.map((time) => (
+                    <button
+                      key={time}
+                      type="button"
+                      onClick={() => setSelectedTime(time)}
+                      className={`px-2 py-2 rounded-sm font-plexmono text-xs border transition-colors ${
+                        selectedTime === time
+                          ? "bg-signal text-white border-signal"
+                          : "bg-white text-ink/70 border-ink/20 hover:border-ink/50"
+                      }`}
+                    >
+                      {time}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleMeetingRequest}
+                className="group flex items-center justify-center gap-3 w-full bg-ink text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] py-4 rounded-sm transition-all duration-300 hover:bg-ink-soft"
+              >
+                Заяви среща по имейл
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+
+              <p className="font-plexmono text-[10px] text-ink/40 text-center tracking-wide mt-3">
+                Това е отделен канал от контактната форма и изпраща отделен имейл.
+              </p>
+            </div>
+          </div>
         </div>
+
+        <Dialog open={isMeetingDialogOpen} onOpenChange={setIsMeetingDialogOpen}>
+          <DialogContent className="sm:max-w-[460px] rounded-sm bg-bone border-ink/20">
+            <DialogHeader>
+              <DialogTitle className="font-heading text-ink">Потвърдете данни за срещата</DialogTitle>
+              <DialogDescription className="font-plex">
+                Въведете email и телефон, за да се свържем с вас и потвърдим избраните дата и час.
+              </DialogDescription>
+            </DialogHeader>
+
+            <form onSubmit={handleMeetingSubmit} className="space-y-4">
+              <div className="rounded-sm border border-ink/15 bg-white px-3 py-2.5">
+                <p className="font-plexmono text-xs text-ink/60">
+                  Избрана среща:{" "}
+                  <span className="text-ink font-medium">
+                    {selectedDate
+                      ? selectedDate.toLocaleDateString("bg-BG", { day: "2-digit", month: "long", year: "numeric" })
+                      : "няма дата"}
+                  </span>{" "}
+                  • <span className="text-ink font-medium">{selectedTime}</span>
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <label htmlFor="meeting-email" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                  Email
+                </label>
+                <input
+                  id="meeting-email"
+                  name="email"
+                  type="email"
+                  required
+                  value={meetingFormData.email}
+                  onChange={handleMeetingFieldChange}
+                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none focus:border-machine"
+                  placeholder="email@example.com"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label htmlFor="meeting-phone" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/60">
+                  Телефон
+                </label>
+                <input
+                  id="meeting-phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={meetingFormData.phone}
+                  onChange={handleMeetingFieldChange}
+                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/35 focus:outline-none focus:border-machine"
+                  placeholder="+359 888 123 456"
+                />
+              </div>
+
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-sm border-ink/25 text-ink"
+                  onClick={() => setIsMeetingDialogOpen(false)}
+                >
+                  Отказ
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isMeetingSubmitting}
+                  className="rounded-sm bg-signal text-white hover:bg-signal hover:brightness-110"
+                >
+                  {isMeetingSubmitting ? "Изпращане..." : "Изпрати заявка"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );

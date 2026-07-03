@@ -52,10 +52,10 @@ const organizationSchema = {
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <SEOHead
-        title="Automation Aid — Уебсайтове, AI и автоматизация"
-        description="Създаваме уебсайтове, AI интеграции и автоматизации, които ускоряват бизнеса ви. Дизайн, разработка, SEO и поддръжка на едно място."
+        title="Automation Aid — Изработка на уебсайт, AI интеграции и автоматизация"
+        description="Изработка на уебсайт, AI интеграции и автоматизации за българския бизнес. Дизайн, разработка, хостинг, SEO и поддръжка в един месечен план — от 99 €/месец, без начална инвестиция."
         canonical="https://automationaid.bg/"
         structuredData={organizationSchema}
       />

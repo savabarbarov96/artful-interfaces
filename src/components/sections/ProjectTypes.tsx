@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Maximize2, Play, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Maximize2, Play } from "lucide-react";
+import { useReveal, SectionHead, Cross } from "@/components/home/primitives";
 
 interface ProjectType {
   id: number;
@@ -61,102 +61,50 @@ const projectTypes: ProjectType[] = [
   },
 ];
 
+const showcaseLabel: Record<number, string> = {
+  1: "Уебсайт по ваша визия",
+  2: "Магазин по ваша визия",
+  3: "Корпоративен сайт по ваша визия",
+  4: "Уеб приложение по ваша визия",
+};
+
+const interstitialCopy: Record<number, string> = {
+  1: "Вижте как изглежда един реален сайт за услуги с внимание към детайла, удобството и професионалното представяне.",
+  2: "Вижте как изглежда една реална e-commerce реализация с внимание към детайла, удобството и усещането за премиум бранд.",
+  3: "Вижте как изглежда един корпоративен сайт с ясно послание, доверие и силно бизнес присъствие.",
+  4: "Вижте как изглежда уеб приложение с модерна визия, ясни потоци и фокус върху ефективността.",
+};
+
 const ProjectTypes = () => {
-  const [activeProject, setActiveProject] = useState<ProjectType>(projectTypes[1]); // Start with video project
+  const [activeProject, setActiveProject] = useState<ProjectType>(projectTypes[0]);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const { ref: sectionRef, inView: isVisible } = useReveal<HTMLElement>(0.1);
 
-  const interstitialCopy: Record<number, string> = {
-    1: "Вижте как изглежда един реален сайт за услуги с внимание към детайла, удобството и професионалното представяне.",
-    2: "Вижте как изглежда една реална e-commerce реализация с внимание към детайла, удобството и усещането за премиум бранд.",
-    3: "Вижте как изглежда един корпоративен сайт с ясно послание, доверие и силно бизнес присъствие.",
-    4: "Вижте как изглежда уеб приложение с модерна визия, ясни потоци и фокус върху ефективността.",
-  };
-
-  const showcaseLabel: Record<number, string> = {
-    1: "Уебсайт по ваша визия",
-    2: "Магазин по ваша визия",
-    3: "Корпоративен сайт по ваша визия",
-    4: "Уеб приложение по ваша визия",
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          // Auto-play video when section becomes visible
-          if (activeProject.mediaType === "video" && videoRef.current) {
-            videoRef.current.play().catch(() => {
-              // Autoplay failed, user needs to interact
-              setIsPlaying(false);
-            });
-          }
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [activeProject.mediaType]);
-
-  // Auto-play video when switching between project types
+  // Auto-play once visible and on project switch
   useEffect(() => {
     if (isVisible && activeProject.mediaType === "video" && videoRef.current) {
-      // Small delay to allow video source to load after transition
       const timer = setTimeout(() => {
-        videoRef.current?.play().catch(() => {
-          setIsPlaying(false);
-        });
+        videoRef.current?.play().catch(() => setIsPlaying(false));
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [activeProject.id, isVisible]);
+  }, [activeProject.id, activeProject.mediaType, isVisible]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const progress = Math.max(0, Math.min(1,
-          (window.innerHeight - rect.top) / (window.innerHeight + rect.height)
-        ));
-        setScrollProgress(progress);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
-    };
+    const handleFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("webkitfullscreenchange", handleFullscreenChange as EventListener);
     document.addEventListener("msfullscreenchange", handleFullscreenChange as EventListener);
 
     const video = videoRef.current as (HTMLVideoElement & {
-      addEventListener: (
-        type: "webkitbeginfullscreen" | "webkitendfullscreen",
-        listener: () => void
-      ) => void;
-      removeEventListener: (
-        type: "webkitbeginfullscreen" | "webkitendfullscreen",
-        listener: () => void
-      ) => void;
+      addEventListener: (type: "webkitbeginfullscreen" | "webkitendfullscreen", listener: () => void) => void;
+      removeEventListener: (type: "webkitbeginfullscreen" | "webkitendfullscreen", listener: () => void) => void;
     }) | null;
 
     const handleWebkitBegin = () => setIsFullscreen(true);
@@ -183,7 +131,7 @@ const ProjectTypes = () => {
     setIsTransitioning(true);
     setActiveProject(project);
     setVideoLoaded(false);
-    setTimeout(() => setIsTransitioning(false), 600);
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
   const toggleVideoPlayback = () => {
@@ -234,370 +182,216 @@ const ProjectTypes = () => {
   return (
     <section
       ref={sectionRef}
-      className="section-padding relative overflow-hidden"
-      style={{
-        background: 'linear-gradient(180deg, hsl(220 30% 98%) 0%, hsl(217 91% 96%) 30%, hsl(220 30% 96%) 70%, hsl(220 30% 98%) 100%)'
-      }}
+      id="work"
+      className={`relative py-20 md:py-28 bg-paper-deep overflow-hidden ${isVisible ? "aa-in" : ""}`}
     >
-      {/* Cinematic background effects */}
-      <div className="absolute inset-0 bg-radial-lines opacity-20" />
-
-      {/* Dynamic gradient overlay */}
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          background: `radial-gradient(ellipse 70% 60% at ${50 + scrollProgress * 10}% 50%, hsl(217 91% 50% / 0.08) 0%, transparent 70%)`,
-        }}
-      />
-
-      {/* Floating orbs */}
-      <div
-        className="glow-orb glow-orb-copper w-[500px] h-[500px] -top-32 -right-48 opacity-20"
-        style={{
-          transform: `translate(${scrollProgress * -40}px, ${scrollProgress * 30}px) scale(${1 + scrollProgress * 0.1})`,
-          transition: 'transform 0.3s ease-out'
-        }}
-      />
-      <div
-        className="glow-orb glow-orb-teal w-[400px] h-[400px] -bottom-32 -left-48 opacity-15"
-        style={{
-          transform: `translate(${scrollProgress * 35}px, ${scrollProgress * -25}px)`,
-          transition: 'transform 0.3s ease-out'
-        }}
-      />
-
-      {/* Top and bottom borders with shimmer */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px aa-rule-ink" aria-hidden="true" />
 
       <div className="container relative z-10">
-        {/* Section header - cinematic reveal */}
-        <div
-          className={`text-center mb-20 transition-all duration-1200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}`}
-        >
-          <div
-            className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-primary/20 mb-8 shadow-subtle"
-            style={{
-              boxShadow:
-                "0 18px 36px rgba(15, 23, 42, 0.18), 0 3px 10px rgba(15, 23, 42, 0.12)",
-            }}
-          >
-            <Sparkles className="w-4 h-4 text-primary animate-pulse-glow" />
-            <span className="text-label text-primary font-body font-semibold tracking-[0.25em]">
-              Нашите решения
-            </span>
-          </div>
-
-          <h2 className="text-display-lg text-foreground font-display max-w-3xl mx-auto mb-6">
-            Какъв тип проект{" "}
-            <span className="text-gradient-blue italic">търсите?</span>
-          </h2>
-
-          <p className="text-lg text-muted-foreground font-body max-w-2xl mx-auto leading-relaxed">
-            От модерни онлайн магазини до корпоративни решения - създаваме уебсайтове,
-            които превръщат посетители в клиенти
-          </p>
+        <div className="aa-reveal">
+          <SectionHead
+            index="02"
+            label="Нашите решения"
+            title={
+              <>
+                Какъв тип проект <span className="text-machine-deep">търсите?</span>
+              </>
+            }
+            lead="От модерни онлайн магазини до корпоративни решения — създаваме уебсайтове, които превръщат посетители в клиенти."
+          />
         </div>
 
-        {/* Navigation chips - floating style */}
-        <div
-          className={`flex flex-wrap justify-center gap-4 mb-16 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          {projectTypes.map((project, index) => (
-            <button
-              key={project.id}
-              onClick={() => handleProjectChange(project)}
-              className={`group relative px-8 py-4 rounded-2xl font-body font-semibold text-sm transition-all duration-400 hover:scale-105 ${
-                activeProject.id === project.id
-                  ? "bg-blue-gradient text-white shadow-copper scale-105"
-                  : "bg-white/90 backdrop-blur-sm border-2 border-border text-foreground hover:border-primary/50 hover:shadow-md"
-              }`}
-              style={{
-                transitionDelay: `${index * 60}ms`,
-                transform: activeProject.id === project.id ? 'scale(1.05) translateY(-2px)' : 'scale(1) translateY(0)'
-              }}
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                {activeProject.id === project.id && (
-                  <Play className="w-3.5 h-3.5 fill-current animate-pulse" />
-                )}
-                {project.title}
-              </span>
-
-              {/* Hover glow effect */}
-              {activeProject.id !== project.id && (
-                <div className="absolute inset-0 rounded-2xl bg-blue-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-400" />
-              )}
-            </button>
-          ))}
-        </div>
-
-        {/* Stacked layout: Text on top, media centerpiece below */}
-        <div className="max-w-6xl mx-auto">
-          <div
-            className={`relative rounded-[2.25rem] bg-white/70 backdrop-blur-xl border border-primary/10 shadow-subtle p-8 md:p-10 lg:p-12 transition-all duration-1000 delay-300 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-          >
-            <div
-              key={activeProject.id}
-              className={`transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-8 scale-95' : 'opacity-100 translate-y-0 scale-100'}`}
-            >
-              {/* Category badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs font-body font-bold text-primary uppercase tracking-wider">
-                  {activeProject.category}
-                </span>
-              </div>
-
-              <div className="grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-start">
-                <div>
-                  {/* Title with dramatic sizing */}
-                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-foreground mb-6 leading-tight">
-                    {activeProject.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-xl md:text-2xl text-foreground leading-relaxed font-display font-medium italic">
-                    {activeProject.description}
-                  </p>
-
-                  {/* SEO Description - hidden, for crawlers */}
-                  <div className="sr-only" aria-hidden="true">
-                    {activeProject.seoDescription}
-                  </div>
-                </div>
-
-                <div className="lg:pt-2">
-                  {/* Features list */}
-                  <div className="space-y-4 mb-8">
-                    {activeProject.features.map((feature, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-4 group"
-                        style={{
-                          transitionDelay: `${index * 80}ms`,
-                          opacity: isTransitioning ? 0 : 1,
-                          transform: isTransitioning ? 'translateX(-20px)' : 'translateX(0)',
-                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                        }}
-                      >
-                        <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                          <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                        </div>
-                        <span className="text-foreground font-body text-base font-medium">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Tech stack */}
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {activeProject.tech.map((tech, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1.5 text-xs font-body font-semibold bg-secondary/10 text-secondary rounded-lg border border-secondary/20"
-                        style={{
-                          transitionDelay: `${index * 60}ms`,
-                          opacity: isTransitioning ? 0 : 1,
-                          transition: 'opacity 0.3s ease-out',
-                        }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA Button */}
-                  <Button
-                    className="bg-blue-gradient hover:shadow-copper text-white font-bold rounded-2xl px-10 py-7 text-base transition-all duration-400 group hover:scale-105 shadow-md"
-                    asChild
+        <div className="grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-10 lg:gap-16 mt-14 items-start">
+          {/* Left — numbered selector rail */}
+          <div className="aa-reveal" style={{ transitionDelay: "120ms" }}>
+            <div role="tablist" aria-label="Типове проекти" className="border-t border-ink/15">
+              {projectTypes.map((project, i) => {
+                const isActive = activeProject.id === project.id;
+                return (
+                  <button
+                    key={project.id}
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => handleProjectChange(project)}
+                    className={`group w-full flex items-baseline gap-4 md:gap-5 text-left px-1 py-5 border-b border-ink/15 transition-colors duration-300 ${
+                      isActive ? "" : "hover:bg-ink/[0.03]"
+                    }`}
                   >
-                    <a href="#contact" className="flex items-center gap-3">
-                      Поискайте оферта
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Interstitial text */}
-          <div
-            className={`text-center max-w-3xl mx-auto mt-10 lg:mt-12 transition-all duration-1000 delay-300 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
-          >
-            <p className="text-base md:text-lg text-foreground font-body font-medium leading-relaxed">
-              {interstitialCopy[activeProject.id] ?? ""}
-            </p>
-          </div>
-
-          {/* Media centerpiece */}
-          <div
-            className={`relative mt-12 lg:mt-16 transition-all ease-out ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-            }`}
-            style={{
-              transitionDuration: '1.4s',
-              transitionDelay: '0.5s',
-            }}
-          >
-            <div className="text-center mb-6 md:mb-8">
-              <span
-                className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-primary/20 shadow-subtle"
-                style={{
-                  boxShadow:
-                    "0 18px 36px rgba(15, 23, 42, 0.18), 0 3px 10px rgba(15, 23, 42, 0.12)",
-                }}
-              >
-                <span className="text-sm font-body font-semibold tracking-[0.18em] text-primary uppercase">
-                  {showcaseLabel[activeProject.id] ?? "Проект по ваша визия"}
-                </span>
-              </span>
-            </div>
-            <div className="relative flex items-center justify-center">
-              {/* Background decorative element */}
-              <div
-                className="absolute inset-0 -m-10 rounded-[2.5rem] -z-10"
-                style={{
-                  background: 'radial-gradient(ellipse 75% 65% at 50% 50%, hsl(217 91% 50% / 0.08) 0%, transparent 72%)',
-                }}
-              />
-              <div
-                className="absolute -inset-8 rounded-[2.5rem] -z-10 opacity-70"
-                style={{
-                  background: 'conic-gradient(from 160deg at 50% 50%, hsl(220 30% 96%) 0deg, hsl(217 50% 94%) 120deg, hsl(220 30% 96%) 240deg, hsl(217 50% 94%) 360deg)',
-                }}
-              />
-
-              <div className="relative w-full max-w-5xl xl:max-w-6xl mx-auto">
-                {/* Cinematic frame */}
-                <div
-                  className="relative rounded-[2.5rem] overflow-hidden"
-                  style={{
-                    padding: '1px',
-                    background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.08) 100%)',
-                  }}
-                >
-                  <div className="relative rounded-[2.4rem] overflow-hidden bg-black/90">
-                    {/* Media container */}
-                    <div
-                      key={activeProject.id}
-                      className={`relative transition-all duration-700 ease-out ${
-                        isTransitioning
-                          ? 'opacity-0 translate-y-8'
-                          : 'opacity-100 translate-y-0'
+                    <span
+                      className={`font-plexmono text-xs transition-colors duration-300 ${
+                        isActive ? "text-signal" : "text-ink/35 group-hover:text-ink/60"
                       }`}
                     >
-                      {activeProject.mediaType === "video" ? (
-                        <div
-                          ref={fullscreenRef}
-                          className={`relative group ${
-                            isFullscreen
-                              ? "w-screen h-screen bg-black flex items-center justify-center"
-                              : "aspect-[16/9]"
-                          }`}
-                        >
-                          <video
-                            ref={videoRef}
-                            className={`w-full h-full block ${
-                              isFullscreen ? "object-contain bg-black" : "object-cover"
-                            }`}
-                            loop
-                            muted
-                            playsInline
-                            preload={isVisible ? "metadata" : "none"}
-                            onLoadedData={() => setVideoLoaded(true)}
-                            onPlay={() => setIsPlaying(true)}
-                            onPause={() => setIsPlaying(false)}
-                            aria-label={`${activeProject.title} - демонстрация на проект`}
-                          >
-                            {activeProject.id === 1 && (
-                              <source
-                                src="/clients/wetransportit_mobile.mp4"
-                                media="(max-width: 768px)"
-                                type="video/mp4"
-                              />
-                            )}
-                            {activeProject.id === 2 && (
-                              <source
-                                src="/clients/ecommerce_raw.mp4"
-                                media="(max-width: 768px)"
-                                type="video/mp4"
-                              />
-                            )}
-                            <source src={activeProject.mediaUrl} type="video/mp4" />
-                          </video>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className={`font-heading text-xl md:text-[1.65rem] leading-none transition-colors duration-300 ${
+                        isActive ? "text-ink" : "text-ink/35 group-hover:text-ink/70"
+                      }`}
+                    >
+                      {project.title}
+                    </span>
+                    <ArrowRight
+                      className={`w-4 h-4 ml-auto self-center transition-all duration-300 ${
+                        isActive ? "text-signal opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
 
-                          {/* Loading state */}
-                          {!videoLoaded && (
-                            <div className="absolute inset-0 bg-gray-900 flex items-center justify-center">
-                              <div className="w-9 h-9 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
-                            </div>
-                          )}
+            {/* Active project detail */}
+            <div
+              key={activeProject.id}
+              className={`mt-8 transition-all duration-500 ${
+                isTransitioning ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
+              }`}
+            >
+              <span className="aa-label text-machine-deep">{activeProject.category}</span>
+              <p className="font-plex text-base md:text-lg text-ink/75 leading-relaxed mt-3 mb-6">
+                {activeProject.description}
+              </p>
 
-                          {/* Fullscreen control */}
-                          <button
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              requestFullscreen();
-                            }}
-                            className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform duration-200 hover:scale-110"
-                            aria-label="Цял екран"
-                          >
-                            <Maximize2 className="w-4 h-4 text-gray-800" />
-                          </button>
+              <ul className="grid grid-cols-2 gap-x-6 gap-y-2.5 mb-6">
+                {activeProject.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2.5">
+                    <span className="w-1 h-1 bg-signal flex-shrink-0" />
+                    <span className="font-plex text-sm text-ink/80">{feature}</span>
+                  </li>
+                ))}
+              </ul>
 
-                          {/* Subtle play button on hover */}
-                          <button
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              toggleVideoPlayback();
-                            }}
-                            className="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-                            aria-label={isPlaying ? "Пауза" : "Възпроизвеждане"}
-                          >
-                            <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl hover:scale-110 transition-transform duration-200">
-                              {isPlaying ? (
-                                <div className="flex gap-1">
-                                  <div className="w-1.5 h-6 bg-gray-800 rounded-full" />
-                                  <div className="w-1.5 h-6 bg-gray-800 rounded-full" />
-                                </div>
-                              ) : (
-                                <Play className="w-6 h-6 text-gray-800 ml-0.5 fill-current" />
-                              )}
-                            </div>
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="aspect-[16/9]">
-                          <img
-                            src={activeProject.mediaUrl}
-                            alt={`${activeProject.title} - ${activeProject.seoDescription}`}
-                            loading="lazy"
-                            className="w-full h-full object-cover block"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {activeProject.tech.map((tech) => (
+                  <span
+                    key={tech}
+                    className="font-plexmono text-[11px] uppercase tracking-wider px-2.5 py-1 border border-ink/20 text-ink/60"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
 
-                {/* Soft shadow underneath */}
-                <div
-                  className="absolute -bottom-4 left-10 right-10 h-8 rounded-full blur-2xl -z-10"
-                  style={{ background: 'rgba(0,0,0,0.18)' }}
-                />
-                <div
-                  className="absolute -bottom-10 left-16 right-16 h-14 rounded-full blur-3xl -z-20"
-                  style={{ background: 'rgba(37, 99, 235, 0.18)' }}
-                />
+              <a
+                href="#contact"
+                className="group inline-flex items-center gap-3 bg-ink text-paper font-plex font-semibold text-sm uppercase tracking-[0.08em] px-7 py-3.5 rounded-sm transition-all duration-300 hover:bg-ink-soft"
+              >
+                Поискайте оферта
+                <ArrowRight className="w-4 h-4 text-signal group-hover:translate-x-1 transition-transform" />
+              </a>
+
+              {/* SEO copy for crawlers */}
+              <div className="sr-only" aria-hidden="true">
+                {activeProject.seoDescription}
               </div>
             </div>
+          </div>
+
+          {/* Right — media in technical frame */}
+          <div className="aa-reveal lg:sticky lg:top-28" style={{ transitionDelay: "220ms" }}>
+            <div className="relative">
+              <Cross className="absolute -top-[7px] -left-[7px] text-ink/40 z-10" />
+              <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/40 z-10" />
+
+              <div className="border border-ink/15 bg-white shadow-[0_24px_60px_-28px_rgba(15,23,42,0.3)]">
+                {/* Caption bar */}
+                <div className="flex items-center justify-between px-4 py-2.5 border-b border-ink/10 bg-bone">
+                  <span className="font-plexmono text-[10px] uppercase tracking-[0.2em] text-ink/55">
+                    {showcaseLabel[activeProject.id] ?? "Проект по ваша визия"}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-signal animate-pulse" />
+                    <span className="font-plexmono text-[10px] uppercase tracking-wider text-ink/40">live demo</span>
+                  </span>
+                </div>
+
+                <div
+                  key={activeProject.id}
+                  className={`relative transition-opacity duration-500 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
+                >
+                  {activeProject.mediaType === "video" ? (
+                    <div
+                      ref={fullscreenRef}
+                      className={`relative group ${
+                        isFullscreen ? "w-screen h-screen bg-black flex items-center justify-center" : "aspect-[16/9]"
+                      }`}
+                    >
+                      <video
+                        ref={videoRef}
+                        className={`w-full h-full block ${isFullscreen ? "object-contain bg-black" : "object-cover"}`}
+                        loop
+                        muted
+                        playsInline
+                        preload={isVisible ? "metadata" : "none"}
+                        onLoadedData={() => setVideoLoaded(true)}
+                        onPlay={() => setIsPlaying(true)}
+                        onPause={() => setIsPlaying(false)}
+                        aria-label={`${activeProject.title} - демонстрация на проект`}
+                      >
+                        {activeProject.id === 1 && (
+                          <source src="/clients/wetransportit_mobile.mp4" media="(max-width: 768px)" type="video/mp4" />
+                        )}
+                        {activeProject.id === 2 && (
+                          <source src="/clients/ecommerce_raw.mp4" media="(max-width: 768px)" type="video/mp4" />
+                        )}
+                        <source src={activeProject.mediaUrl} type="video/mp4" />
+                      </video>
+
+                      {!videoLoaded && (
+                        <div className="absolute inset-0 bg-bone flex items-center justify-center">
+                          <div className="w-8 h-8 border border-ink/15 border-t-signal rounded-full animate-spin" />
+                        </div>
+                      )}
+
+                      <button
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          requestFullscreen();
+                        }}
+                        className="absolute top-3 right-3 z-20 w-9 h-9 rounded-sm bg-white/90 backdrop-blur-sm border border-ink/15 flex items-center justify-center transition-all duration-200 hover:bg-white"
+                        aria-label="Цял екран"
+                      >
+                        <Maximize2 className="w-4 h-4 text-ink" />
+                      </button>
+
+                      <button
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleVideoPlayback();
+                        }}
+                        className="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                        aria-label={isPlaying ? "Пауза" : "Възпроизвеждане"}
+                      >
+                        <span className="w-14 h-14 rounded-sm bg-white/90 backdrop-blur-sm flex items-center justify-center hover:scale-105 transition-transform duration-200">
+                          {isPlaying ? (
+                            <span className="flex gap-1">
+                              <span className="w-1.5 h-5 bg-ink" />
+                              <span className="w-1.5 h-5 bg-ink" />
+                            </span>
+                          ) : (
+                            <Play className="w-5 h-5 text-ink ml-0.5 fill-current" />
+                          )}
+                        </span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="aspect-[16/9]">
+                      <img
+                        src={activeProject.mediaUrl}
+                        alt={`${activeProject.title} - ${activeProject.seoDescription}`}
+                        loading="lazy"
+                        className="w-full h-full object-cover block"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <p className="font-plex text-sm text-ink/60 leading-relaxed mt-5 max-w-lg">
+              {interstitialCopy[activeProject.id] ?? ""}
+            </p>
           </div>
         </div>
       </div>

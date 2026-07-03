@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { Check, Sparkles, ArrowRight, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Check, ArrowRight } from "lucide-react";
+import { useReveal, SectionHead, Cross } from "@/components/home/primitives";
 
 const plans = [
   {
     badge: "Перфектен старт",
-    icon: Zap,
     title: "Стартиращ уебсайт",
-    subtitle: "НАЙ-ПОДХОДЯЩ ЗА МАЛКИ И СРЕДНИ БИЗНЕСИ",
+    subtitle: "Най-подходящ за малки и средни бизнеси",
     priceEur: "99",
     priceBgn: "193.50",
     description: "Уебсайт с висока ефективност, създаден да впечатлява, да продава и поддържа Вашия бранд с лекота:",
@@ -26,9 +24,8 @@ const plans = [
   },
   {
     badge: "Най-избиран",
-    icon: Sparkles,
     title: "Бизнес уебсайт",
-    subtitle: "ЗА РАСТЯЩИ БИЗНЕСИ И ОНЛАЙН ТЪРГОВИЯ",
+    subtitle: "За растящи бизнеси и онлайн търговия",
     priceEur: "299",
     priceBgn: "585.00",
     description: "Разширена уеб платформа, създадена за продажби, маркетинг и стабилен онлайн растеж.",
@@ -48,219 +45,128 @@ const plans = [
 ];
 
 const Pricing = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const { ref, inView } = useReveal<HTMLElement>(0.1);
 
   return (
-    <section
-      ref={sectionRef}
-      className="section-padding relative overflow-hidden bg-background"
-    >
-      {/* Background decorations */}
-      <div className="absolute inset-0 bg-mesh opacity-60" />
-
-      {/* Decorative lines */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-      {/* Floating orbs */}
-      <div className="glow-orb glow-orb-copper w-[300px] h-[300px] top-1/4 -left-32 opacity-20" />
-      <div className="glow-orb glow-orb-teal w-[400px] h-[400px] bottom-0 right-0 opacity-15" />
-
-      {/* Geometric pattern */}
-      <div className="absolute inset-0 bg-diamond-pattern opacity-30" />
+    <section ref={ref} className={`relative py-20 md:py-28 bg-paper overflow-hidden ${inView ? "aa-in" : ""}`}>
+      <div className="absolute inset-0 aa-grid-paper opacity-50 pointer-events-none" aria-hidden="true" />
 
       <div className="container relative z-10">
-        {/* Section header */}
-        <div
-          className={`text-center max-w-2xl mx-auto mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          <span className="text-label text-primary mb-4 block font-body font-medium tracking-[0.2em]">
-            Прозрачни цени, без изненади
-          </span>
-          <h2 className="text-display-lg text-foreground font-display mb-6">
-            Изберете план за{" "}
-            <span className="text-accent-italic">вашия бизнес</span>
-          </h2>
-          <p className="text-foreground text-xl md:text-2xl font-display font-medium italic">
-            Месечни планове с включено всичко необходимо за успешно онлайн присъствие.
-          </p>
+        <div className="aa-reveal">
+          <SectionHead
+            index="04"
+            label="Прозрачни цени, без изненади"
+            align="center"
+            title={
+              <>
+                Изберете план за <span className="text-machine-deep">вашия бизнес</span>
+              </>
+            }
+            lead="Дизайн, хостинг, поддръжка и SEO — в една прозрачна месечна цена. Започвате без начална инвестиция и спирате, когато пожелаете."
+          />
         </div>
 
-        {/* Pricing cards */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto mt-14 items-stretch">
           {plans.map((plan, index) => {
-            const Icon = plan.icon;
-            const isHovered = hoveredPlan === index;
-
+            const dark = plan.isPopular;
             return (
               <div
                 key={plan.title}
-                className={`relative transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}`}
-                onMouseEnter={() => setHoveredPlan(index)}
-                onMouseLeave={() => setHoveredPlan(null)}
-                style={{
-                  transitionDelay: `${(index + 1) * 150}ms`,
-                }}
+                className={`relative flex flex-col aa-reveal bg-white text-ink border ${
+                  dark ? "border-signal shadow-[0_24px_60px_-24px_hsl(var(--aa-signal)/0.35)]" : "border-ink/15"
+                }`}
+                style={{ transitionDelay: `${150 + index * 120}ms` }}
               >
-                {/* Popular badge */}
-                {plan.isPopular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                    <div className="px-4 py-1.5 bg-blue-gradient text-white text-xs font-bold font-body rounded-full shadow-blue flex items-center gap-2">
-                      <Sparkles className="w-3 h-3" />
-                      <span>{plan.badge}</span>
-                    </div>
-                  </div>
+                {dark && (
+                  <>
+                    <span className="absolute top-0 left-0 right-0 h-1 bg-signal" />
+                    <Cross className="absolute -top-[7px] -left-[7px] text-ink/40" />
+                    <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/40" />
+                  </>
                 )}
 
-                {/* Card */}
-                <div
-                  className={`relative h-full rounded-2xl p-5 md:p-6 lg:p-7 transition-all duration-500 overflow-hidden ${plan.isPopular
-                      ? 'bg-white border-2 border-primary shadow-lg'
-                      : 'bg-white border border-border shadow-sm'
-                    } ${isHovered ? 'shadow-xl scale-[1.02]' : ''}`}
-                >
-                  {/* Animated glow on hover */}
-                  <div
-                    className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl transition-all duration-700 ${isHovered ? 'opacity-40' : 'opacity-0'
-                      }`}
-                    style={{
-                      background: plan.isPopular
-                        ? 'hsl(217 91% 50%)'
-                        : 'hsl(173 80% 40%)'
-                    }}
-                  />
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    {/* Top badge / Icon */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium font-body border ${plan.isPopular
-                            ? 'border-primary/30 bg-primary/10 text-primary'
-                            : 'border-border bg-muted text-muted-foreground'
-                          }`}
-                      >
-                        <Icon className="w-3.5 h-3.5" />
-                        {!plan.isPopular && plan.badge}
-                      </div>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-xl md:text-2xl font-display text-foreground mb-2">
-                      {plan.title}
-                    </h3>
-
-                    {/* Subtitle badge */}
-                    <div
-                      className={`inline-block px-3 py-1.5 rounded-lg text-xs font-medium font-body mb-5 ${plan.isPopular
-                          ? 'bg-secondary/20 text-secondary'
-                          : 'bg-primary/10 text-primary/80'
-                        }`}
-                    >
-                      {plan.subtitle}
-                    </div>
-
-                    {/* Pricing */}
-                    <div className="mb-1">
-                      <span className="text-muted-foreground text-base font-body">от </span>
-                      <span className="text-4xl md:text-5xl font-display font-medium text-foreground">
-                        {plan.priceEur}
-                      </span>
-                      <span className="text-xl font-display text-primary">€</span>
-                      <span className="text-muted-foreground text-base font-body">/месец </span>
-                    </div>
-
-                    {/* BGN price */}
-                    <p className="text-base text-muted-foreground mb-5 font-body">
-                      ≈ <span className="font-medium text-foreground">{plan.priceBgn} лв</span>/месец{" "}
-                      <span className="text-sm opacity-60">(без ДДС)</span>
-                    </p>
-
-                    {/* Divider */}
-                    <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-5" />
-
-                    {/* Description */}
-                    <p className="text-foreground mb-5 font-display text-base md:text-lg leading-relaxed font-medium italic">
-                      {plan.description}
-                    </p>
-
-                    {/* Features */}
-                    <ul className="space-y-3 mb-6">
-                      {plan.features.map((feature) => (
-                        <li
-                          key={feature}
-                          className="flex items-start gap-3"
-                        >
-                          <div
-                            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${plan.isPopular
-                                ? 'bg-primary/20 text-primary'
-                                : 'bg-secondary/20 text-secondary'
-                              }`}
-                          >
-                            <Check className="w-3 h-3" strokeWidth={3} />
-                          </div>
-                          <span className="text-foreground font-body text-sm font-medium">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* Details link */}
-                    <a
-                      href="#contact"
-                      className="text-muted-foreground hover:text-primary underline underline-offset-4 transition-colors text-sm font-body block mb-5"
-                    >
-                      Вижте всичко, което получавате в плана си
-                    </a>
-
-                    {/* CTA Button */}
-                    <Button
-                      size="lg"
-                      className={`w-full group rounded-xl py-5 text-sm md:text-base font-medium transition-all duration-300 ${plan.isPopular
-                          ? 'bg-blue-gradient hover:shadow-blue text-white'
-                          : 'bg-muted hover:bg-muted/80 text-foreground border border-border'
-                        }`}
-                      asChild
-                    >
-                      <a href="#contact" className="flex items-center justify-center gap-2">
-                        {plan.cta}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </a>
-                    </Button>
+                {/* Plan header */}
+                <div className={"px-7 md:px-9 pt-8 pb-6 border-b border-ink/10"}>
+                  <div className="flex items-center justify-between gap-4 mb-5">
+                    <span className={`aa-label ${dark ? "text-signal" : "text-machine-deep"}`}>{plan.badge}</span>
+                    <span className={`font-plexmono text-[10px] tracking-widest ${dark ? "text-signal/70" : "text-ink/35"}`}>
+                      план {String(index + 1).padStart(2, "0")}
+                    </span>
                   </div>
+                  <h3 className="font-heading text-2xl md:text-[1.75rem] mb-2">{plan.title}</h3>
+                  <p className={`font-plexmono text-[11px] uppercase tracking-[0.14em] ${dark ? "text-ink/50" : "text-ink/50"}`}>
+                    {plan.subtitle}
+                  </p>
+                </div>
+
+                {/* Price */}
+                <div className={"px-7 md:px-9 py-6 border-b border-ink/10"}>
+                  <div className="flex items-baseline gap-2">
+                    <span className={`font-plex text-sm ${dark ? "text-ink/50" : "text-ink/50"}`}>от</span>
+                    <span className="font-heading text-5xl md:text-6xl leading-none">{plan.priceEur}</span>
+                    <span className={`font-heading text-2xl ${dark ? "text-signal" : "text-machine-deep"}`}>€</span>
+                    <span className={`font-plex text-sm ${dark ? "text-ink/50" : "text-ink/50"}`}>/месец</span>
+                  </div>
+                  <p className={`font-plexmono text-xs mt-2.5 tracking-wide text-ink/45`}>
+                    ≈ {plan.priceBgn} лв/месец (без ДДС)
+                  </p>
+                </div>
+
+                {/* Features */}
+                <div className="px-7 md:px-9 py-6 flex-1">
+                  <p className={`font-plex text-[0.95rem] leading-relaxed mb-5 text-ink/75`}>
+                    {plan.description}
+                  </p>
+                  <ul className="space-y-2.5">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <span
+                          className={`w-4 h-4 rounded-sm flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                            dark ? "bg-signal/20" : "bg-machine/15"
+                          }`}
+                        >
+                          <Check className={`w-3 h-3 ${dark ? "text-signal" : "text-machine-deep"}`} strokeWidth={3} />
+                        </span>
+                        <span className={`font-plex text-sm text-ink/85`}>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA */}
+                <div className="px-7 md:px-9 pb-8">
+                  <a
+                    href="#contact"
+                    className={`group flex items-center justify-center gap-3 w-full font-plex font-semibold text-sm uppercase tracking-[0.08em] py-4 rounded-sm transition-all duration-300 ${
+                      dark
+                        ? "bg-signal text-white hover:brightness-110 hover:shadow-[0_16px_36px_-12px_hsl(var(--aa-signal)/0.6)]"
+                        : "bg-ink text-paper hover:bg-ink-soft"
+                    }`}
+                  >
+                    {plan.cta}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                  <a
+                    href="#contact"
+                    className={`block text-center font-plexmono text-[11px] tracking-wider underline underline-offset-4 mt-4 transition-colors ${
+                      "text-ink/50 hover:text-ink"
+                    }`}
+                  >
+                    Вижте всичко, което получавате в плана си
+                  </a>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Bottom note */}
-        <div
-          className={`text-center mt-12 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          <p className="text-muted-foreground text-sm font-body">
-            Нуждаете се от нещо по-специфично? {" "}
-            <a href="#contact" className="text-primary hover:text-primary/80 underline underline-offset-4 transition-colors">
+        <div className="text-center mt-12 aa-reveal" style={{ transitionDelay: "400ms" }}>
+          <p className="font-plex text-sm text-ink/60">
+            Нуждаете се от нещо по-специфично?{" "}
+            <a href="#contact" className="text-machine-deep hover:text-ink underline underline-offset-4 transition-colors">
               Свържете се с нас
-            </a>
-            {" "} за персонална оферта.
+            </a>{" "}
+            за персонална оферта.
           </p>
         </div>
       </div>

@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { Quote, Star, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Star, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
+import { useReveal, SectionHead } from "@/components/home/primitives";
 
 interface Testimonial {
   id: number;
@@ -103,14 +104,9 @@ const testimonials: Testimonial[] = [
 ];
 
 const Testimonials = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    dragFree: false,
-    skipSnaps: false,
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: false, skipSnaps: false });
   const [currentIndex, setCurrentIndex] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const { ref: sectionRef, inView: isVisible } = useReveal<HTMLElement>(0.12);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -126,161 +122,119 @@ const Testimonials = () => {
     };
   }, [emblaApi, onSelect]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
     <section
       ref={sectionRef}
-      className="py-20 md:py-28 relative overflow-hidden"
+      className={`relative py-20 md:py-28 bg-paper-deep text-ink overflow-hidden ${isVisible ? "aa-in" : ""}`}
     >
-      {/* Premium background with grid */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted/50 via-background to-muted/30" />
-      <div className="absolute inset-0 bg-geometric-grid opacity-60" />
-
-      {/* Subtle glow orbs for depth */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px]" />
-
-      {/* Top border gradient */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      <div className="absolute inset-0 aa-grid-paper opacity-70 pointer-events-none" aria-hidden="true" />
 
       <div className="container relative z-10">
-        {/* Header */}
-        <div
-          className={`max-w-2xl mb-14 transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <span className="text-label text-primary mb-4 block font-body font-medium tracking-[0.2em]">
-            Доверие, изградено чрез резултати
-          </span>
-          <h2 className="text-display-lg text-foreground font-display mb-4">
-            Какво споделят{" "}
-            <span className="text-accent-italic">клиентите ни</span>
-          </h2>
-          <p className="text-foreground text-xl md:text-2xl font-display italic">
-            Вярваме, че най-добрият показател за нашата работа са думите на хората, с които сме изградили партньорство.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12 aa-reveal">
+          <SectionHead
+            index="03"
+            label="Доверие чрез резултати"
+            title={
+              <>
+                Какво споделят <span className="text-machine-deep">клиентите ни</span>
+              </>
+            }
+            lead="Вярваме, че най-добрият показател за нашата работа са думите на хората, с които сме изградили партньорство."
+          />
+
+          {/* Counter + arrows */}
+          <div className="flex items-center gap-6 flex-shrink-0">
+            <span className="font-plexmono text-sm text-ink/50 tracking-[0.2em]">
+              {String(currentIndex + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={scrollPrev}
+                className="w-11 h-11 rounded-sm border border-ink/25 flex items-center justify-center hover:border-signal hover:text-signal transition-colors duration-300"
+                aria-label="Предишен отзив"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={scrollNext}
+                className="w-11 h-11 rounded-sm border border-ink/25 flex items-center justify-center hover:border-signal hover:text-signal transition-colors duration-300"
+                aria-label="Следващ отзив"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Carousel */}
-        <div
-          className={`transition-all duration-1000 delay-200 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
+        <div className="aa-reveal" style={{ transitionDelay: "150ms" }}>
           <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
             <div className="flex">
               {testimonials.map((testimonial) => (
-                <div key={testimonial.id} className="flex-[0_0_100%] min-w-0 pl-0">
-                  <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-border/50">
-                    <div className="grid md:grid-cols-12 gap-0">
-                      {/* Image column */}
-                      <div className="md:col-span-5 lg:col-span-4 relative">
-                        <div className="aspect-[4/5] md:aspect-auto md:h-full relative overflow-hidden bg-muted">
+                <div key={testimonial.id} className="flex-[0_0_100%] min-w-0">
+                  <div className="grid md:grid-cols-[minmax(0,0.38fr)_minmax(0,0.62fr)] gap-8 md:gap-12 items-stretch border border-ink/15 bg-white">
+                    {/* Photo */}
+                    <div className="relative overflow-hidden aspect-[4/5] md:aspect-auto md:min-h-[420px] border-b md:border-b-0 md:border-r border-ink/10">
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        draggable={false}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
+                      {testimonial.logo ? (
+                        <div className="absolute bottom-4 left-4 w-16 h-16 rounded-sm bg-white/90 backdrop-blur-sm border border-ink/15 flex items-center justify-center p-2">
                           <img
-                            src={testimonial.image}
-                            alt={testimonial.name}
-                            className="w-full h-full object-cover"
+                            src={testimonial.logo}
+                            alt={testimonial.company}
+                            className="w-full h-full object-contain"
                             draggable={false}
                           />
-                          {/* Gradient overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent" />
-
-                          {/* Logo overlay - bottom left */}
-                          {testimonial.logo ? (
-                            <div className="absolute bottom-4 left-4 w-20 h-20 rounded-2xl bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 shadow-xl border border-white/10">
-                              <img
-                                src={testimonial.logo}
-                                alt={testimonial.company}
-                                className="w-full h-full object-contain"
-                                draggable={false}
-                              />
-                            </div>
-                          ) : testimonial.logoText ? (
-                            <div className="absolute bottom-4 left-4 w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-xl border border-white/20">
-                              <span className="text-2xl font-display font-bold text-white">
-                                {testimonial.logoText}
-                              </span>
-                            </div>
-                          ) : null}
                         </div>
+                      ) : testimonial.logoText ? (
+                        <div className="absolute bottom-4 left-4 w-16 h-16 rounded-sm bg-signal flex items-center justify-center">
+                          <span className="font-heading text-xl text-white">{testimonial.logoText}</span>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    {/* Quote */}
+                    <div className="flex flex-col justify-between p-7 md:py-10 md:pr-10 md:pl-0">
+                      <div>
+                        <div className="flex items-center justify-between gap-4 mb-6">
+                          <h3 className="aa-label text-machine-deep">{testimonial.headline}</h3>
+                          <div className="flex gap-1 flex-shrink-0">
+                            {[...Array(testimonial.rating)].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 text-signal fill-signal" />
+                            ))}
+                          </div>
+                        </div>
+
+                        <blockquote className="font-plex text-lg md:text-xl lg:text-[1.35rem] leading-relaxed text-ink/85 mb-8">
+                          „{testimonial.quote}"
+                        </blockquote>
                       </div>
 
-                      {/* Content column */}
-                      <div className="md:col-span-7 lg:col-span-8 p-8 md:p-10 lg:p-12 flex flex-col justify-between">
+                      <div className="flex flex-wrap items-end justify-between gap-4 pt-6 border-t border-ink/10">
                         <div>
-                          {/* Top row: Quote icon and rating */}
-                          <div className="flex items-center justify-between mb-6">
-                            <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                              <Quote className="w-5 h-5 text-primary fill-primary/30" />
-                            </div>
-                            <div className="flex gap-1.5">
-                              {[...Array(testimonial.rating)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className="w-5 h-5 text-accent fill-accent"
-                                />
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Headline */}
-                          <h3 className="text-base md:text-lg font-body font-bold text-primary tracking-wide mb-5">
-                            {testimonial.headline}
-                          </h3>
-
-                          {/* Quote - bigger font */}
-                          <blockquote className="text-foreground text-xl md:text-2xl lg:text-[1.65rem] leading-relaxed font-display font-normal italic mb-8">
-                            „{testimonial.quote}"
-                          </blockquote>
-
-                          {/* CTA Button - prominent centerpiece */}
-                          {testimonial.projectUrl ? (
-                            <div className="mb-8">
-                              <a
-                                href={testimonial.projectUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white rounded-xl font-body font-semibold text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5"
-                              >
-                                <span>Вижте проекта</span>
-                                <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                              </a>
-                            </div>
-                          ) : null}
+                          <h4 className="font-heading text-base md:text-lg text-ink mb-1">{testimonial.name}</h4>
+                          <p className="font-plexmono text-xs text-ink/50 tracking-wider">
+                            {testimonial.role} — {testimonial.company}
+                          </p>
                         </div>
-
-                        {/* Bottom row: Author info */}
-                        <div className="flex items-center justify-between pt-6 border-t border-border">
-                          <div>
-                            <h4 className="text-xl font-display font-semibold text-foreground mb-1">
-                              {testimonial.name}
-                            </h4>
-                            <p className="text-muted-foreground text-base font-body">
-                              {testimonial.role},{" "}
-                              <span className="text-primary font-medium">{testimonial.company}</span>
-                            </p>
-                          </div>
-                        </div>
+                        {testimonial.projectUrl ? (
+                          <a
+                            href={testimonial.projectUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group inline-flex items-center gap-2 font-plex font-semibold text-xs uppercase tracking-[0.1em] text-ink border border-ink/25 px-4 py-2.5 rounded-sm hover:border-signal hover:text-signal transition-colors duration-300"
+                          >
+                            Вижте проекта
+                            <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                          </a>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -289,46 +243,21 @@ const Testimonials = () => {
             </div>
           </div>
 
-          {/* Navigation */}
-          <div className="flex items-center justify-center gap-6 mt-8">
-            {/* Nav buttons */}
-            <button
-              onClick={scrollPrev}
-              className="w-12 h-12 rounded-full border-2 border-border bg-white flex items-center justify-center hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-300 shadow-sm"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            {/* Dots */}
-            <div className="flex gap-3">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => emblaApi?.scrollTo(i)}
-                  className={`h-2.5 rounded-full transition-all duration-500 ${
-                    i === currentIndex
-                      ? "w-10 bg-primary"
-                      : "w-2.5 bg-border hover:bg-primary/50"
-                  }`}
-                  aria-label={`Go to testimonial ${i + 1}`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={scrollNext}
-              className="w-12 h-12 rounded-full border-2 border-border bg-white flex items-center justify-center hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-300 shadow-sm"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+          {/* Dots */}
+          <div className="flex justify-center gap-2.5 mt-8">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => emblaApi?.scrollTo(i)}
+                className={`h-1 transition-all duration-500 ${
+                  i === currentIndex ? "w-10 bg-signal" : "w-4 bg-ink/20 hover:bg-ink/40"
+                }`}
+                aria-label={`Към отзив ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
-
-      {/* Bottom border gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
     </section>
   );
 };

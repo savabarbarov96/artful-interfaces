@@ -50,6 +50,20 @@ export default {
         copper: "hsl(var(--copper))",
         teal: "hsl(var(--teal))",
         navy: "hsl(var(--navy-deep))",
+        paper: {
+          DEFAULT: "hsl(var(--aa-paper))",
+          deep: "hsl(var(--aa-paper-deep))",
+        },
+        bone: "hsl(var(--aa-bone))",
+        ink: {
+          DEFAULT: "hsl(var(--aa-ink))",
+          soft: "hsl(var(--aa-ink-soft))",
+        },
+        machine: {
+          DEFAULT: "hsl(var(--aa-teal))",
+          deep: "hsl(var(--aa-teal-deep))",
+        },
+        signal: "hsl(var(--aa-signal))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -64,6 +78,9 @@ export default {
       fontFamily: {
         display: ["Space Grotesk", "sans-serif"],
         body: ["Manrope", "sans-serif"],
+        heading: ["Unbounded", "Manrope", "sans-serif"],
+        plex: ["Manrope", "IBM Plex Sans", "sans-serif"],
+        plexmono: ["IBM Plex Mono", "monospace"],
       },
       fontSize: {
         "display-hero": ["clamp(3rem, 8vw, 6rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],

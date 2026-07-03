@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 
 @tailwind base;
@@ -74,6 +75,20 @@
     --sidebar-accent-foreground: 222 47% 11%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217 91% 50%;
+
+    /* ============================================
+       Automation Aid home redesign — "Инженерно ателие"
+       Warm bone paper + deep ink, teal machine color,
+       vermilion signal reserved for conversion actions.
+       ============================================ */
+    --aa-paper: 40 25% 97%;
+    --aa-paper-deep: 40 18% 94%;
+    --aa-ink: 206 45% 8%;
+    --aa-ink-soft: 207 32% 13%;
+    --aa-teal: 186 52% 40%;
+    --aa-teal-deep: 190 45% 26%;
+    --aa-signal: 15 85% 53%;
+    --aa-bone: 40 30% 97%;
   }
 }
 
@@ -642,5 +657,141 @@
 
   .parallax-fast {
     will-change: transform;
+  }
+
+  /* ============================================
+     Automation Aid home redesign utilities
+     ============================================ */
+
+  .font-heading {
+    font-family: 'Unbounded', 'Manrope', sans-serif;
+    font-weight: 500;
+  }
+
+  .font-plex {
+    font-family: 'Manrope', 'IBM Plex Sans', sans-serif;
+  }
+
+  .font-plexmono {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* Mono technical eyebrow label */
+  .aa-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* Display headline — Unbounded, moderate weight */
+  .aa-display {
+    font-family: 'Unbounded', 'Manrope', sans-serif;
+    font-weight: 600;
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+  }
+
+  /* Blueprint grid on ink */
+  .aa-grid-ink {
+    background-image:
+      linear-gradient(to right, hsl(0 0% 100% / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(0 0% 100% / 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Blueprint grid on paper */
+  .aa-grid-paper {
+    background-image:
+      linear-gradient(to right, hsl(var(--aa-ink) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--aa-ink) / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Hairline rules */
+  .aa-rule-ink {
+    background: hsl(var(--aa-ink) / 0.14);
+  }
+
+  .aa-rule-light {
+    background: hsl(0 0% 100% / 0.14);
+  }
+
+  /* Crosshair registration mark */
+  .aa-cross {
+    position: relative;
+    width: 13px;
+    height: 13px;
+  }
+
+  .aa-cross::before,
+  .aa-cross::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+  }
+
+  .aa-cross::before {
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+
+  .aa-cross::after {
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  /* Ticker */
+  @keyframes aa-ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .aa-ticker {
+    animation: aa-ticker 36s linear infinite;
+  }
+
+  /* Gentle float for hero illustration */
+  @keyframes aa-drift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .aa-drift {
+    animation: aa-drift 9s ease-in-out infinite;
+  }
+
+  /* Dashed schematic line flow */
+  @keyframes aa-dash-flow {
+    to { stroke-dashoffset: -24; }
+  }
+
+  .aa-dash-flow {
+    animation: aa-dash-flow 1.6s linear infinite;
+  }
+
+  /* Reveal-on-scroll baseline (driven by .aa-in toggle) */
+  .aa-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .aa-in .aa-reveal,
+  .aa-reveal.aa-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aa-reveal { transition: none; opacity: 1; transform: none; }
+    .aa-ticker, .aa-drift, .aa-dash-flow { animation: none; }
   }
 }

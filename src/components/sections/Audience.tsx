@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Users, Factory, Rocket, ArrowUpRight } from "lucide-react";
+import { Users, Factory, Rocket } from "lucide-react";
+import { useReveal, SectionHead } from "@/components/home/primitives";
 
 const audiences = [
   {
@@ -7,153 +7,70 @@ const audiences = [
     number: "01",
     title: "Малки бизнеси",
     description: "Изграждаме онлайн присъствие, което генерира клиенти и растеж. Всичко от лого до пълна дигитална екосистема.",
-    gradient: "from-primary/20 to-primary/5",
-    iconBg: "bg-primary/10 border-primary/20",
-    iconColor: "text-primary",
   },
   {
     icon: Factory,
     number: "02",
     title: "Производствени фирми",
     description: "Дигитализираме процеси и оптимизираме производствените вериги с персонализирани уеб решения.",
-    gradient: "from-secondary/20 to-secondary/5",
-    iconBg: "bg-secondary/10 border-secondary/20",
-    iconColor: "text-secondary",
   },
   {
     icon: Rocket,
     number: "03",
     title: "Стартъпи",
     description: "Бързо прототипиране и MVP разработка за валидация на идеи. Готови за скалиране от първия ден.",
-    gradient: "from-accent/20 to-accent/5",
-    iconBg: "bg-accent/10 border-accent/20",
-    iconColor: "text-accent",
   },
 ];
 
 const Audience = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const { ref, inView } = useReveal<HTMLElement>(0.15);
 
   return (
-    <section
-      ref={sectionRef}
-      className="section-padding-sm relative overflow-hidden bg-background"
-    >
-      {/* Background decorations */}
-      <div className="absolute inset-0 bg-diamond-pattern opacity-20" />
-
-      {/* Top and bottom lines */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-      {/* Subtle glow */}
-      <div className="glow-orb glow-orb-copper w-[400px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10" />
+    <section ref={ref} className={`relative py-20 md:py-28 bg-paper-deep overflow-hidden ${inView ? "aa-in" : ""}`}>
+      <div className="absolute top-0 left-0 right-0 h-px aa-rule-ink" aria-hidden="true" />
 
       <div className="container relative z-10">
-        {/* Section header */}
-        <div
-          className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          <span className="text-label text-primary mb-4 block font-body font-medium tracking-[0.2em]">
-            За кого е
-          </span>
-          <h2 className="text-display-lg text-foreground font-display mb-4">
-            Работим с{" "}
-            <span className="text-accent-italic">амбициозни екипи</span>
-          </h2>
-          <p className="text-foreground text-xl md:text-2xl font-display font-medium italic">
-            Партнираме с визионери, които ценят качеството и иновациите.
-          </p>
+        <div className="aa-reveal">
+          <SectionHead
+            index="07"
+            label="За кого е"
+            title={
+              <>
+                Работим с <span className="text-machine-deep">амбициозни екипи</span>
+              </>
+            }
+            lead="Партнираме с визионери, които ценят качеството и иновациите."
+          />
         </div>
 
-        {/* Audience blocks */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-3 mt-14 border-t border-ink/15">
           {audiences.map((audience, index) => {
             const Icon = audience.icon;
-            const isHovered = hoveredCard === index;
-
             return (
               <div
                 key={audience.title}
-                className={`group relative transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}`}
-                style={{ transitionDelay: `${(index + 1) * 150}ms` }}
-                onMouseEnter={() => setHoveredCard(index)}
-                onMouseLeave={() => setHoveredCard(null)}
+                className={`group relative pt-10 pb-12 md:px-8 first:md:pl-0 last:md:pr-0 border-b md:border-b-0 border-ink/10 ${
+                  index < audiences.length - 1 ? "md:border-r md:border-ink/10" : ""
+                } aa-reveal`}
+                style={{ transitionDelay: `${150 + index * 130}ms` }}
               >
-                <div
-                  className={`relative p-10 lg:p-12 rounded-2xl transition-all duration-500 overflow-hidden bg-white ${isHovered ? 'scale-[1.02] shadow-lg' : 'shadow-sm'
-                    }`}
-                >
-                  {/* Border effect */}
-                  <div
-                    className={`absolute inset-0 rounded-2xl border transition-all duration-500 ${isHovered ? 'border-primary/30' : 'border-border'
-                      }`}
-                  />
-
-                  {/* Gradient glow on hover */}
-                  <div
-                    className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl transition-opacity duration-500 bg-gradient-to-br ${audience.gradient} ${isHovered ? 'opacity-60' : 'opacity-0'
-                      }`}
-                  />
-
-                  {/* Number watermark */}
-                  <div
-                    className={`absolute top-4 right-6 text-6xl font-display font-bold transition-all duration-500 ${isHovered ? 'text-primary/15' : 'text-border'
-                      }`}
-                  >
+                {/* Big numeral */}
+                <div className="flex items-end justify-between mb-8">
+                  <span className="font-heading text-6xl md:text-7xl leading-none text-ink/[0.12] group-hover:text-signal/25 transition-colors duration-500">
                     {audience.number}
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    {/* Icon */}
-                    <div
-                      className={`w-16 h-16 rounded-2xl ${audience.iconBg} border flex items-center justify-center mb-8 transition-all duration-500 ${isHovered ? 'scale-110 shadow-lg' : ''
-                        }`}
-                    >
-                      <Icon className={`w-7 h-7 ${audience.iconColor} transition-all duration-300`} />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-2xl md:text-3xl font-display text-foreground mb-5 flex items-center gap-2">
-                      {audience.title}
-                      <ArrowUpRight
-                        className={`w-5 h-5 text-muted-foreground transition-all duration-300 ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
-                          }`}
-                      />
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-foreground leading-relaxed font-display text-xl md:text-2xl font-medium italic">
-                      {audience.description}
-                    </p>
-                  </div>
-
-                  {/* Bottom accent line */}
-                  <div
-                    className={`absolute bottom-0 left-0 right-0 h-1 bg-blue-gradient transition-all duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'
-                      }`}
-                  />
+                  </span>
+                  <span className="w-10 h-10 rounded-sm bg-ink text-paper flex items-center justify-center transition-colors duration-300 group-hover:bg-signal">
+                    <Icon className="w-4.5 h-4.5 w-[18px] h-[18px]" />
+                  </span>
                 </div>
+
+                <h3 className="font-heading text-xl md:text-2xl text-ink mb-4">{audience.title}</h3>
+                <p className="font-plex text-[0.95rem] md:text-base text-ink/70 leading-relaxed">
+                  {audience.description}
+                </p>
+
+                {/* Accent underline on hover */}
+                <span className="absolute bottom-0 left-0 md:left-8 group-first:md:left-0 h-0.5 w-0 bg-signal transition-all duration-500 group-hover:w-16" />
               </div>
             );
           })}
