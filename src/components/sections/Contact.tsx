@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Mail, Phone, ArrowRight, CheckCircle2, CalendarDays, Clock } from "lucide-react";
+import { Send, Mail, Phone, ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 import { useReveal, SectionHead, Cross } from "@/components/home/primitives";
+import { useProjectWizard } from "@/components/wizard/ProjectWizard";
 
 const serviceOptions = ["Уебсайт", "AI интеграция", "Онлайн магазин", "Уеб приложение"];
-const timeSlots = ["09:30", "10:00", "11:30", "14:00", "16:00"];
 
 const contactInfo = [
   {
@@ -24,6 +21,12 @@ const contactInfo = [
   },
 ];
 
+const wizardSteps = [
+  "Изберете целта си — нов бизнес, разширяване или автоматизация",
+  "Отбележете какво да включва проектът",
+  "Оставете телефон или email за предложението",
+];
+
 const inputClasses = (focused: boolean) =>
   `w-full h-12 px-4 rounded-sm border bg-white font-plex text-sm text-ink placeholder:text-ink/60 focus:outline-none transition-all duration-300 ${
     focused ? "border-machine shadow-[0_0_0_3px_hsl(var(--aa-teal)/0.12)]" : "border-ink/20"
@@ -31,23 +34,15 @@ const inputClasses = (focused: boolean) =>
 
 const Contact = () => {
   const { toast } = useToast();
+  const { openWizard } = useProjectWizard();
   const { ref: sectionRef, inView: isVisible } = useReveal<HTMLElement>(0.08);
   const [contactFormData, setContactFormData] = useState({ name: "", email: "", phone: "", message: "" });
-  const [meetingFormData, setMeetingFormData] = useState({ email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isMeetingSubmitting, setIsMeetingSubmitting] = useState(false);
-  const [isMeetingDialogOpen, setIsMeetingDialogOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState("Уебсайт");
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTime, setSelectedTime] = useState("10:00");
 
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setContactFormData({ ...contactFormData, [e.target.name]: e.target.value });
-  };
-
-  const handleMeetingFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMeetingFormData({ ...meetingFormData, [e.target.name]: e.target.value });
   };
 
   const buildContactEmail = () => {
@@ -61,25 +56,6 @@ const Contact = () => {
       "",
       "Съобщение:",
       contactFormData.message || "Няма допълнително съобщение",
-    ];
-
-    return `mailto:slav@automationaid.eu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
-  };
-
-  const buildMeetingEmail = () => {
-    const subject = "Заявка за среща от календар";
-    const meetingDate = selectedDate
-      ? selectedDate.toLocaleDateString("bg-BG", { day: "2-digit", month: "long", year: "numeric" })
-      : "Не е избрана";
-
-    const bodyLines = [
-      "Тип: Календарна заявка за среща",
-      `Дата: ${meetingDate}`,
-      `Час: ${selectedTime}`,
-      "",
-      "Контакти за потвърждение:",
-      `Email: ${meetingFormData.email || "Не е попълнен"}`,
-      `Телефон: ${meetingFormData.phone || "Не е попълнен"}`,
     ];
 
     return `mailto:slav@automationaid.eu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
@@ -100,51 +76,6 @@ const Contact = () => {
     setContactFormData({ name: "", email: "", phone: "", message: "" });
     setIsSubmitting(false);
   };
-
-  const handleMeetingRequest = () => {
-    if (!selectedDate) {
-      toast({
-        title: "Изберете дата за срещата",
-        description: "Моля изберете ден от календара и после продължете.",
-      });
-      return;
-    }
-    setIsMeetingDialogOpen(true);
-  };
-
-  const handleMeetingSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const emailValue = meetingFormData.email.trim();
-    const phoneValue = meetingFormData.phone.trim();
-    const hasValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
-    const digitsOnly = phoneValue.replace(/\D/g, "");
-    const hasValidPhone = digitsOnly.length >= 6;
-
-    if (!hasValidEmail || !hasValidPhone) {
-      toast({
-        title: "Попълнете email и телефон",
-        description: "Нужни са валидни контакти, за да потвърдим срещата.",
-      });
-      return;
-    }
-
-    setIsMeetingSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    window.location.href = buildMeetingEmail();
-
-    toast({
-      title: "Срещата е заявена!",
-      description: "Изпратихме заявката с избраната дата, час и вашите контакти.",
-    });
-
-    setMeetingFormData({ email: "", phone: "" });
-    setIsMeetingDialogOpen(false);
-    setIsMeetingSubmitting(false);
-  };
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
 
   return (
     <section
@@ -172,7 +103,7 @@ const Contact = () => {
                 Нека превърнем идеята ви в <span className="text-machine-deep">работещ дигитален актив</span>
               </>
             }
-            lead="Разкажете ни за проекта си — отговаряме до 24 часа. Или си запазете кратка среща директно от календара."
+            lead="Разкажете ни за проекта си — отговаряме до 24 часа. Или попълнете краткия въпросник и получете конкретно предложение."
           />
         </div>
 
@@ -337,170 +268,54 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Meeting booking — dark card */}
+          {/* Project questionnaire — fast lane */}
           <div className="relative aa-reveal" style={{ transitionDelay: "240ms" }}>
             <Cross className="absolute -bottom-[7px] -right-[7px] text-ink/55 z-10" />
             <div className="bg-white border border-ink/15 p-6 md:p-7">
               <div className="flex items-center gap-3 mb-5 pb-5 border-b border-ink/10">
-                <img
-                  src="/clients/slav-4.jpg"
-                  alt="Slav Astinov"
-                  className="w-12 h-12 rounded-sm object-cover border border-ink/15"
-                />
+                <span className="w-12 h-12 rounded-sm bg-ink flex items-center justify-center flex-shrink-0">
+                  <ClipboardList className="w-5 h-5 text-paper" />
+                </span>
                 <div>
-                  <p className="font-plex text-sm font-semibold text-ink">Slav Astinov</p>
-                  <p className="font-plexmono text-[11px] text-ink/65 tracking-wide">Co-owner • Project Discovery</p>
+                  <p className="font-plex text-sm font-semibold text-ink">Кратък въпросник</p>
+                  <p className="font-plexmono text-[11px] text-ink/65 tracking-wide">Под 2 минути • Без ангажимент</p>
                 </div>
                 <span className="ml-auto inline-flex items-center gap-1.5 border border-ink/15 px-2.5 py-1 font-plexmono text-[10px] uppercase tracking-wider text-ink/65">
-                  <CalendarDays className="w-3.5 h-3.5 text-signal" />
-                  Optional
+                  <span className="w-1.5 h-1.5 rounded-full bg-signal animate-pulse" />
+                  По-бързо
                 </span>
               </div>
 
-              <h3 className="font-heading text-lg md:text-xl text-ink mb-2">Резервирайте кратка среща</h3>
-              <p className="font-plex text-sm text-ink/70 leading-relaxed mb-5">
-                Изберете дата и час, после въведете email и телефон в pop-up за потвърждение.
+              <h3 className="font-heading text-lg md:text-xl text-ink mb-2">Заявете проекта си</h3>
+              <p className="font-plex text-sm text-ink/70 leading-relaxed mb-6">
+                Няколко клика вместо дълго писане — отговорете на кратките въпроси и получете конкретно предложение
+                до 24 часа.
               </p>
 
-              <div className="rounded-sm border border-ink/15 bg-white mb-5">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  disabled={{ before: today }}
-                  className="mx-auto w-full text-ink"
-                  classNames={{
-                    day_selected: "bg-signal text-white hover:bg-signal focus:bg-signal",
-                    day_today: "bg-signal/10 text-signal",
-                    months: "flex flex-col w-full",
-                    month: "space-y-4 w-full",
-                    table: "w-full border-collapse",
-                    row: "flex w-full mt-2",
-                    head_row: "flex w-full",
-                    head_cell: "text-ink/55 rounded-sm w-9 lg:w-full text-center font-normal text-[0.7rem] font-plexmono uppercase",
-                    cell: "h-9 w-9 lg:h-10 lg:w-full text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
-                    nav_button: "h-7 w-7 bg-transparent text-ink/70 border border-ink/15 p-0 opacity-100 hover:bg-bone hover:text-ink",
-                    caption_label: "text-sm font-medium text-ink font-plex",
-                    day: "h-9 w-9 lg:h-10 lg:w-full p-0 font-normal text-ink/85 hover:bg-bone rounded-sm",
-                    day_disabled: "text-ink/20 hover:bg-transparent",
-                    day_outside: "text-ink/25",
-                  }}
-                />
-              </div>
-
-              <div className="mb-5">
-                <p className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/65 mb-2.5 flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 text-signal" />
-                  Изберете час
-                </p>
-                <div className="grid grid-cols-3 gap-2">
-                  {timeSlots.map((time) => (
-                    <button
-                      key={time}
-                      type="button"
-                      onClick={() => setSelectedTime(time)}
-                      className={`px-2 py-2 rounded-sm font-plexmono text-xs border transition-colors ${
-                        selectedTime === time
-                          ? "bg-signal text-white border-signal"
-                          : "bg-white text-ink/70 border-ink/20 hover:border-ink/50"
-                      }`}
-                    >
-                      {time}
-                    </button>
-                  ))}
-                </div>
+              <div className="border border-ink/15 bg-bone rounded-sm divide-y divide-ink/10 mb-6">
+                {wizardSteps.map((step, i) => (
+                  <div key={step} className="flex items-start gap-3 px-4 py-3.5">
+                    <span className="font-plexmono text-[11px] text-signal pt-0.5">0{i + 1}</span>
+                    <span className="font-plex text-sm text-ink/80 leading-snug">{step}</span>
+                  </div>
+                ))}
               </div>
 
               <button
                 type="button"
-                onClick={handleMeetingRequest}
+                onClick={openWizard}
                 className="group flex items-center justify-center gap-3 w-full bg-ink text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] py-4 rounded-sm transition-all duration-300 hover:bg-ink-soft"
               >
-                Заяви среща по имейл
+                Заяви проекта сега
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
 
               <p className="font-plexmono text-[10px] text-ink/55 text-center tracking-wide mt-3">
-                Това е отделен канал от контактната форма и изпраща отделен имейл.
+                Получавате отговор по email или телефон — без обвързване.
               </p>
             </div>
           </div>
         </div>
-
-        <Dialog open={isMeetingDialogOpen} onOpenChange={setIsMeetingDialogOpen}>
-          <DialogContent className="sm:max-w-[460px] rounded-sm bg-bone border-ink/20">
-            <DialogHeader>
-              <DialogTitle className="font-heading text-ink">Потвърдете данни за срещата</DialogTitle>
-              <DialogDescription className="font-plex">
-                Въведете email и телефон, за да се свържем с вас и потвърдим избраните дата и час.
-              </DialogDescription>
-            </DialogHeader>
-
-            <form onSubmit={handleMeetingSubmit} className="space-y-4">
-              <div className="rounded-sm border border-ink/15 bg-white px-3 py-2.5">
-                <p className="font-plexmono text-xs text-ink/70">
-                  Избрана среща:{" "}
-                  <span className="text-ink font-medium">
-                    {selectedDate
-                      ? selectedDate.toLocaleDateString("bg-BG", { day: "2-digit", month: "long", year: "numeric" })
-                      : "няма дата"}
-                  </span>{" "}
-                  • <span className="text-ink font-medium">{selectedTime}</span>
-                </p>
-              </div>
-
-              <div className="space-y-1.5">
-                <label htmlFor="meeting-email" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
-                  Email
-                </label>
-                <input
-                  id="meeting-email"
-                  name="email"
-                  type="email"
-                  required
-                  value={meetingFormData.email}
-                  onChange={handleMeetingFieldChange}
-                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/60 focus:outline-none focus:border-machine"
-                  placeholder="email@example.com"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label htmlFor="meeting-phone" className="font-plexmono text-[11px] uppercase tracking-[0.15em] text-ink/70">
-                  Телефон
-                </label>
-                <input
-                  id="meeting-phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  value={meetingFormData.phone}
-                  onChange={handleMeetingFieldChange}
-                  className="w-full h-12 px-4 rounded-sm border border-ink/20 bg-white font-plex text-sm text-ink placeholder:text-ink/60 focus:outline-none focus:border-machine"
-                  placeholder="+359 888 123 456"
-                />
-              </div>
-
-              <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="rounded-sm border-ink/25 text-ink"
-                  onClick={() => setIsMeetingDialogOpen(false)}
-                >
-                  Отказ
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isMeetingSubmitting}
-                  className="rounded-sm bg-signal text-white hover:bg-signal hover:brightness-110"
-                >
-                  {isMeetingSubmitting ? "Изпращане..." : "Изпрати заявка"}
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
       </div>
     </section>
   );

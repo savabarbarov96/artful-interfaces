@@ -13,6 +13,7 @@ import AIIntegrationLanding from "./pages/AIIntegrationLanding";
 import HousingSoftwareLanding from "./pages/HousingSoftwareLanding";
 import EcommerceStoreLanding from "./pages/EcommerceStoreLanding";
 import ScrollToTop from "./components/ScrollToTop";
+import { ProjectWizardProvider } from "./components/wizard/ProjectWizard";
 
 const queryClient = new QueryClient();
 
@@ -24,17 +25,19 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/website" element={<WebsiteLanding />} />
-            <Route path="/ai-integration" element={<AIIntegrationLanding />} />
-            <Route path="/housing-software" element={<HousingSoftwareLanding />} />
-            <Route path="/ecommerce-store" element={<EcommerceStoreLanding />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <ProjectWizardProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/website" element={<WebsiteLanding />} />
+              <Route path="/ai-integration" element={<AIIntegrationLanding />} />
+              <Route path="/housing-software" element={<HousingSoftwareLanding />} />
+              <Route path="/ecommerce-store" element={<EcommerceStoreLanding />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ProjectWizardProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

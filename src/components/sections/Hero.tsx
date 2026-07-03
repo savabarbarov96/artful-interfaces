@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowDown } from "lucide-react";
 import heroBlocks from "@/assets/hero section.png";
 import { Cross } from "@/components/home/primitives";
+import { useProjectWizard } from "@/components/wizard/ProjectWizard";
 
 const technologies = [
   "React",
@@ -16,6 +17,8 @@ const technologies = [
 ];
 
 const Hero = () => {
+  const { openWizard } = useProjectWizard();
+
   return (
     <section className="relative min-h-screen flex flex-col bg-white text-ink overflow-hidden">
       {/* Blueprint grid */}
@@ -65,13 +68,14 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 animate-fade-up delay-400">
-              <a
-                href="#contact"
+              <button
+                type="button"
+                onClick={openWizard}
                 className="group inline-flex items-center justify-center gap-3 bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] px-8 py-4 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_16px_40px_-12px_hsl(var(--aa-signal)/0.65)]"
               >
-                Безплатна консултация
+                Заяви проекта сега
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </button>
               <a
                 href="#work"
                 className="group inline-flex items-center justify-center gap-3 border border-ink/25 text-ink font-plex font-medium text-sm uppercase tracking-[0.08em] px-8 py-4 rounded-sm transition-all duration-300 hover:border-ink/60 hover:bg-ink/5"

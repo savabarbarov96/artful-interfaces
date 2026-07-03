@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useProjectWizard } from "@/components/wizard/ProjectWizard";
 
 interface LandingCTAProps {
   title: ReactNode;
   subtitle: string;
   ctaText: string;
   ctaHref?: string;
+  /** Open the project questionnaire instead of following ctaHref */
+  ctaOpensWizard?: boolean;
 }
 
 const LandingCTA = ({
@@ -14,7 +17,9 @@ const LandingCTA = ({
   subtitle,
   ctaText,
   ctaHref = "#contact",
+  ctaOpensWizard = false,
 }: LandingCTAProps) => {
+  const { openWizard } = useProjectWizard();
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -83,18 +88,31 @@ const LandingCTA = ({
           <p className="text-xl md:text-2xl text-white/80 font-body mb-10 max-w-2xl mx-auto leading-relaxed">
             {subtitle}
           </p>
-          <Button
-            size="lg"
-            className="group bg-white hover:bg-white/95 text-primary font-semibold px-10 py-7 text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500"
-            asChild
-          >
-            <a href={ctaHref} className="flex items-center gap-3">
-              {ctaText}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </Button>
+          {ctaOpensWizard ? (
+            <Button
+              size="lg"
+              className="group bg-white hover:bg-white/95 text-primary font-semibold px-10 py-7 text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500"
+              onClick={openWizard}
+            >
+              <span className="flex items-center gap-3">
+                {ctaText}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              className="group bg-white hover:bg-white/95 text-primary font-semibold px-10 py-7 text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500"
+              asChild
+            >
+              <a href={ctaHref} className="flex items-center gap-3">
+                {ctaText}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </Button>
+          )}
           <p className="text-white/50 font-body text-sm mt-6">
-            Безплатна консултация • Отговаряме до 24 часа
+            Отнема под 2 минути • Отговаряме до 24 часа
           </p>
         </div>
       </div>
