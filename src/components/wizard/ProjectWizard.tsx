@@ -115,6 +115,8 @@ const ProjectWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (o
   const [timeline, setTimeline] = useState("");
   const [contact, setContact] = useState({ name: "", email: "", phone: "" });
   const [contactHint, setContactHint] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   // Fresh questionnaire every time the wizard opens
   useEffect(() => {
@@ -128,6 +130,8 @@ const ProjectWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (o
       setTimeline("");
       setContact({ name: "", email: "", phone: "" });
       setContactHint(false);
+      setIsSubmitting(false);
+      setSubmitError(false);
     }
   }, [open]);
 
@@ -135,33 +139,52 @@ const ProjectWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (o
     setFocus((prev) => (prev.includes(option) ? prev.filter((f) => f !== option) : [...prev, option]));
   };
 
-  const buildMailto = () => {
-    const subject = `Заявка за проект — ${goal ? goalLabels[goal] : "Общо запитване"}`;
-    const bodyLines = [
-      "Тип: Заявка за проект (въпросник от сайта)",
+  // Same field shape as the live /api/contact endpoint (name, email, phone,
+  // message); the questionnaire answers travel as a readable message body.
+  // The API rejects empty name/email, so phone-only leads get placeholders.
+  const buildPayload = () => {
+    const messageLines = [
+      "Заявка за проект (въпросник от сайта)",
+      "",
       `Цел: ${goal ? goalLabels[goal] : "Не е избрана"}`,
       `Фокус: ${focus.length ? focus.join(", ") : "Не е посочен"}`,
       `За проекта: ${about.trim() || "Не е попълнено"}`,
       `Бюджет: ${budget || "Не е посочен"}`,
       `Срок: ${timeline || "Не е посочен"}`,
       "",
-      "Контакти:",
-      `Име: ${contact.name.trim() || "Не е попълнено"}`,
-      `Email: ${contact.email.trim() || "Не е попълнен"}`,
       `Телефон: ${contact.phone.trim() || "Не е попълнен"}`,
     ];
-    return `mailto:slav@automationaid.eu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+    return {
+      name: contact.name.trim() || "Заявка от въпросник",
+      email: contact.email.trim() || "не е посочен",
+      phone: contact.phone.trim(),
+      message: messageLines.join("\n"),
+    };
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Soft nudge only — one contact channel is the whole point of the wizard,
     // but nothing is format-validated and the second click always goes through.
     if (!contact.email.trim() && !contact.phone.trim() && !contactHint) {
       setContactHint(true);
       return;
     }
-    window.location.href = buildMailto();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(false);
+    try {
+      const response = await fetch("https://automationaid.eu/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildPayload()),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.message || "Request failed");
+      setSubmitted(true);
+    } catch {
+      setSubmitError(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const focusStep = goal ? focusCopy[goal] : focusCopy.build;
@@ -213,9 +236,9 @@ const ProjectWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (o
                 <span className="w-14 h-14 rounded-sm bg-machine/10 border border-machine/30 flex items-center justify-center mb-6">
                   <CheckCircle2 className="w-7 h-7 text-machine-deep" />
                 </span>
-                <h2 className="font-heading text-xl md:text-2xl text-ink mb-3">Заявката е готова!</h2>
+                <h2 className="font-heading text-xl md:text-2xl text-ink mb-3">Заявката е изпратена!</h2>
                 <p className="font-plex text-sm text-ink/70 leading-relaxed max-w-sm mb-7">
-                  Отворихме имейла с попълнения бриф — просто натиснете „Изпрати“ в пощата си и той пристига при нас.
+                  Брифът ви пристигна при нас. Ето какво следва:
                 </p>
                 <div className="w-full max-w-sm text-left border border-ink/15 bg-bone rounded-sm divide-y divide-ink/10 mb-7">
                   {[
@@ -384,10 +407,17 @@ const ProjectWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (o
                       />
                     </div>
                   </div>
-                  {contactHint && (
+                  {contactHint && !submitError && (
                     <p className="font-plex text-xs text-signal leading-relaxed">
                       Без телефон или email няма как да ви изпратим предложението — но ако предпочитате, натиснете
                       бутона отново и ще изпратим заявката както е.
+                    </p>
+                  )}
+                  {submitError && (
+                    <p className="font-plex text-xs text-signal leading-relaxed">
+                      Нещо се обърка при изпращането — опитайте отново след малко или ни пишете директно на{" "}
+                      <a href="mailto:slav@automationaid.eu" className="underline">slav@automationaid.eu</a> /{" "}
+                      <a href="tel:0884323999" className="underline whitespace-nowrap">0884 323 999</a>.
                     </p>
                   )}
                   <div className="flex items-center gap-2.5 pt-1">
@@ -432,10 +462,20 @@ const ProjectWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (o
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="group inline-flex items-center gap-2.5 bg-signal text-white font-plex font-semibold text-xs uppercase tracking-[0.1em] px-6 py-3 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_14px_32px_-10px_hsl(var(--aa-signal)/0.7)]"
+                  disabled={isSubmitting}
+                  className="group inline-flex items-center gap-2.5 bg-signal text-white font-plex font-semibold text-xs uppercase tracking-[0.1em] px-6 py-3 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_14px_32px_-10px_hsl(var(--aa-signal)/0.7)] disabled:opacity-70"
                 >
-                  Заяви проекта сега
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  {isSubmitting ? (
+                    <>
+                      <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Изпращане...
+                    </>
+                  ) : (
+                    <>
+                      Заяви проекта сега
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </>
+                  )}
                 </button>
               )}
             </div>
