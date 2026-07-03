@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Cross } from "@/components/home/primitives";
+import { useProjectWizard } from "@/components/wizard/ProjectWizard";
 
 interface LandingHeroProps {
   eyebrow: string;
@@ -8,6 +9,8 @@ interface LandingHeroProps {
   subtitle: string;
   ctaText: string;
   ctaHref?: string;
+  /** Open the project questionnaire instead of following ctaHref */
+  ctaOpensWizard?: boolean;
   secondaryCta?: { text: string; href: string };
   technologies?: string[];
 }
@@ -18,9 +21,11 @@ const LandingHero = ({
   subtitle,
   ctaText,
   ctaHref = "#contact",
+  ctaOpensWizard = false,
   secondaryCta,
   technologies,
 }: LandingHeroProps) => {
+  const { openWizard } = useProjectWizard();
   return (
     <section className="relative min-h-[78vh] flex flex-col bg-white text-ink overflow-hidden">
       {/* Blueprint grid */}
@@ -64,13 +69,24 @@ const LandingHero = ({
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 animate-fade-up delay-300">
-            <a
-              href={ctaHref}
-              className="group inline-flex items-center justify-center gap-3 bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] px-8 py-4 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_16px_40px_-12px_hsl(var(--aa-signal)/0.65)]"
-            >
-              {ctaText}
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
+            {ctaOpensWizard ? (
+              <button
+                type="button"
+                onClick={openWizard}
+                className="group inline-flex items-center justify-center gap-3 bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] px-8 py-4 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_16px_40px_-12px_hsl(var(--aa-signal)/0.65)]"
+              >
+                {ctaText}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            ) : (
+              <a
+                href={ctaHref}
+                className="group inline-flex items-center justify-center gap-3 bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] px-8 py-4 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_16px_40px_-12px_hsl(var(--aa-signal)/0.65)]"
+              >
+                {ctaText}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            )}
             {secondaryCta && (
               <a
                 href={secondaryCta.href}

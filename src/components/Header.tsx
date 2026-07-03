@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, ArrowRight, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoImg from "@/assets/5f0bce7a-38e6-4daf-b989-6c44279836ea.png";
+import { useProjectWizard } from "@/components/wizard/ProjectWizard";
 
 const serviceLinks = [
   { href: "/website", label: "Изработка на уебсайт" },
@@ -16,6 +17,7 @@ const navLinks = [
 ];
 
 const Header = () => {
+  const { openWizard } = useProjectWizard();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -144,13 +146,14 @@ const Header = () => {
             </div>
 
             {/* CTA */}
-            <a
-              href="#contact"
+            <button
+              type="button"
+              onClick={openWizard}
               className="hidden md:inline-flex items-center gap-2 bg-signal text-white font-plex font-semibold text-xs uppercase tracking-[0.1em] px-5 py-2.5 rounded-sm transition-all duration-300 hover:brightness-110 hover:shadow-[0_12px_28px_-10px_hsl(var(--aa-signal)/0.7)] group"
             >
-              Безплатна консултация
+              Заяви проекта сега
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </a>
+            </button>
 
             {/* Mobile menu toggle */}
             <button
@@ -279,16 +282,19 @@ const Header = () => {
               transition: "all 0.5s ease-out 0.25s",
             }}
           >
-            <a
-              href="#contact"
-              onClick={() => setIsMobileMenuOpen(false)}
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                openWizard();
+              }}
               className="flex items-center justify-center gap-3 w-full bg-signal text-white font-plex font-semibold text-sm uppercase tracking-[0.08em] py-4 rounded-sm"
             >
-              Безплатна консултация
+              Заяви проекта сега
               <ArrowRight className="w-4 h-4 flex-shrink-0" />
-            </a>
+            </button>
             <div className="h-px aa-rule-ink mt-6" />
-            <p className="text-center font-plexmono text-xs text-ink/65 tracking-wider mt-4">Отговаряме до 24 часа</p>
+            <p className="text-center font-plexmono text-xs text-ink/65 tracking-wider mt-4">Отнема под 2 минути · Отговор до 24 часа</p>
           </div>
         </div>
       </div>
