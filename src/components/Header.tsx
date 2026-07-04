@@ -223,7 +223,7 @@ const Header = () => {
 
               <div
                 className={`overflow-hidden transition-all duration-400 ${
-                  isMobileServicesOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                  isMobileServicesOpen ? "max-h-[40rem] opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
                 <div className="pl-4 py-2 space-y-0.5 border-l border-signal/40 ml-1">
