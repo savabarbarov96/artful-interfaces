@@ -22,6 +22,7 @@ import {
   Monitor,
   Brain,
   Rocket,
+  GraduationCap,
 } from "lucide-react";
 
 const automationFaqs: FAQItem[] = [
@@ -260,6 +261,13 @@ const AutomationForBusinessLanding = () => {
                 "Тепърва стартирате? Сайт, AI агент и автоматизации в един абонамент, от нулата.",
               href: "/launch-your-business",
               icon: Rocket,
+            },
+            {
+              title: "AI обучение за служители",
+              description:
+                "Обучаваме екипа ви да работи с AI инструментите и автоматизациите, които изграждаме.",
+              href: "/ai-training",
+              icon: GraduationCap,
             },
           ]}
         />
