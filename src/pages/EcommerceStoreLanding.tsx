@@ -27,6 +27,7 @@ import {
   Brain,
   Building2,
   Rocket,
+  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -425,6 +426,13 @@ const EcommerceStoreLanding = () => {
                 "Тепърва стартирате бизнес от нулата? Сайт, AI агент и автоматизации в един абонамент.",
               href: "/launch-your-business",
               icon: Rocket,
+            },
+            {
+              title: "Съответствие и сигурност",
+              description:
+                "Готовност за NIS2, ISO 27001 и GDPR — техническите мерки и документацията за одит.",
+              href: "/compliance",
+              icon: ShieldCheck,
             },
           ]}
         />

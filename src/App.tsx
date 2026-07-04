@@ -22,6 +22,7 @@ const AutomationForBusinessLanding = lazy(() => import("./pages/AutomationForBus
 const AIAgentsLanding = lazy(() => import("./pages/AIAgentsLanding"));
 const MvpDevelopmentLanding = lazy(() => import("./pages/MvpDevelopmentLanding"));
 const AITrainingLanding = lazy(() => import("./pages/AITrainingLanding"));
+const ComplianceLanding = lazy(() => import("./pages/ComplianceLanding"));
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
                 <Route path="/ai-agents" element={<AIAgentsLanding />} />
                 <Route path="/mvp-development" element={<MvpDevelopmentLanding />} />
                 <Route path="/ai-training" element={<AITrainingLanding />} />
+                <Route path="/compliance" element={<ComplianceLanding />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
