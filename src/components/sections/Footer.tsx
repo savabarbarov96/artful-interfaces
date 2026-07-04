@@ -5,6 +5,13 @@ const links = {
     { label: "Уебсайт / лендинг", href: "/website" },
     { label: "AI бизнес интеграция", href: "/ai-integration" },
     { label: "Софтуер за настаняване", href: "/housing-software" },
+    { label: "Онлайн магазин", href: "/ecommerce-store" },
+    { label: "Стартиране на бизнес", href: "/launch-your-business" },
+    { label: "Автоматизация за самонаети", href: "/automation-for-business" },
+    { label: "AI агенти", href: "/ai-agents" },
+    { label: "MVP разработка", href: "/mvp-development" },
+    { label: "AI обучение", href: "/ai-training" },
+    { label: "Съответствие", href: "/compliance" },
     { label: "Всички услуги", href: "/#services" },
   ],
   company: [
