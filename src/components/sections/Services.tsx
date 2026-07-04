@@ -188,13 +188,16 @@ const Services = () => {
               >
                 <div className="absolute top-[8px] left-1/2 -translate-x-1/2 w-8 sm:w-10 h-[4px] bg-black rounded-full z-10" />
                 <div className="rounded-[14px] sm:rounded-[20px] overflow-hidden bg-white">
-                  <img
-                    src="/dashboard_mobile.png"
-                    alt="Клиентски портал — мобилна версия"
-                    className="w-full block"
-                    loading="lazy"
-                    style={{ aspectRatio: "9/19", objectFit: "cover", objectPosition: "top center" }}
-                  />
+                  <picture>
+                    <source srcSet="/dashboard_mobile.webp" type="image/webp" />
+                    <img
+                      src="/dashboard_mobile.png"
+                      alt="Клиентски портал — мобилна версия"
+                      className="w-full block"
+                      loading="lazy"
+                      style={{ aspectRatio: "9/19", objectFit: "cover", objectPosition: "top center" }}
+                    />
+                  </picture>
                 </div>
               </div>
             </div>
@@ -218,13 +221,16 @@ const Services = () => {
                   </span>
                 </div>
                 <div className="relative overflow-hidden bg-white">
-                  <img
-                    src="/dashboard_desktop.png"
-                    alt="Клиентски портал — административно табло"
-                    className="w-full h-auto block"
-                    loading="lazy"
-                    style={{ maxHeight: "420px", objectFit: "cover", objectPosition: "top left" }}
-                  />
+                  <picture>
+                    <source srcSet="/dashboard_desktop.webp" type="image/webp" />
+                    <img
+                      src="/dashboard_desktop.png"
+                      alt="Клиентски портал — административно табло"
+                      className="w-full h-auto block"
+                      loading="lazy"
+                      style={{ maxHeight: "420px", objectFit: "cover", objectPosition: "top left" }}
+                    />
+                  </picture>
                 </div>
               </div>
               {/* Base */}

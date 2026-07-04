@@ -60,6 +60,18 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Analytics
+
+The site can send privacy-friendly, cookie-free analytics via [Plausible](https://plausible.io) — no cookie-consent banner required under GDPR. It is inert by default.
+
+To enable it, set `VITE_ANALYTICS_DOMAIN` to your Plausible site domain (e.g. `automationaid.bg`) in your `.env` file or hosting provider's environment variables, then rebuild:
+
+```
+VITE_ANALYTICS_DOMAIN=automationaid.bg
+```
+
+Leaving the variable unset renders nothing — no script tag is injected and no third-party request is made.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.

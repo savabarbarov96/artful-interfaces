@@ -26,6 +26,7 @@ import {
   Monitor,
   Brain,
   Building2,
+  Rocket,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -417,6 +418,13 @@ const EcommerceStoreLanding = () => {
                 "Платформа за къщи за гости и хотели с Airbnb и Booking.com синхронизация.",
               href: "/housing-software",
               icon: Building2,
+            },
+            {
+              title: "Стартиране на онлайн бизнес",
+              description:
+                "Тепърва стартирате бизнес от нулата? Сайт, AI агент и автоматизации в един абонамент.",
+              href: "/launch-your-business",
+              icon: Rocket,
             },
           ]}
         />
