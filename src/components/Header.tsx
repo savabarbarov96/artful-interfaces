@@ -9,6 +9,12 @@ const serviceLinks = [
   { href: "/ai-integration", label: "AI Интеграция" },
   { href: "/housing-software", label: "Софтуер за настаняване" },
   { href: "/ecommerce-store", label: "Онлайн магазин" },
+  { href: "/launch-your-business", label: "Стартиране на бизнес" },
+  { href: "/automation-for-business", label: "Автоматизация за самонаети" },
+  { href: "/ai-agents", label: "AI агенти" },
+  { href: "/mvp-development", label: "MVP разработка" },
+  { href: "/ai-training", label: "AI обучение" },
+  { href: "/compliance", label: "Съответствие" },
 ];
 
 const navLinks = [
@@ -124,7 +130,7 @@ const Header = () => {
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         <span>{link.label}</span>
-                        <span className="font-plexmono text-[10px] text-signal/70">0{i + 1}</span>
+                        <span className="font-plexmono text-[10px] text-signal/70">{String(i + 1).padStart(2, "0")}</span>
                       </Link>
                     ))}
                   </div>
