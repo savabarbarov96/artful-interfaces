@@ -214,7 +214,7 @@ const ProjectTypes = () => {
                     aria-selected={isActive}
                     onClick={() => handleProjectChange(project)}
                     className={`group w-full flex items-baseline gap-4 md:gap-5 text-left px-1 py-5 border-b border-ink/15 transition-colors duration-300 ${
-                      isActive ? "" : "hover:bg-ink/[0.03]"
+                      isActive ? "" : "hover:bg-ink/[0.03] active:bg-ink/[0.05]"
                     }`}
                   >
                     <span
@@ -233,7 +233,9 @@ const ProjectTypes = () => {
                     </span>
                     <ArrowRight
                       className={`w-4 h-4 ml-auto self-center transition-all duration-300 ${
-                        isActive ? "text-signal opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+                        isActive
+                          ? "text-signal opacity-100 translate-x-0"
+                          : "text-ink/40 opacity-40 translate-x-0 group-hover:opacity-70 group-hover:text-ink/60"
                       }`}
                     />
                   </button>
