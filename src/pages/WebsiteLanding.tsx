@@ -22,6 +22,7 @@ import {
   Brain,
   Building2,
   ShoppingCart,
+  Rocket,
 } from "lucide-react";
 
 const websiteFaqs: FAQItem[] = [
@@ -260,6 +261,13 @@ const WebsiteLanding = () => {
                 "eCommerce платформа с checkout оптимизация, Speedy и Еконт интеграции.",
               href: "/ecommerce-store",
               icon: ShoppingCart,
+            },
+            {
+              title: "Стартиране на онлайн бизнес",
+              description:
+                "Тепърва стартирате бизнес от нулата? Сайт, AI агент и автоматизации в един абонамент.",
+              href: "/launch-your-business",
+              icon: Rocket,
             },
           ]}
         />

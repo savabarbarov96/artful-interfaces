@@ -182,6 +182,7 @@ const Testimonials = () => {
                         alt={testimonial.name}
                         className="absolute inset-0 w-full h-full object-cover"
                         draggable={false}
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
                       {testimonial.logo ? (
@@ -191,6 +192,7 @@ const Testimonials = () => {
                             alt={testimonial.company}
                             className="w-full h-full object-contain"
                             draggable={false}
+                            loading="lazy"
                           />
                         </div>
                       ) : testimonial.logoText ? (

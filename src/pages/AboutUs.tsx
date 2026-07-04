@@ -283,6 +283,7 @@ const AboutUs = () => {
                           src={founder.image}
                           alt={`${founder.name} — ${founder.title}, съосновател на Automation Aid`}
                           className="w-full aspect-[4/5] object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
                         <div className="absolute bottom-6 left-6 right-6">
@@ -386,6 +387,7 @@ const AboutUs = () => {
                     src="/clients/savaandslav.jpg"
                     alt="Сава и Слав — съоснователи на Automation Aid"
                     className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
                   />
                 </div>
 
