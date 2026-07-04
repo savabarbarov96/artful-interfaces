@@ -19,6 +19,7 @@ const HousingSoftwareLanding = lazy(() => import("./pages/HousingSoftwareLanding
 const EcommerceStoreLanding = lazy(() => import("./pages/EcommerceStoreLanding"));
 const LaunchBusinessLanding = lazy(() => import("./pages/LaunchBusinessLanding"));
 const AutomationForBusinessLanding = lazy(() => import("./pages/AutomationForBusinessLanding"));
+const AIAgentsLanding = lazy(() => import("./pages/AIAgentsLanding"));
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/ecommerce-store" element={<EcommerceStoreLanding />} />
                 <Route path="/launch-your-business" element={<LaunchBusinessLanding />} />
                 <Route path="/automation-for-business" element={<AutomationForBusinessLanding />} />
+                <Route path="/ai-agents" element={<AIAgentsLanding />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
