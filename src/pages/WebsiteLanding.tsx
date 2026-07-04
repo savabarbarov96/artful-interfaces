@@ -23,6 +23,7 @@ import {
   Building2,
   ShoppingCart,
   Rocket,
+  Code2,
 } from "lucide-react";
 
 const websiteFaqs: FAQItem[] = [
@@ -268,6 +269,13 @@ const WebsiteLanding = () => {
                 "Тепърва стартирате бизнес от нулата? Сайт, AI агент и автоматизации в един абонамент.",
               href: "/launch-your-business",
               icon: Rocket,
+            },
+            {
+              title: "MVP разработка",
+              description:
+                "Трябва ви софтуерен продукт, не сайт? AI-native MVP на фиксирана цена, който притежавате изцяло.",
+              href: "/mvp-development",
+              icon: Code2,
             },
           ]}
         />
